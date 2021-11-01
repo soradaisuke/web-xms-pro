@@ -1,0 +1,10 @@
+import { ActionType } from '@ant-design/pro-table';
+import { CommonRecord } from '../types/common';
+import { CreateService, DeleteService, RetrieveRequest, ServiceConfig, UpdateService } from './useCRUDRequests';
+export declare type TableRetrieveRequest = RetrieveRequest;
+export declare type TableCreateRequest = (values: CommonRecord, action?: ActionType) => Promise<boolean>;
+export declare type TableUpdateRequest = (values: CommonRecord, id?: string | number, action?: ActionType) => Promise<boolean>;
+export declare type TableDeleteRequest = (id?: string | number, action?: ActionType) => Promise<boolean>;
+export declare function useTableCreateRequest(service: CreateService | ServiceConfig, action?: ActionType): TableCreateRequest;
+export declare function useTableUpdateRequest(service: UpdateService | ServiceConfig, action?: ActionType): TableUpdateRequest;
+export declare function useTableDeleteRequest(service: DeleteService | ServiceConfig, action?: ActionType): TableDeleteRequest;
