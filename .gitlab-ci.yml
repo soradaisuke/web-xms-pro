@@ -1,0 +1,4 @@
+include:
+  - project: 'bj-libs/qt-gitlab-runner'
+    ref: master
+    file: '/ymls/node.yml'
