@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import ProLayout, { BasicLayoutProps } from '@ant-design/pro-layout';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { Route as AntRoute } from '@ant-design/pro-layout/lib/typings';
@@ -95,7 +95,7 @@ function renderRoutes(props: Route) {
   );
 }
 
-const Layout: React.FC<LayoutProps> = (props) => {
+const Layout: React.FC<LayoutProps> = function(props) {
   const { route, title } = props;
   const location = useLocation();
   const user = useModel('user', (data) => data.user);
@@ -103,6 +103,21 @@ const Layout: React.FC<LayoutProps> = (props) => {
     () => validRoute(route, user?.permissions),
     [route, user]
   );
+
+  const menuHeaderRender = useCallback((logo) => (
+    <>
+      {logo}
+      <span style={{ color: 'white', marginLeft: 5 }}>蜻蜓FM</span>
+    </>
+  ), []);
+  const menuItemRender = useCallback((item, dom) => <Link to={item.path}>{dom}</Link>, []);
+  const waterMarkProps = useMemo(() => ({
+    content: `蜻蜓FM${user ? ` ${user.nickname} ${user.phone}` : ''}`,
+  }), [user]);
+  const headerContentRender = useCallback(() => (
+    <span style={{ fontWeight: 600, fontSize: '25px' }}>{title}</span>
+  ), [title]);
+  const rightContentRender = useCallback(() => <Account />, []);
 
   return (
     <div
@@ -113,28 +128,19 @@ const Layout: React.FC<LayoutProps> = (props) => {
     >
       <ProLayout
         logo="https://sss.qtfm.cn/favicon.ico"
-        menuHeaderRender={(logo) => (
-          <>
-            {logo}
-            <span style={{ color: 'white', marginLeft: 5 }}>蜻蜓FM</span>
-          </>
-        )}
+        menuHeaderRender={menuHeaderRender}
         {...props}
         route={newRoute}
         location={location}
-        menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}
-        waterMarkProps={{
-          content: `蜻蜓FM${user ? ` ${user.nickname} ${user.phone}` : ''}`,
-        }}
-        headerContentRender={() => (
-          <span style={{ fontWeight: 600, fontSize: '25px' }}>{title}</span>
-        )}
-        rightContentRender={() => <Account />}
+        menuItemRender={menuItemRender}
+        waterMarkProps={waterMarkProps}
+        headerContentRender={headerContentRender}
+        rightContentRender={rightContentRender}
       >
         <Routes>{renderRoutes(newRoute)}</Routes>
       </ProLayout>
     </div>
   );
-};
+}
 
 export default Layout;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { ConfigProvider, Input, Select, Switch } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -20,7 +20,7 @@ export type AppProps = {
   models?: Models;
 };
 
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC<AppProps> = function(props) {
   const values = useContext(ProProvider);
 
   const { layoutProps, settings: propSettings, models } = props;
@@ -38,60 +38,60 @@ const App: React.FC<AppProps> = (props) => {
     )
   );
 
+  const value = useMemo(() => ({
+    ...values,
+    valueTypeMap: {
+      image: {
+        renderFormItem: (_, renderProps) => (
+          <UploadImage {...renderProps?.fieldProps} />
+        ),
+      },
+      file: {
+        renderFormItem: (_, renderProps) => (
+          <UploadFile {...renderProps?.fieldProps} />
+        ),
+      },
+      link: {
+        render: (text, renderProps) => (
+          <a href={text} target="_blank" rel="noreferrer">
+            <div
+              style={{
+                wordBreak: 'break-all',
+                width: renderProps?.fieldProps?.width ?? 200,
+              }}
+            >
+              {text}
+            </div>
+          </a>
+        ),
+        renderFormItem: (_, renderProps) => (
+          <Input placeholder="请输入链接" {...renderProps?.fieldProps} />
+        ),
+      },
+      boolean: {
+        render: (text) => <Switch checked={text} />,
+        renderFormItem: (_, renderProps) => (
+          <Select
+            options={[
+              {
+                label: '是',
+                value: true,
+              },
+              {
+                label: '否',
+                value: false,
+              },
+            ]}
+            {...renderProps?.fieldProps}
+          />
+        ),
+      },
+    },
+  }), [values]);
+
   return (
     <ConfigProvider locale={zhCN}>
-      <ProProvider.Provider
-        value={{
-          ...values,
-          valueTypeMap: {
-            image: {
-              renderFormItem: (_, renderProps) => (
-                <UploadImage {...renderProps?.fieldProps} />
-              ),
-            },
-            file: {
-              renderFormItem: (_, renderProps) => (
-                <UploadFile {...renderProps?.fieldProps} />
-              ),
-            },
-            link: {
-              render: (text, renderProps) => (
-                <a href={text} target="_blank" rel="noreferrer">
-                  <div
-                    style={{
-                      wordBreak: 'break-all',
-                      width: renderProps?.fieldProps?.width ?? 200,
-                    }}
-                  >
-                    {text}
-                  </div>
-                </a>
-              ),
-              renderFormItem: (_, renderProps) => (
-                <Input placeholder="请输入链接" {...renderProps?.fieldProps} />
-              ),
-            },
-            boolean: {
-              render: (text) => <Switch checked={text} />,
-              renderFormItem: (_, renderProps) => (
-                <Select
-                  options={[
-                    {
-                      label: '是',
-                      value: true,
-                    },
-                    {
-                      label: '否',
-                      value: false,
-                    },
-                  ]}
-                  {...renderProps?.fieldProps}
-                />
-              ),
-            },
-          },
-        }}
-      >
+      <ProProvider.Provider value={value}>
         <Router>
           <Provider models={models}>
             <Layout {...layoutProps} {...settings} />
@@ -108,6 +108,6 @@ const App: React.FC<AppProps> = (props) => {
       </ProProvider.Provider>
     </ConfigProvider>
   );
-};
+}
 
 export default App;

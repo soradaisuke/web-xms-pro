@@ -200,7 +200,7 @@ function makeMergedRender(
   };
 }
 
-const Table: React.FC<TableProps> = (props) => {
+const Table: React.FC<TableProps> = function(props) {
   const {
     rowKey,
     requestConfig,
@@ -316,6 +316,6 @@ const Table: React.FC<TableProps> = (props) => {
       columns={newColumns}
     />
   );
-};
+}
 
 export default Table;

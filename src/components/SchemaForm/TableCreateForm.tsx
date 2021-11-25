@@ -25,7 +25,7 @@ export type TableCreateFormProps<T = CommonRecord> =
     ) => T | Promise<T>;
   };
 
-const TableCreateForm: React.FC<TableCreateFormProps> = (props) => {
+const TableCreateForm: React.FC<TableCreateFormProps> = function(props) {
   const {
     normalizeSubmitValues = (v) => v,
     create,
@@ -64,6 +64,6 @@ const TableCreateForm: React.FC<TableCreateFormProps> = (props) => {
       {...otherProps}
     />
   );
-};
+}
 
 export default TableCreateForm;

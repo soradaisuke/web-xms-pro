@@ -38,7 +38,7 @@ export type TableUpdateFormProps<
     normalizeInitialValues?: (record: T, matchParams: RouteParams) => T;
   };
 
-const TableUpdateForm: React.FC<TableUpdateFormProps> = (props) => {
+const TableUpdateForm: React.FC<TableUpdateFormProps> = function(props) {
   const {
     normalizeInitialValues = (v) => v,
     normalizeSubmitValues = (v) => v,
@@ -88,6 +88,6 @@ const TableUpdateForm: React.FC<TableUpdateFormProps> = (props) => {
       {...otherProps}
     />
   );
-};
+}
 
 export default TableUpdateForm;

@@ -51,7 +51,7 @@ function renderContent(props: PageProps, key?: string): ReactNode {
   return null;
 }
 
-const Page: React.FC<PageProps> = (props) => {
+const Page: React.FC<PageProps> = function(props) {
   const { tabList = [], title } = props;
   const [params, setParams] = useUrlSearchParams();
   const [tabKey, setTabKey] = useState(
@@ -92,6 +92,6 @@ const Page: React.FC<PageProps> = (props) => {
         )}
     </PageContainer>
   );
-};
+}
 
 export default Page;

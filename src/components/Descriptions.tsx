@@ -19,7 +19,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   columns: XMSDescriptionsColumns[];
 };
 
-const Descriptions: React.FC<DescriptionsProps> = (props) => {
+const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const { requestConfig } = props;
 
   const matchParams = useParams();
@@ -42,6 +42,6 @@ const Descriptions: React.FC<DescriptionsProps> = (props) => {
       {...props}
     />
   );
-};
+}
 
 export default Descriptions;

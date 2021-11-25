@@ -3,7 +3,7 @@ import { Avatar, Button } from 'antd';
 import { UserOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import useModel from '../hooks/useModel';
 
-const Account: React.FC = () => {
+const Account: React.FC = function() {
   const { user, auth, signin, signout } = useModel('user', (data) => data);
 
   useEffect(() => {
@@ -33,6 +33,6 @@ const Account: React.FC = () => {
   }
 
   return null;
-};
+}
 
 export default Account;
