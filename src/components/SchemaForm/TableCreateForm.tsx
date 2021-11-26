@@ -41,7 +41,7 @@ const TableCreateForm: React.FC<TableCreateFormProps> = function(props) {
       return (...args: Parameters<CreateService>) =>
         create(matchParams, ...args);
     }
-    return isFunction(requestConfig) ? service(matchParams) : requestConfig;
+    return isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig;
   }, [create, matchParams, requestConfig]);
 
   const req = useTableCreateRequest(service, tableAction);

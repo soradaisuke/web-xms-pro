@@ -57,7 +57,7 @@ const TableUpdateForm: React.FC<TableUpdateFormProps> = function(props) {
       return (...args: Parameters<UpdateService>) =>
         update(matchParams, record, ...args);
     }
-    return isFunction(requestConfig) ? service(matchParams) : requestConfig;
+    return isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig;
   }, [matchParams, record, requestConfig, update]);
 
   const req = useTableUpdateRequest(service, tableAction);
