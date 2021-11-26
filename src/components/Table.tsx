@@ -3,7 +3,7 @@ import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { find, get, isBoolean, isFunction, map, startsWith } from 'lodash';
 import { Link, useParams } from 'react-router-dom';
-import { Button, FormInstance, Popconfirm } from 'antd';
+import { Button, FormInstance, Popconfirm, Tooltip } from 'antd';
 import {
   CloudDownloadOutlined,
   CloudUploadOutlined,
@@ -118,13 +118,15 @@ function makeMergedRender(
               cancelText="取消"
               {...popConfirmProps}
             >
-              <Button
-                danger
-                style={{ marginRight: 10 }}
-                icon={<DeleteOutlined />}
-                shape="circle"
-                type="primary"
-              />
+              <Tooltip title="删除">
+                <Button
+                  danger
+                  style={{ marginRight: 10 }}
+                  icon={<DeleteOutlined />}
+                  shape="circle"
+                  type="primary"
+                />
+              </Tooltip>
             </Popconfirm>
           );
         },
@@ -152,19 +154,21 @@ function makeMergedRender(
               okText="确定"
               cancelText="取消"
             >
-              <Button
-                danger={status === onlineStatus}
-                style={{ marginRight: 10 }}
-                icon={
-                  status === onlineStatus ? (
-                    <CloudDownloadOutlined />
-                  ) : (
-                    <CloudUploadOutlined />
-                  )
-                }
-                shape="circle"
-                type="primary"
-              />
+              <Tooltip title={status === onlineStatus ? offlineText : onlineText}>
+                <Button
+                  danger={status === onlineStatus}
+                  style={{ marginRight: 10 }}
+                  icon={
+                    status === onlineStatus ? (
+                      <CloudDownloadOutlined />
+                    ) : (
+                      <CloudUploadOutlined />
+                    )
+                  }
+                  shape="circle"
+                  type="primary"
+                />
+              </Tooltip>
             </Popconfirm>
           );
         },
@@ -185,12 +189,14 @@ function makeMergedRender(
               },
             ],
             trigger: (
-              <Button
-                style={{ marginRight: 10 }}
-                icon={<SwapOutlined />}
-                shape="circle"
-                type="primary"
-              />
+              <Tooltip title="调序">
+                <Button
+                  style={{ marginRight: 10 }}
+                  icon={<SwapOutlined />}
+                  shape="circle"
+                  type="primary"
+                />
+              </Tooltip>
             ),
             ...(config || {}),
           }),

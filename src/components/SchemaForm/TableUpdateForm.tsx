@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { get, isFunction } from 'lodash';
@@ -74,12 +74,14 @@ const TableUpdateForm: React.FC<TableUpdateFormProps> = function(props) {
   return (
     <RecordSchemaForm
       trigger={
-        <Button
-          style={{ marginRight: 10 }}
-          icon={<EditOutlined />}
-          shape="circle"
-          type="primary"
-        />
+        <Tooltip title="编辑">
+          <Button
+            style={{ marginRight: 10 }}
+            icon={<EditOutlined />}
+            shape="circle"
+            type="primary"
+          />
+        </Tooltip>
       }
       layoutType="ModalForm"
       initialValues={normalizeInitialValues(record, matchParams)}
