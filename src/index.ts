@@ -8,5 +8,9 @@ export {
   default as Descriptions,
   DescriptionsProps,
 } from './components/Descriptions';
+export {
+  default as TriggerModal,
+  TriggerModalProps,
+} from './components/TriggerModal';
 export { default as getImageSizeByFile } from './utils/getImageSizeByFile';
 export default xms;
