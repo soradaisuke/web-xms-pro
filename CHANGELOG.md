@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.3](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2021-11-26)
+
+
+### Features
+
+* **NoTicket:** TriggerModal ([1903484](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/1903484242718a9514df914bf25d309838afb96a))
+
 ## [1.0.0-beta.2](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2021-11-26)
 
 
