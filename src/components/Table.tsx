@@ -192,7 +192,7 @@ function makeMergedRender(
               <Tooltip title="调序">
                 <Button
                   style={{ marginRight: 10 }}
-                  icon={<SwapOutlined />}
+                  icon={<SwapOutlined rotate={90} />}
                   shape="circle"
                   type="primary"
                 />
