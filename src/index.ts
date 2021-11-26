@@ -13,4 +13,5 @@ export {
   TriggerModalProps,
 } from './components/TriggerModal';
 export { default as getImageSizeByFile } from './utils/getImageSizeByFile';
+export { DragSortTable, DragTableProps } from '@ant-design/pro-table';
 export default xms;
