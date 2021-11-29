@@ -11,15 +11,15 @@ import { CommonRecord, RouteParams } from '../../types/common';
 import { ServiceConfig, UpdateService } from '../../hooks/useCRUDRequests';
 import getRowKey from '../../utils/getRowKey';
 
-export type TableUpdateFormProps<
+export type UpdateRecordSchemaFormProps<
   T = CommonRecord,
   U = ParamsType
 > = RecordSchemaFormProps<T> &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 传给该form所编辑的原始数据 */
     record: T;
-    /** @name ProTable的action实例 */
-    tableAction: ActionType;
+    /** @name ProTable或ProDescriptions的action实例 */
+    containerAction: ActionType;
     update?: (
       matchParams: RouteParams,
       record: T,
@@ -38,13 +38,13 @@ export type TableUpdateFormProps<
     normalizeInitialValues?: (record: T, matchParams: RouteParams) => T;
   };
 
-const TableUpdateForm: React.FC<TableUpdateFormProps> = function(props) {
+const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(props) {
   const {
     normalizeInitialValues = (v) => v,
     normalizeSubmitValues = (v) => v,
     update,
     requestConfig,
-    tableAction,
+    containerAction,
     record,
     rowKey,
     ...otherProps
@@ -60,7 +60,7 @@ const TableUpdateForm: React.FC<TableUpdateFormProps> = function(props) {
     return isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig;
   }, [matchParams, record, requestConfig, update]);
 
-  const req = useTableUpdateRequest(service, tableAction);
+  const req = useTableUpdateRequest(service, containerAction);
 
   const onFinish = useCallback(
     async (values) =>
@@ -92,4 +92,4 @@ const TableUpdateForm: React.FC<TableUpdateFormProps> = function(props) {
   );
 }
 
-export default TableUpdateForm;
+export default UpdateRecordSchemaForm;

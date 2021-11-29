@@ -9,9 +9,10 @@ import { useTableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
 import { CreateService, ServiceConfig } from '../../hooks/useCRUDRequests';
 
-export type TableCreateFormProps<T = CommonRecord> =
+export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
-    tableAction: ActionType;
+    /** @name ProTable或ProDescriptions的action实例 */
+    containerAction: ActionType;
     create?: (
       matchParams: RouteParams,
       ...base: Parameters<CreateService>
@@ -25,12 +26,12 @@ export type TableCreateFormProps<T = CommonRecord> =
     ) => T | Promise<T>;
   };
 
-const TableCreateForm: React.FC<TableCreateFormProps> = function(props) {
+const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(props) {
   const {
     normalizeSubmitValues = (v) => v,
     create,
     requestConfig,
-    tableAction,
+    containerAction,
     ...otherProps
   } = props;
 
@@ -44,7 +45,7 @@ const TableCreateForm: React.FC<TableCreateFormProps> = function(props) {
     return isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig;
   }, [create, matchParams, requestConfig]);
 
-  const req = useTableCreateRequest(service, tableAction);
+  const req = useTableCreateRequest(service, containerAction);
 
   const onFinish = useCallback(
     async (values) => req(await normalizeSubmitValues(values, matchParams)),
@@ -66,4 +67,4 @@ const TableCreateForm: React.FC<TableCreateFormProps> = function(props) {
   );
 }
 
-export default TableCreateForm;
+export default CreateRecordSchemaForm;

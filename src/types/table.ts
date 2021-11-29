@@ -1,15 +1,15 @@
 import { ProColumns } from '@ant-design/pro-table';
 import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
-import { TableCreateFormProps } from '../components/SchemaForm/TableCreateForm';
-import { TableUpdateFormProps } from '../components/SchemaForm/TableUpdateForm';
+import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
+import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
 import { CommonRecord, XMSValueType } from './common';
 
-export type TableCreateConfig = Partial<TableCreateFormProps> &
-  Pick<TableCreateFormProps, 'columns'>;
+export type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> &
+  Pick<CreateRecordSchemaFormProps, 'columns'>;
 
-export type TableUpdateConfig = Partial<TableUpdateFormProps> &
-  Pick<TableUpdateFormProps, 'columns'>;
+export type TableUpdateConfig = Partial<Omit<UpdateRecordSchemaFormProps, 'columns'>> &
+Pick<UpdateRecordSchemaFormProps, 'columns'>;
 
 export type TableDeleteConfig = {
   /** @name Popconfirm配置 */

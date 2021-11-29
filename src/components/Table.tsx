@@ -12,11 +12,11 @@ import {
 } from '@ant-design/icons';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
-import TableCreateForm from './SchemaForm/TableCreateForm';
+import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
 import { ServiceConfig, useRetrieveRequest } from '../hooks/useCRUDRequests';
-import TableUpdateForm from './SchemaForm/TableUpdateForm';
+import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
   TableDeleteRequest,
   TableUpdateRequest,
@@ -62,9 +62,9 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
             toolBarRender(
               {
                 defaultCreateButtonRender: (config) => (
-                  <TableCreateForm
+                  <CreateRecordSchemaForm
                     requestConfig={requestConfig}
-                    tableAction={args[0]}
+                    containerAction={args[0]}
                     {...config}
                   />
                 ),
@@ -95,10 +95,10 @@ function makeMergedRender(
     const defaultUpdate = (values) => update(values, key, action);
     const defaultDelete = () => del(key, action);
     const defaultUpdateButtonRender = (config) => (
-      <TableUpdateForm
+      <UpdateRecordSchemaForm
         rowKey={rowKey}
         record={record}
-        tableAction={action}
+        containerAction={action}
         requestConfig={requestConfig}
         {...config}
       />
