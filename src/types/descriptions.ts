@@ -1,11 +1,21 @@
 import { ProColumns } from '@ant-design/pro-table';
-import { CommonRecord, XMSValueType } from './common';
+import { CommonRecord, LinkConfig, XMSValueType } from './common';
+import { TableDeleteButtonRender, TableOnlineOfflineButtonRender, TableUpdateButtonRender } from './table';
 
 export type XMSDescriptionsColumns = Omit<
   ProColumns<CommonRecord>,
-  'valueType'
+  'valueType' | 'render'
 > & {
   /** @name 从数据获取跳转地址 */
-  link?: (record: CommonRecord) => string;
+  link?: LinkConfig;
   valueType?: ProColumns['valueType'] | XMSValueType;
+  render?: (
+    config: {
+      update: (values: CommonRecord) => Promise<boolean>;
+      defaultUpdateButtonRender: TableUpdateButtonRender;
+      defaultDeleteButtonRender: TableDeleteButtonRender;
+      defaultOnlineOfflineButtonRender: TableOnlineOfflineButtonRender;
+    },
+    ...base: Parameters<ProColumns<CommonRecord>['render']>
+  ) => ReturnType<ProColumns<CommonRecord>['render']>;
 };

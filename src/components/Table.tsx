@@ -1,13 +1,10 @@
 import React, { useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import { find, get, isBoolean, isFunction, map, startsWith } from 'lodash';
-import { Link, useParams } from 'react-router-dom';
-import { Button, FormInstance, Popconfirm, Tooltip } from 'antd';
+import { find, get, isBoolean, isFunction, map } from 'lodash';
+import { useParams } from 'react-router-dom';
+import { Button, FormInstance, Tooltip } from 'antd';
 import {
-  CloudDownloadOutlined,
-  CloudUploadOutlined,
-  DeleteOutlined,
   SwapOutlined,
 } from '@ant-design/icons';
 import { ProFormInstance } from '@ant-design/pro-form';
@@ -24,6 +21,9 @@ import {
   useTableUpdateRequest,
 } from '../hooks/useTableCRUDRequests';
 import getRowKey from '../utils/getRowKey';
+import makeLinkRender from '../utils/makeLinkRender';
+import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
+import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
@@ -108,70 +108,8 @@ function makeMergedRender(
       {
         update: defaultUpdate,
         defaultUpdateButtonRender,
-        defaultDeleteButtonRender: (config = {}) => {
-          const { popConfirmProps = {} } = config;
-          return (
-            <Popconfirm
-              title="确定删除？"
-              onConfirm={defaultDelete}
-              okText="确定"
-              cancelText="取消"
-              {...popConfirmProps}
-            >
-              <Tooltip title="删除">
-                <Button
-                  danger
-                  style={{ marginRight: 10 }}
-                  icon={<DeleteOutlined />}
-                  shape="circle"
-                  type="primary"
-                />
-              </Tooltip>
-            </Popconfirm>
-          );
-        },
-        defaultOnlineOfflineButtonRender: (config = {}) => {
-          const {
-            onlineStatus = 1,
-            offlineStatus = 0,
-            onlineText = '上线',
-            offlineText = '下线',
-            statusKey = 'status',
-          } = config;
-          const status = get(record, statusKey);
-
-          return (
-            <Popconfirm
-              title={`确定${
-                status === onlineStatus ? offlineText : onlineText
-              }？`}
-              onConfirm={() =>
-                defaultUpdate({
-                  [statusKey]:
-                    status === onlineStatus ? offlineStatus : onlineStatus,
-                })
-              }
-              okText="确定"
-              cancelText="取消"
-            >
-              <Tooltip title={status === onlineStatus ? offlineText : onlineText}>
-                <Button
-                  danger={status === onlineStatus}
-                  style={{ marginRight: 10 }}
-                  icon={
-                    status === onlineStatus ? (
-                      <CloudDownloadOutlined />
-                    ) : (
-                      <CloudUploadOutlined />
-                    )
-                  }
-                  shape="circle"
-                  type="primary"
-                />
-              </Tooltip>
-            </Popconfirm>
-          );
-        },
+        defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
+        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, defaultUpdate),
         defaultSwapButtonRender: (config) =>
           defaultUpdateButtonRender({
             columns: [
@@ -241,17 +179,7 @@ const Table: React.FC<TableProps> = function(props) {
           render: makeMergedRender(rowKey, render, update, del, ser),
         };
         if (link && !render) {
-          newCol.render = (dom, record) => {
-            const url = link(record);
-            if (startsWith(url, 'http') || startsWith(url, '//')) {
-              return (
-                <Button href={url} target="_blank" type="link">
-                  {dom}
-                </Button>
-              );
-            }
-            return <Link to={link(record)}>{dom}</Link>;
-          };
+          newCol.render = makeLinkRender(link);
         }
         if (
           valueType === 'image' ||

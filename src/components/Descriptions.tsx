@@ -3,11 +3,17 @@ import ProDescriptions, {
   ProDescriptionsProps,
 } from '@ant-design/pro-descriptions';
 import { useParams } from 'react-router-dom';
-import { isFunction } from 'lodash';
+import { isFunction, map } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
+import { ProColumns } from '@ant-design/pro-table';
 import { ServiceConfig, useRetrieveOneRequest } from '../hooks/useCRUDRequests';
 import { CommonRecord, RouteParams } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
+import { DescriptionsDeleteRequest, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
+import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
+import makeLinkRender from '../utils/makeLinkRender';
+import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
+import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,
@@ -19,8 +25,43 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   columns: XMSDescriptionsColumns[];
 };
 
+function makeMergedRender(
+  render: XMSDescriptionsColumns['render'],
+  update: DescriptionsUpdateRequest,
+  del: DescriptionsDeleteRequest,
+  requestConfig: ServiceConfig
+): ProColumns['render'] {
+  if (!render) {
+    return null;
+  }
+  return (...args) => {
+    const record = args[1];
+    const action = args[3];
+    const defaultUpdate = (values) => update(values, action);
+    const defaultDelete = del;
+    const defaultUpdateButtonRender = (config) => (
+      <UpdateRecordSchemaForm
+        record={record}
+        containerAction={action}
+        requestConfig={requestConfig}
+        {...config}
+      />
+    );
+
+    return render(
+      {
+        update: defaultUpdate,
+        defaultUpdateButtonRender,
+        defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
+        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, defaultUpdate),
+      },
+      ...args
+    );
+  };
+}
+
 const Descriptions: React.FC<DescriptionsProps> = function(props) {
-  const { requestConfig } = props;
+  const { requestConfig, columns } = props;
 
   const matchParams = useParams();
 
@@ -31,6 +72,24 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   );
 
   const retrieve = useRetrieveOneRequest(ser);
+  const update = useDescriptionsUpdateRequest(ser);
+  const del = useDescriptionsDeleteRequest(ser);
+
+  const newColumns = useMemo(
+    () =>
+      map(columns, (col) => {
+        const { link, render } = col;
+        const newCol = {
+          ...col,
+          render: makeMergedRender(render, update, del, ser),
+        };
+        if (link && !render) {
+          newCol.render = makeLinkRender(link);
+        }
+        return newCol;
+      }),
+    [columns, del, ser, update]
+  );
 
   return (
     <ProDescriptions
@@ -40,6 +99,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
       }}
       request={retrieve.run}
       {...props}
+      columns={newColumns}
     />
   );
 }

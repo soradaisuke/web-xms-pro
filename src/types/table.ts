@@ -3,7 +3,7 @@ import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
 import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
-import { CommonRecord, XMSValueType } from './common';
+import { CommonRecord, LinkConfig, XMSValueType } from './common';
 
 export type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> &
   Pick<CreateRecordSchemaFormProps, 'columns'>;
@@ -39,7 +39,7 @@ export type XMSTableColumns = Omit<
   'valueType' | 'render'
 > & {
   /** @name 从数据获取跳转地址 */
-  link?: (record: CommonRecord) => string;
+  link?: LinkConfig;
   valueType?: ProColumns['valueType'] | XMSValueType;
   render?: (
     config: {

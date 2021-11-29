@@ -3,7 +3,7 @@ import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
 import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
-import { CommonRecord, XMSValueType } from './common';
+import { CommonRecord, LinkConfig, XMSValueType } from './common';
 export declare type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> & Pick<CreateRecordSchemaFormProps, 'columns'>;
 export declare type TableUpdateConfig = Partial<Omit<UpdateRecordSchemaFormProps, 'columns'>> & Pick<UpdateRecordSchemaFormProps, 'columns'>;
 export declare type TableDeleteConfig = {
@@ -24,7 +24,7 @@ export declare type TableOnlineOfflineButtonRender = (config?: TableOnlineOfflin
 export declare type TableSwapButtonRender = (config?: Partial<TableUpdateConfig>) => ReactNode;
 export declare type XMSTableColumns = Omit<ProColumns<CommonRecord>, 'valueType' | 'render'> & {
     /** @name 从数据获取跳转地址 */
-    link?: (record: CommonRecord) => string;
+    link?: LinkConfig;
     valueType?: ProColumns['valueType'] | XMSValueType;
     render?: (config: {
         update: (values: CommonRecord) => Promise<boolean>;
