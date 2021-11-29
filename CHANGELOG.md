@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.5](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2021-11-29)
+
+
+### Features
+
+* **NoTicket:** TableTransfer ([4883c20](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/4883c2093165d176f5d993c4c4dfdade8434fcc9))
+
 ## [1.0.0-beta.4](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2021-11-26)
 
 
