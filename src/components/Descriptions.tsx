@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import ProDescriptions, {
   ProDescriptionsProps,
 } from '@ant-design/pro-descriptions';
@@ -14,6 +14,7 @@ import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
+import UserContext from '../contexts/UserContext';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,
@@ -29,7 +30,8 @@ function makeMergedRender(
   render: XMSDescriptionsColumns['render'],
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
-  requestConfig: ServiceConfig
+  requestConfig: ServiceConfig,
+  user: CommonRecord
 ): ProColumns['render'] {
   if (!render) {
     return null;
@@ -50,6 +52,7 @@ function makeMergedRender(
 
     return render(
       {
+        user,
         update: defaultUpdate,
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
@@ -64,6 +67,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const { requestConfig, columns } = props;
 
   const matchParams = useParams();
+  const { user } = useContext(UserContext);
 
   const ser = useMemo(
     () =>
@@ -81,7 +85,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         const { link, render, valueType } = col;
         const newCol = {
           ...col,
-          render: makeMergedRender(render, update, del, ser),
+          render: makeMergedRender(render, update, del, ser, user),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -94,7 +98,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         }
         return newCol;
       }),
-    [columns, del, ser, update]
+    [columns, del, ser, update, user]
   );
 
   return (
