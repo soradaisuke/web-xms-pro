@@ -8,7 +8,7 @@ const UserContext = React.createContext<{
   signin: () => void,
   signout: () => void
 }>({
-  user: null,
+  user: {},
   auth: null,
   signin: null,
   signout: null,
