@@ -27,6 +27,7 @@ export declare type XMSTableColumns = Omit<ProColumns<CommonRecord>, 'valueType'
     link?: LinkConfig;
     valueType?: ProColumns['valueType'] | XMSValueType;
     render?: (config: {
+        user: CommonRecord;
         update: (values: CommonRecord) => Promise<boolean>;
         defaultUpdateButtonRender: TableUpdateButtonRender;
         defaultDeleteButtonRender: TableDeleteButtonRender;

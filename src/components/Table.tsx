@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useContext, useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { find, get, isBoolean, isFunction, map } from 'lodash';
@@ -24,6 +24,7 @@ import getRowKey from '../utils/getRowKey';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
+import UserContext from '../contexts/UserContext';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
@@ -83,7 +84,8 @@ function makeMergedRender(
   render: XMSTableColumns['render'],
   update: TableUpdateRequest,
   del: TableDeleteRequest,
-  requestConfig: ServiceConfig
+  requestConfig: ServiceConfig,
+  user: CommonRecord
 ): ProColumns['render'] {
   if (!render) {
     return null;
@@ -106,6 +108,7 @@ function makeMergedRender(
 
     return render(
       {
+        user,
         update: defaultUpdate,
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
@@ -155,6 +158,7 @@ const Table: React.FC<TableProps> = function(props) {
     form,
   } = props;
   const matchParams = useParams();
+  const { user } = useContext(UserContext);
   const formRef = useRef<ProFormInstance>();
 
   const ser = useMemo(
@@ -176,7 +180,7 @@ const Table: React.FC<TableProps> = function(props) {
           col;
         const newCol = {
           ...col,
-          render: makeMergedRender(rowKey, render, update, del, ser),
+          render: makeMergedRender(rowKey, render, update, del, ser, user),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -198,7 +202,7 @@ const Table: React.FC<TableProps> = function(props) {
         }
         return newCol;
       }),
-    [columns, del, rowKey, ser, update]
+    [columns, del, rowKey, ser, update, user]
   );
 
   const newSearch = useMemo<TableProps['search']>(() => {
