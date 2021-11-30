@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { extendRequestConfig, RequestConfig } from './utils/request';
 import App, { AppProps } from './components/App';
-import { Models } from './components/Provider';
-import useAuthModel from './models/useAuthModel';
+import UserProvider from './components/UserProvider';
 
 export type AppConfig = AppProps & {
   /** @name 网络请求相关配置 */
@@ -15,15 +14,12 @@ export default function app(config: AppConfig): void {
 
   extendRequestConfig(requestConfig);
 
-  const { authPath } = requestConfig;
-
-  const models: Models = {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    user: useAuthModel(authPath),
-  };
+  const models = {};
 
   ReactDOM.render(
-    <App {...config} models={models} />,
+    <UserProvider authPath={requestConfig.authPath}>
+      <App {...config} models={models} />
+    </UserProvider>,
     document.getElementById('root')
   );
 }

@@ -1,11 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload, UploadProps } from 'antd';
 import ImgCrop, { ImgCropProps } from 'antd-img-crop';
 import { uploadToUpyun, generateDeviceId } from '@qt/web-common';
 import { UploadFile } from 'antd/lib/upload/interface';
-import useModel from '../hooks/useModel';
 import getImageSizeByFile from '../utils/getImageSizeByFile';
+import UserContext from '../contexts/UserContext';
 
 type UploadImageProps = UploadProps & {
   value?: string;
@@ -25,7 +25,7 @@ const UploadImage: React.FC<UploadImageProps> = function(props) {
   const [fileList, setFileList] = useState<UploadFile[]>(
     value ? [{ uid: value, name: value, url: value }] : []
   );
-  const user = useModel('user', (data) => data.user);
+  const { user } = useContext(UserContext);
 
   const customRequest = useCallback<UploadImageProps['customRequest']>(
     async (info) => {

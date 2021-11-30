@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Avatar, Button } from 'antd';
 import { UserOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
-import useModel from '../hooks/useModel';
+import UserContext from '../contexts/UserContext';
 
 const Account: React.FC = function() {
-  const { user, auth, signin, signout } = useModel('user', (data) => data);
+  const { user, auth, signin, signout } = useContext(UserContext);
 
   useEffect(() => {
     auth.run();

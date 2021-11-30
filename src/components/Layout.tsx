@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import ProLayout, { BasicLayoutProps } from '@ant-design/pro-layout';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { Route as AntRoute } from '@ant-design/pro-layout/lib/typings';
@@ -13,8 +13,8 @@ import {
   map,
 } from 'lodash';
 import Account from './Account';
-import useModel from '../hooks/useModel';
 import Page, { PageProps } from './Page';
+import UserContext from '../contexts/UserContext';
 
 export type Route = Omit<AntRoute, 'routes'> & {
   /** @name 路由所需用户权限 */
@@ -98,7 +98,7 @@ function renderRoutes(props: Route) {
 const Layout: React.FC<LayoutProps> = function(props) {
   const { route, title } = props;
   const location = useLocation();
-  const user = useModel('user', (data) => data.user);
+  const { user } = useContext(UserContext);
   const newRoute = useMemo(
     () => validRoute(route, user?.permissions),
     [route, user]
