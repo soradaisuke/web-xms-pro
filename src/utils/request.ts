@@ -45,8 +45,8 @@ interface RequestError extends Error {
   response?: Context['res'];
 }
 
-type ErrorAdapter = (
-  resData: ResponseStructure,
+type ErrorAdapter = <T extends ResponseStructure>(
+  resData: T,
   ctx: Context
 ) => ErrorInfoStructure;
 
