@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.6](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2021-11-30)
+
+
+### Features
+
+* **NoTicket:** Descriptions增加默认操作 ([2ca0bd5](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/2ca0bd59621ec502fc54292a3461b24f9096bcc8))
+* **NoTicket:** UserContext ([abd27c9](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/abd27c9bf901440dcc5662f34f7fb964609af438))
+
+
+### Bug Fixes
+
+* **NoTicket:** rename ([349a011](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/349a0115dcb3caa65f96285757bd375afcb65c0d))
+
 ## [1.0.0-beta.5](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2021-11-29)
 
 
