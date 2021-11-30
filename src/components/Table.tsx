@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import { find, get, isBoolean, isFunction, map } from 'lodash';
+import { find, forEach, get, isBoolean, isFunction, keys, map, toNumber } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { Button, FormInstance, Tooltip } from 'antd';
 import {
@@ -228,11 +228,23 @@ const Table: React.FC<TableProps> = function(props) {
 
   const newForm = useMemo<TableProps['form']>(
     () => ({
-      syncToUrl: true,
+      syncToUrl: (values, type) => {
+        if (type === 'get') {
+          const newValues = { ...values };
+          forEach(keys(newValues), key => {
+            const column = find(newColumns, c => c.dataIndex === key);
+            if (column.valueType === 'digit') {
+              newValues[key] = toNumber(newValues[key]);
+            }
+          })
+          return newValues;
+        }
+        return values;
+      },
       syncToInitialValues: false,
       ...(form || {}),
     }),
-    [form]
+    [form, newColumns]
   );
 
   const mergedToolBarRender = useMergedToolBarRender(
