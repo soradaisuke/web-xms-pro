@@ -78,13 +78,19 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const newColumns = useMemo(
     () =>
       map(columns, (col) => {
-        const { link, render } = col;
+        const { link, render, valueType } = col;
         const newCol = {
           ...col,
           render: makeMergedRender(render, update, del, ser),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
+        }
+        if (valueType === 'image') {
+          newCol.valueType = {
+            type: 'image',
+            width: 100,
+          };
         }
         return newCol;
       }),
