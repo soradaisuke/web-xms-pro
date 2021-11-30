@@ -24,7 +24,7 @@ export enum ErrorShowType {
   NOTIFICATION = 4,
 }
 
-interface ResponseStructure {
+interface ResponseStructure extends CommonRecord {
   errcode: number;
   errmsg: string;
   data?: CommonRecord;
@@ -45,8 +45,8 @@ interface RequestError extends Error {
   response?: Context['res'];
 }
 
-type ErrorAdapter = <T extends ResponseStructure>(
-  resData: T,
+type ErrorAdapter = (
+  resData: ResponseStructure,
   ctx: Context
 ) => ErrorInfoStructure;
 
