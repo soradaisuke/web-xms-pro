@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.9](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2021-11-30)
+
+
+### Bug Fixes
+
+* **NoTicket:** 允许自定义ResponseStructure ([1b3929f](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/1b3929f9ace95a39ca8ad18f1137a37d62b9c1e5))
+
 ## [1.0.0-beta.8](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2021-11-30)
 
 
