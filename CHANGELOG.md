@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.13](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.12...v1.0.0-beta.13) (2021-11-30)
+
+
+### Features
+
+* **NoTicket:** 默认转化number类型到syncToUrl ([9b869eb](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/9b869ebe7b4bf69e941fb7950a53a66e7cf241ed))
+
 ## [1.0.0-beta.12](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2021-11-30)
 
 
