@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.7](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2021-11-30)
+
+
+### Features
+
+* **NoTicket:** Table render增加user ([0a99f62](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/0a99f621685d2cb82154954bf4a883ba0e736d7a))
+
 ## [1.0.0-beta.6](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2021-11-30)
 
 
