@@ -7,5 +7,5 @@ export { default as Descriptions, DescriptionsProps, } from './components/Descri
 export { default as TriggerModal, TriggerModalProps, } from './components/TriggerModal';
 export { default as TableTransfer, TableTransferProps, } from './components/TableTransfer';
 export { default as getImageSizeByFile } from './utils/getImageSizeByFile';
-export { DragSortTable, DragTableProps } from '@ant-design/pro-table';
+export { default as useSyncTabKeyToUrl } from './hooks/useSyncTabKeyToUrl';
 export default xms;

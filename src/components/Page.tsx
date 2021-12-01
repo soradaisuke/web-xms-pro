@@ -1,6 +1,5 @@
-import React, { ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { PageContainer, PageContainerProps } from '@ant-design/pro-layout';
-import { useUrlSearchParams } from '@umijs/use-params';
 import { find, isFunction } from 'lodash';
 import { TabPaneProps } from 'antd';
 import { useParams } from 'react-router-dom';
@@ -8,6 +7,7 @@ import useRequest from '@ahooksjs/use-request';
 import Table, { TableProps } from './Table';
 import Descriptions, { DescriptionsProps } from './Descriptions';
 import { RouteParams } from '../types/common';
+import useSyncTabKeyToUrl from '../hooks/useSyncTabKeyToUrl';
 
 export type ContentConfig = {
   /** @name pro-table配置 */
@@ -53,17 +53,7 @@ function renderContent(props: PageProps, key?: string): ReactNode {
 
 const Page: React.FC<PageProps> = function(props) {
   const { tabList = [], title } = props;
-  const [params, setParams] = useUrlSearchParams();
-  const [tabKey, setTabKey] = useState(
-    String(params.tab_key || tabList?.[0]?.key)
-  );
-  const onTabChange = useCallback(
-    (key) => {
-      setTabKey(key);
-      setParams({ tab_key: key });
-    },
-    [setParams]
-  );
+  const { tabActiveKey, onTabChange } = useSyncTabKeyToUrl('tab_key', tabList?.[0]?.key);
   const matchParams = useParams();
 
   const getTitle = useMemo<() => Promise<PageContainerProps['title']>>(
@@ -82,13 +72,13 @@ const Page: React.FC<PageProps> = function(props) {
     <PageContainer
       {...props}
       title={data}
-      tabActiveKey={tabKey}
+      tabActiveKey={tabActiveKey}
       onTabChange={onTabChange}
     >
       {renderContent(props) ||
         renderContent(
-          find(tabList, (tab) => tab.key === tabKey),
-          tabKey
+          find(tabList, (tab) => tab.key === tabActiveKey),
+          tabActiveKey
         )}
     </PageContainer>
   );
