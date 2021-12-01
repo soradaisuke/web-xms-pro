@@ -202,7 +202,7 @@ const Table: React.FC<TableProps> = function(props) {
       const newValues = { ...values };
       forEach(keys(newValues), key => {
         const column = find(newColumns, c => c.dataIndex === key);
-        if (isMap(column.valueEnum) && isNumber(column.valueEnum.keys()?.[0])) {
+        if (isMap(column?.valueEnum) && isNumber(column.valueEnum.keys()?.[0])) {
           newValues[key] = toNumber(newValues[key]);
         }
       })
