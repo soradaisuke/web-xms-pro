@@ -41,7 +41,6 @@ export type XMSTableColumns = Omit<
   /** @name 从数据获取跳转地址 */
   link?: LinkConfig;
   valueType?: ProColumns['valueType'] | XMSValueType;
-  filterValueType?: 'digit' | 'text';
   render?: (
     config: {
       user: CommonRecord,

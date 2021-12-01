@@ -1,12 +1,9 @@
-import React, { useContext, useMemo, useRef } from 'react';
+import React, { useCallback, useContext, useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import { find, forEach, get, isBoolean, isFunction, keys, map, toNumber } from 'lodash';
+import { find, forEach, get, isBoolean, isFunction, isMap, isNumber, isObject, keys, map, toNumber } from 'lodash';
 import { useParams } from 'react-router-dom';
-import { Button, FormInstance, Tooltip } from 'antd';
-import {
-  SwapOutlined,
-} from '@ant-design/icons';
+import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
@@ -25,6 +22,7 @@ import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
 import UserContext from '../contexts/UserContext';
+import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
@@ -113,34 +111,7 @@ function makeMergedRender(
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
         defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, defaultUpdate),
-        defaultSwapButtonRender: (config) =>
-          defaultUpdateButtonRender({
-            columns: [
-              {
-                dataIndex: 'pos',
-                title: '序号',
-                valueType: 'digit',
-                formItemProps: {
-                  rules: [
-                    {
-                      required: true,
-                    },
-                  ],
-                },
-              },
-            ],
-            trigger: (
-              <Tooltip title="调序">
-                <Button
-                  style={{ marginRight: 10 }}
-                  icon={<SwapOutlined rotate={90} />}
-                  shape="circle"
-                  type="primary"
-                />
-              </Tooltip>
-            ),
-            ...(config || {}),
-          }),
+        defaultSwapButtonRender: makeDefaultSwapButtonRender(defaultUpdateButtonRender),
       },
       ...args
     );
@@ -226,25 +197,32 @@ const Table: React.FC<TableProps> = function(props) {
     };
   }, [newColumns, search]);
 
+  const defaultSyncToUrl = useCallback((values, type) => {
+    if (type === 'get') {
+      const newValues = { ...values };
+      forEach(keys(newValues), key => {
+        const column = find(newColumns, c => c.dataIndex === key);
+        if (isMap(column.valueEnum) && isNumber(column.valueEnum.keys()?.[0])) {
+          newValues[key] = toNumber(newValues[key]);
+        }
+      })
+      return newValues;
+    }
+    return values;
+  }, [newColumns]);
+
   const newForm = useMemo<TableProps['form']>(
     () => ({
       syncToUrl: (values, type) => {
-        if (type === 'get') {
-          const newValues = { ...values };
-          forEach(keys(newValues), key => {
-            const column = find(newColumns, c => c.dataIndex === key);
-            if (column?.filterValueType === 'digit') {
-              newValues[key] = toNumber(newValues[key]);
-            }
-          })
-          return newValues;
+        if (isFunction(form?.syncToUrl)) {
+          return form.syncToUrl(defaultSyncToUrl(values, type), type)
         }
-        return values;
+        return defaultSyncToUrl(values, type);
       },
       syncToInitialValues: false,
       ...(form || {}),
     }),
-    [form, newColumns]
+    [defaultSyncToUrl, form]
   );
 
   const mergedToolBarRender = useMergedToolBarRender(

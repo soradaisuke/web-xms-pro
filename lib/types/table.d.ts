@@ -26,7 +26,6 @@ export declare type XMSTableColumns = Omit<ProColumns<CommonRecord>, 'valueType'
     /** @name 从数据获取跳转地址 */
     link?: LinkConfig;
     valueType?: ProColumns['valueType'] | XMSValueType;
-    filterValueType?: 'digit' | 'text';
     render?: (config: {
         user: CommonRecord;
         update: (values: CommonRecord) => Promise<boolean>;

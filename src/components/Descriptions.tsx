@@ -15,6 +15,7 @@ import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
 import UserContext from '../contexts/UserContext';
+import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,
@@ -57,6 +58,7 @@ function makeMergedRender(
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
         defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, defaultUpdate),
+        defaultSwapButtonRender: makeDefaultSwapButtonRender(defaultUpdateButtonRender),
       },
       ...args
     );
