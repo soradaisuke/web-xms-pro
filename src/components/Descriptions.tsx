@@ -1,11 +1,11 @@
 import React, { useContext, useMemo } from 'react';
 import ProDescriptions, {
+  ProDescriptionsItemProps,
   ProDescriptionsProps,
 } from '@ant-design/pro-descriptions';
 import { useParams } from 'react-router-dom';
 import { isFunction, map } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
-import { ProColumns } from '@ant-design/pro-table';
 import { ServiceConfig, useRetrieveOneRequest } from '../hooks/useCRUDRequests';
 import { CommonRecord, RouteParams } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
@@ -33,7 +33,7 @@ function makeMergedRender(
   del: DescriptionsDeleteRequest,
   requestConfig: ServiceConfig,
   user: CommonRecord
-): ProColumns['render'] {
+): ProDescriptionsItemProps['render'] {
   if (!render) {
     return null;
   }
@@ -44,6 +44,7 @@ function makeMergedRender(
     const defaultDelete = del;
     const defaultUpdateButtonRender = (config) => (
       <UpdateRecordSchemaForm
+        key="update"
         record={record}
         containerAction={action}
         requestConfig={requestConfig}

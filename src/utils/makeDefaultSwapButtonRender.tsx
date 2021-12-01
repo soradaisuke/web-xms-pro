@@ -6,6 +6,7 @@ import { TableSwapButtonRender, TableUpdateButtonRender } from "../types/table";
 export default function makeDefaultSwapButtonRender(defaultUpdateButtonRender: TableUpdateButtonRender): TableSwapButtonRender {
   return function(config = {}) {
     return defaultUpdateButtonRender({
+      key: 'swap',
       columns: [
         {
           dataIndex: 'pos',
@@ -23,7 +24,6 @@ export default function makeDefaultSwapButtonRender(defaultUpdateButtonRender: T
       trigger: (
         <Tooltip title="调序">
           <Button
-            style={{ marginRight: 10 }}
             icon={<SwapOutlined rotate={90} />}
             shape="circle"
             type="primary"

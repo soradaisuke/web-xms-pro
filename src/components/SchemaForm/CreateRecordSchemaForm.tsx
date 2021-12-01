@@ -60,7 +60,6 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(p
         </Button>
       }
       layoutType="ModalForm"
-      key="create"
       onFinish={onFinish}
       {...otherProps}
     />

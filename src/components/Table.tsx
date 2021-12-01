@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import { find, forEach, get, isBoolean, isFunction, isMap, isNumber, isObject, keys, map, toNumber } from 'lodash';
+import { find, forEach, get, isBoolean, isFunction, isMap, isNumber, keys, map, toNumber } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
@@ -62,6 +62,7 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
               {
                 defaultCreateButtonRender: (config) => (
                   <CreateRecordSchemaForm
+                    key="create"
                     requestConfig={requestConfig}
                     containerAction={args[0]}
                     {...config}
@@ -96,6 +97,7 @@ function makeMergedRender(
     const defaultDelete = () => del(key, action);
     const defaultUpdateButtonRender = (config) => (
       <UpdateRecordSchemaForm
+        key="update"
         rowKey={rowKey}
         record={record}
         containerAction={action}

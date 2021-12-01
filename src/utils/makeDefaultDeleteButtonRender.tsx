@@ -8,6 +8,7 @@ export default function makeDefaultDeleteButtonRender(del: () => Promise<boolean
     const { popConfirmProps = {} } = config;
     return (
       <Popconfirm
+        key="delete"
         title="确定删除？"
         onConfirm={del}
         okText="确定"
@@ -17,7 +18,6 @@ export default function makeDefaultDeleteButtonRender(del: () => Promise<boolean
         <Tooltip title="删除">
           <Button
             danger
-            style={{ marginRight: 10 }}
             icon={<DeleteOutlined />}
             shape="circle"
             type="primary"

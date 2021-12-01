@@ -18,6 +18,7 @@ export default function makeDefaultOnlineOfflineButtonRender(record: CommonRecor
 
     return (
       <Popconfirm
+        key="status"
         title={`确定${
           status === onlineStatus ? offlineText : onlineText
         }？`}
@@ -33,7 +34,6 @@ export default function makeDefaultOnlineOfflineButtonRender(record: CommonRecor
         <Tooltip title={status === onlineStatus ? offlineText : onlineText}>
           <Button
             danger={status === onlineStatus}
-            style={{ marginRight: 10 }}
             icon={
               status === onlineStatus ? (
                 <CloudDownloadOutlined />

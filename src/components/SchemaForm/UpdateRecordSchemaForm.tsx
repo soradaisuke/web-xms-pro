@@ -76,7 +76,6 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
       trigger={
         <Tooltip title="编辑">
           <Button
-            style={{ marginRight: 10 }}
             icon={<EditOutlined />}
             shape="circle"
             type="primary"

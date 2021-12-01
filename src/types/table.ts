@@ -5,11 +5,11 @@ import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateReco
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
 import { CommonRecord, LinkConfig, XMSValueType } from './common';
 
-export type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> &
-  Pick<CreateRecordSchemaFormProps, 'columns'>;
+export type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> & Pick<CreateRecordSchemaFormProps, 'columns'>;
 
-export type TableUpdateConfig = Partial<Omit<UpdateRecordSchemaFormProps, 'columns'>> &
-Pick<UpdateRecordSchemaFormProps, 'columns'>;
+export type TableUpdateConfig = Partial<Omit<UpdateRecordSchemaFormProps, 'columns'>> & Pick<UpdateRecordSchemaFormProps, 'columns'> & {
+  key?: string
+};
 
 export type TableDeleteConfig = {
   /** @name Popconfirm配置 */
