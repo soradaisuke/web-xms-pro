@@ -6,7 +6,7 @@ import { CommonRecord } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
 export declare type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<ProDescriptionsProps<T, U>, 'columns'> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig;
+    requestConfig?: RequestConfig<CommonRecord>;
     /** @name columns配置 */
     columns: XMSDescriptionsColumns[];
 };

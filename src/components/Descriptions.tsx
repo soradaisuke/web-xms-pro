@@ -22,7 +22,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   'columns'
 > & {
   /** @name 数据请求配置 */
-  requestConfig?: RequestConfig;
+  requestConfig?: RequestConfig<CommonRecord>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
 };

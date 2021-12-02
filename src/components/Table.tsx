@@ -9,7 +9,7 @@ import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import { RequestConfig, ServiceConfig, useRetrieveRequest } from '../hooks/useCRUDRequests';
+import { RequestConfig, RetrieveResult, ServiceConfig, useRetrieveRequest } from '../hooks/useCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
   TableDeleteRequest,
@@ -30,7 +30,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig;
+    requestConfig?: RequestConfig<RetrieveResult>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);

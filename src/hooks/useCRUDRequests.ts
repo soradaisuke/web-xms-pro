@@ -12,28 +12,30 @@ import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { request, useRequest } from '../utils/request';
 
-export type ServiceConfigObject = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ServiceConfigObject<T = any> = {
   requestPath: string;
   requestOptions?: RequestOptionsInit;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useRequestOptions?: Partial<OptionsWithFormat<any, any[], any, any>>
+  useRequestOptions?: Partial<OptionsWithFormat<any, any[], T, T>>
 };
 
-export type ServiceConfig = string | ServiceConfigObject;
+export type ServiceConfig<T = any> = string | ServiceConfigObject<T>;
 
-export type RequestConfig = ServiceConfig | ((matchParams: RouteParams, user: User) => ServiceConfig);
+export type RequestConfig<T = any> = ServiceConfig<T> | ((matchParams: RouteParams, user: User) => ServiceConfig<T>);
 
-export type RetrieveService = Service<
-  {
-    data: CommonRecord[];
-    success: boolean;
-    total: number;
-  },
-  [
-    params: Record<string, string | number>,
-    sort: Record<string, 'ascend' | 'descend'>
-  ]
->;
+export type RetrieveResult = {
+  data: CommonRecord[];
+  success: boolean;
+  total: number;
+};
+
+export type RetrieveArgs = [
+  params: Record<string, string | number>,
+  sort: Record<string, 'ascend' | 'descend'>
+];
+
+export type RetrieveService = Service<RetrieveResult, RetrieveArgs>;
 
 export type RetrieveOneService = Service<
   CommonRecord,
@@ -52,17 +54,7 @@ export type UpdateService = Service<
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type DeleteService = Service<any, [id?: string | number]>;
 
-export type RetrieveRequest = BaseResult<
-  {
-    data: CommonRecord[];
-    success: boolean;
-    total: number;
-  },
-  [
-    params: Record<string, string | number>,
-    sort: Record<string, 'ascend' | 'descend'>
-  ]
->;
+export type RetrieveRequest = BaseResult<RetrieveResult, RetrieveArgs>;
 
 export type RetrieveOneRequest = BaseResult<
   CommonRecord,
