@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -7,7 +7,8 @@ import { isFunction } from 'lodash';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { useTableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import { CreateService, ServiceConfig } from '../../hooks/useCRUDRequests';
+import { CreateService, RequestConfig } from '../../hooks/useCRUDRequests';
+import UserContext from '../../contexts/UserContext';
 
 export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
@@ -17,9 +18,7 @@ export type CreateRecordSchemaFormProps<T = CommonRecord> =
       matchParams: RouteParams,
       ...base: Parameters<CreateService>
     ) => ReturnType<CreateService>;
-    requestConfig?:
-      | ServiceConfig
-      | ((matchParams: RouteParams) => ServiceConfig);
+    requestConfig?: RequestConfig;
     normalizeSubmitValues?: (
       values: T,
       matchParams: RouteParams
@@ -36,14 +35,15 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(p
   } = props;
 
   const matchParams = useParams();
+  const { user } = useContext(UserContext);
 
   const service = useMemo(() => {
     if (create) {
       return (...args: Parameters<CreateService>) =>
         create(matchParams, ...args);
     }
-    return isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig;
-  }, [create, matchParams, requestConfig]);
+    return isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig;
+  }, [create, matchParams, requestConfig, user]);
 
   const req = useTableCreateRequest(service, containerAction);
 

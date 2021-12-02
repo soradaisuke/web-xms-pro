@@ -24,7 +24,7 @@ declare type ErrorAdapter = (resData: ResponseStructure, ctx: Context) => ErrorI
 declare const request: import("umi-request").RequestMethod<false>;
 declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any, U = CommonRecord>(service: CombineService<R, P>, options: OptionsWithFormat<R, P, U, U>): BaseResult<U, P>;
 declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any>(service: CombineService<R, P>, options?: BaseOptions<R['data'], P>): BaseResult<R['data'], P>;
-export interface RequestConfig extends RequestOptionsInit {
+export interface RequestOptions extends RequestOptionsInit {
     /** @name 错误处理配置 */
     errorConfig?: {
         /** @name 错误消息适配器 */
@@ -39,5 +39,5 @@ export interface RequestConfig extends RequestOptionsInit {
     /** @name 获取用户信息的path */
     authPath: string;
 }
-declare function extendRequestConfig(requestConfig: RequestConfig): void;
+declare function extendRequestConfig(requestOptions: RequestOptions): void;
 export { request, useRequest, extendRequestConfig, UseRequestProvider };

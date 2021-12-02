@@ -9,7 +9,7 @@ import {
   toPairs,
 } from 'lodash';
 import { RequestOptionsInit } from 'umi-request';
-import { CommonRecord } from '../types/common';
+import { CommonRecord, RouteParams, User } from '../types/common';
 import { request, useRequest } from '../utils/request';
 
 export type ServiceConfigObject = {
@@ -18,6 +18,8 @@ export type ServiceConfigObject = {
 };
 
 export type ServiceConfig = string | ServiceConfigObject;
+
+export type RequestConfig = ServiceConfig | ((matchParams: RouteParams, user: User) => ServiceConfig);
 
 export type RetrieveService = Service<
   {

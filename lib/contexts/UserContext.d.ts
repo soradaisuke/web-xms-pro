@@ -1,8 +1,8 @@
 import { BaseResult } from '@ahooksjs/use-request/lib/types';
 import React from 'react';
-import { CommonRecord } from '../types/common';
+import { User } from '../types/common';
 declare const UserContext: React.Context<{
-    user: CommonRecord;
+    user: User;
     auth: BaseResult<any, []>;
     signin: () => void;
     signout: () => void;

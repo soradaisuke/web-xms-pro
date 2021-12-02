@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { extendRequestConfig, RequestConfig } from './utils/request';
+import { extendRequestConfig, RequestOptions } from './utils/request';
 import App, { AppProps } from './components/App';
 import UserProvider from './components/UserProvider';
 
 export type AppConfig = AppProps & {
   /** @name 网络请求相关配置 */
-  requestConfig: RequestConfig;
+  requestConfig: RequestOptions;
 };
 
 export default function app(config: AppConfig): void {

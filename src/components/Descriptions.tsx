@@ -6,8 +6,8 @@ import ProDescriptions, {
 import { useParams } from 'react-router-dom';
 import { isFunction, map } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
-import { ServiceConfig, useRetrieveOneRequest } from '../hooks/useCRUDRequests';
-import { CommonRecord, RouteParams } from '../types/common';
+import { RequestConfig, ServiceConfig, useRetrieveOneRequest } from '../hooks/useCRUDRequests';
+import { CommonRecord, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
 import { DescriptionsDeleteRequest, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
@@ -22,7 +22,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   'columns'
 > & {
   /** @name 数据请求配置 */
-  requestConfig?: ServiceConfig | ((matchParams: RouteParams) => ServiceConfig);
+  requestConfig?: RequestConfig;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
 };
@@ -32,7 +32,7 @@ function makeMergedRender(
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
   requestConfig: ServiceConfig,
-  user: CommonRecord
+  user: User
 ): ProDescriptionsItemProps['render'] {
   if (!render) {
     return null;
@@ -74,8 +74,8 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
 
   const ser = useMemo(
     () =>
-      isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig,
-    [matchParams, requestConfig]
+      isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig,
+    [matchParams, requestConfig, user]
   );
 
   const retrieve = useRetrieveOneRequest(ser);

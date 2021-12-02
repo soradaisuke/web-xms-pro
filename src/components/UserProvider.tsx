@@ -4,6 +4,7 @@ import { isProduction } from '@qt/env';
 import Cookie from 'js-cookie';
 import { request, useRequest } from '../utils/request';
 import UserContext from '../contexts/UserContext';
+import { User } from '../types/common';
 
 export type UserProviderProps = {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ const signout = () => {
 const UserProvider: React.FC<UserProviderProps> = function(props) {
   const { children, authPath } = props;
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({});
   
   const auth = useRequest(() => request.get(authPath), {
     manual: true,

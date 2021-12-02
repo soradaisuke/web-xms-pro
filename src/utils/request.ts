@@ -165,7 +165,7 @@ function useRequest<
   });
 }
 
-export interface RequestConfig extends RequestOptionsInit {
+export interface RequestOptions extends RequestOptionsInit {
   /** @name 错误处理配置 */
   errorConfig?: {
     /** @name 错误消息适配器 */
@@ -181,13 +181,13 @@ export interface RequestConfig extends RequestOptionsInit {
   authPath: string;
 }
 
-function extendRequestConfig(requestConfig: RequestConfig): void {
+function extendRequestConfig(requestOptions: RequestOptions): void {
   const errorAdaptor =
-    requestConfig.errorConfig?.adaptor || defaultErrorAdapter;
+    requestOptions.errorConfig?.adaptor || defaultErrorAdapter;
 
   request.extendOptions({
     errorHandler: makeErrorHandler(errorAdaptor),
-    ...requestConfig,
+    ...requestOptions,
   });
 
   // 中间件统一错误处理
@@ -215,14 +215,14 @@ function extendRequestConfig(requestConfig: RequestConfig): void {
   });
 
   // Add user custom middlewares
-  const customMiddlewares = requestConfig.middlewares || [];
+  const customMiddlewares = requestOptions.middlewares || [];
   customMiddlewares.forEach((mw) => {
     request.use(mw);
   });
 
   // Add user custom interceptors
-  const requestInterceptors = requestConfig.requestInterceptors || [];
-  const responseInterceptors = requestConfig.responseInterceptors || [];
+  const requestInterceptors = requestOptions.requestInterceptors || [];
+  const responseInterceptors = requestOptions.responseInterceptors || [];
   requestInterceptors.map((ri) => request.interceptors.request.use(ri));
   responseInterceptors.map((ri) => request.interceptors.response.use(ri));
 }

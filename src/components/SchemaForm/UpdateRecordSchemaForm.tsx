@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { Button, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -8,8 +8,9 @@ import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { useTableUpdateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import { ServiceConfig, UpdateService } from '../../hooks/useCRUDRequests';
+import { RequestConfig, UpdateService } from '../../hooks/useCRUDRequests';
 import getRowKey from '../../utils/getRowKey';
+import UserContext from '../../contexts/UserContext';
 
 export type UpdateRecordSchemaFormProps<
   T = CommonRecord,
@@ -25,9 +26,7 @@ export type UpdateRecordSchemaFormProps<
       record: T,
       ...base: Parameters<UpdateService>
     ) => ReturnType<UpdateService>;
-    requestConfig?:
-      | ServiceConfig
-      | ((matchParams: RouteParams) => ServiceConfig);
+    requestConfig?: RequestConfig;
     /** @name 对提交给后台的数据做转换 */
     normalizeSubmitValues?: (
       values: T,
@@ -51,14 +50,15 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
   } = props;
 
   const matchParams = useParams();
+  const { user } = useContext(UserContext);
 
   const service = useMemo(() => {
     if (update) {
       return (...args: Parameters<UpdateService>) =>
         update(matchParams, record, ...args);
     }
-    return isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig;
-  }, [matchParams, record, requestConfig, update]);
+    return isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig;
+  }, [matchParams, record, requestConfig, update, user]);
 
   const req = useTableUpdateRequest(service, containerAction);
 

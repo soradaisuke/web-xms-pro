@@ -1,12 +1,12 @@
 import { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { CommonRecord, LinkConfig, XMSValueType } from './common';
+import { CommonRecord, LinkConfig, User, XMSValueType } from './common';
 import { TableDeleteButtonRender, TableOnlineOfflineButtonRender, TableSwapButtonRender, TableUpdateButtonRender } from './table';
 export declare type XMSDescriptionsColumns = Omit<ProDescriptionsItemProps<CommonRecord>, 'valueType' | 'render'> & {
     /** @name 从数据获取跳转地址 */
     link?: LinkConfig;
     valueType?: ProDescriptionsItemProps['valueType'] | XMSValueType;
     render?: (config: {
-        user: CommonRecord;
+        user: User;
         update: (values: CommonRecord) => Promise<boolean>;
         defaultUpdateButtonRender: TableUpdateButtonRender;
         defaultDeleteButtonRender: TableDeleteButtonRender;

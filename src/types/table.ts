@@ -3,7 +3,7 @@ import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
 import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
-import { CommonRecord, LinkConfig, XMSValueType } from './common';
+import { CommonRecord, LinkConfig, User, XMSValueType } from './common';
 
 export type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> & Pick<CreateRecordSchemaFormProps, 'columns'>;
 
@@ -43,7 +43,7 @@ export type XMSTableColumns = Omit<
   valueType?: ProColumns['valueType'] | XMSValueType;
   render?: (
     config: {
-      user: CommonRecord,
+      user: User,
       update: (values: CommonRecord) => Promise<boolean>;
       defaultUpdateButtonRender: TableUpdateButtonRender;
       defaultDeleteButtonRender: TableDeleteButtonRender;

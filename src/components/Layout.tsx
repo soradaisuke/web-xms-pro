@@ -15,6 +15,7 @@ import {
 import Account from './Account';
 import Page, { PageProps } from './Page';
 import UserContext from '../contexts/UserContext';
+import { CommonRecord } from '../types/common';
 
 export type Route = Omit<AntRoute, 'routes'> & {
   /** @name 路由所需用户权限 */
@@ -35,9 +36,9 @@ function hasPermission(
     | string
     | string[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | ((userPermissions: Record<string, any>) => boolean),
+    | ((userPermissions: CommonRecord) => boolean),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  userPermissions: Record<string, any>
+  userPermissions: CommonRecord
 ): boolean {
   if (!needPermissions) {
     return true;
@@ -61,7 +62,7 @@ function hasPermission(
   return true;
 }
 
-function validRoute(route: Route, userPermissions: string[]): Route {
+function validRoute(route: Route, userPermissions: CommonRecord): Route {
   if (!hasPermission(route.permissions, userPermissions)) {
     return null;
   }

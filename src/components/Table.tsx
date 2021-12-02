@@ -7,9 +7,9 @@ import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
-import { CommonRecord, RouteParams } from '../types/common';
+import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import { ServiceConfig, useRetrieveRequest } from '../hooks/useCRUDRequests';
+import { RequestConfig, ServiceConfig, useRetrieveRequest } from '../hooks/useCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
   TableDeleteRequest,
@@ -30,9 +30,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?:
-      | ServiceConfig
-      | ((matchParams: RouteParams) => ServiceConfig);
+    requestConfig?: RequestConfig;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -84,7 +82,7 @@ function makeMergedRender(
   update: TableUpdateRequest,
   del: TableDeleteRequest,
   requestConfig: ServiceConfig,
-  user: CommonRecord
+  user: User
 ): ProColumns['render'] {
   if (!render) {
     return null;
@@ -136,8 +134,8 @@ const Table: React.FC<TableProps> = function(props) {
 
   const ser = useMemo(
     () =>
-      isFunction(requestConfig) ? requestConfig(matchParams) : requestConfig,
-    [matchParams, requestConfig]
+      isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig,
+    [matchParams, requestConfig, user]
   );
 
   const retrieve = useRetrieveRequest(ser);
