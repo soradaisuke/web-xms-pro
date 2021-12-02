@@ -1,9 +1,10 @@
-import { BaseResult, Service } from '@ahooksjs/use-request/lib/types';
+import { BaseResult, OptionsWithFormat, Service } from '@ahooksjs/use-request/lib/types';
 import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
 export declare type ServiceConfigObject = {
     requestPath: string;
     requestOptions?: RequestOptionsInit;
+    useRequestOptions?: Partial<OptionsWithFormat<any, any[], any, any>>;
 };
 export declare type ServiceConfig = string | ServiceConfigObject;
 export declare type RequestConfig = ServiceConfig | ((matchParams: RouteParams, user: User) => ServiceConfig);

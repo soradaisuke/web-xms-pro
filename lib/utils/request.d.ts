@@ -23,7 +23,7 @@ interface ErrorInfoStructure {
 declare type ErrorAdapter = (resData: ResponseStructure, ctx: Context) => ErrorInfoStructure;
 declare const request: import("umi-request").RequestMethod<false>;
 declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any, U = CommonRecord>(service: CombineService<R, P>, options: OptionsWithFormat<R, P, U, U>): BaseResult<U, P>;
-declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any>(service: CombineService<R, P>, options?: BaseOptions<R['data'], P>): BaseResult<R['data'], P>;
+declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any>(service: CombineService<R, P>, options?: BaseOptions<R, P>): BaseResult<R, P>;
 export interface RequestOptions extends RequestOptionsInit {
     /** @name 错误处理配置 */
     errorConfig?: {

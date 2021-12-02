@@ -1,4 +1,4 @@
-import { BaseResult, Service } from '@ahooksjs/use-request/lib/types';
+import { BaseResult, OptionsWithFormat, Service } from '@ahooksjs/use-request/lib/types';
 import {
   isPlainObject,
   isString,
@@ -15,6 +15,8 @@ import { request, useRequest } from '../utils/request';
 export type ServiceConfigObject = {
   requestPath: string;
   requestOptions?: RequestOptionsInit;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useRequestOptions?: Partial<OptionsWithFormat<any, any[], any, any>>
 };
 
 export type ServiceConfig = string | ServiceConfigObject;
@@ -103,9 +105,11 @@ export function useCreateRequest(
       );
   }
 
-  return useRequest(ser, {
-    manual: true,
-  });
+  return useRequest(ser, merge(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (service as ServiceConfigObject).useRequestOptions as any, 
+    { manual: true }
+  ));
 }
 
 export function useRetrieveRequest(
@@ -162,14 +166,20 @@ export function useRetrieveRequest(
     };
   }
 
-  return useRequest(ser, {
-    manual: true,
-    formatResult: (response) => ({
-      data: response.data.items,
-      success: true,
-      total: response.data.total,
-    }),
-  });
+  return useRequest(ser, merge(
+    {
+      formatResult: (response) => ({
+        data: response.data.items,
+        success: true,
+        total: response.data.total,
+      }),
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (service as ServiceConfigObject).useRequestOptions as any,
+    {
+      manual: true,
+    }
+  ));
 }
 
 export function useRetrieveOneRequest(
@@ -196,13 +206,19 @@ export function useRetrieveOneRequest(
       );
   }
 
-  return useRequest(ser, {
-    manual: true,
-    formatResult: (response) => ({
-      data: response.data,
-      success: true,
-    }),
-  });
+  return useRequest(ser, merge(
+    {
+      formatResult: (response) => ({
+        data: response.data,
+        success: true,
+      }),
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (service as ServiceConfigObject).useRequestOptions as any,
+    {
+      manual: true,
+    }
+  ));
 }
 
 export function useUpdateRequest(
@@ -229,9 +245,11 @@ export function useUpdateRequest(
       );
   }
 
-  return useRequest(ser, {
-    manual: true,
-  });
+  return useRequest(ser, merge(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (service as ServiceConfigObject).useRequestOptions as any, 
+    { manual: true }
+  ));
 }
 
 export function useDeleteRequest(
@@ -252,7 +270,9 @@ export function useDeleteRequest(
       );
   }
 
-  return useRequest(ser, {
-    manual: true,
-  });
+  return useRequest(ser, merge(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (service as ServiceConfigObject).useRequestOptions as any, 
+    { manual: true }
+  ));
 }

@@ -140,8 +140,8 @@ function useRequest<
   P extends any[] = any
 >(
   service: CombineService<R, P>,
-  options?: BaseOptions<R['data'], P>
-): BaseResult<R['data'], P>;
+  options?: BaseOptions<R, P>
+): BaseResult<R, P>;
 
 function useRequest<
   R extends ResponseStructure = ResponseStructure,
