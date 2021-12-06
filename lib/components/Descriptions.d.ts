@@ -9,9 +9,6 @@ export declare type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<P
     requestConfig?: RequestConfig<CommonRecord>;
     /** @name columns配置 */
     columns: XMSDescriptionsColumns[];
-    editable?: ProDescriptionsProps<T, U>['editable'] & {
-        requestConfig?: RequestConfig<CommonRecord>;
-    };
 };
 declare const Descriptions: React.FC<DescriptionsProps>;
 export default Descriptions;

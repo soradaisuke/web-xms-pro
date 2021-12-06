@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef } from 'react';
+import React, { useContext, useMemo } from 'react';
 import ProDescriptions, {
   ProDescriptionsItemProps,
   ProDescriptionsProps,
@@ -25,9 +25,6 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   requestConfig?: RequestConfig<CommonRecord>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
-  editable?: ProDescriptionsProps<T, U>['editable'] & {
-    requestConfig?: RequestConfig<CommonRecord>;
-  }
 };
 
 function makeMergedRender(
@@ -70,10 +67,9 @@ function makeMergedRender(
 }
 
 const Descriptions: React.FC<DescriptionsProps> = function(props) {
-  const { requestConfig, columns, editable } = props;
+  const { requestConfig, columns } = props;
 
   const matchParams = useParams();
-  const actionRef: DescriptionsProps['actionRef'] = useRef();
   const { user } = useContext(UserContext);
 
   const service = useMemo(
@@ -82,20 +78,9 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
     [matchParams, requestConfig, user]
   );
 
-  const editableService = useMemo(
-    () => {
-      if (editable.requestConfig) {
-        return isFunction(editable.requestConfig) ? editable.requestConfig(matchParams, user) : editable.requestConfig;
-      }
-      return service;
-    },
-    [editable, matchParams, service, user]
-  );
-
   const retrieve = useRetrieveOneRequest(service);
   const update = useDescriptionsUpdateRequest(service);
   const del = useDescriptionsDeleteRequest(service);
-  const editableUpdate = useDescriptionsUpdateRequest(editableService);
 
   const newColumns = useMemo(
     () =>
@@ -119,16 +104,6 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
     [columns, del, service, update, user]
   );
 
-  const newEditable = useMemo(() => {
-    if (editable) {
-      return {
-        onSave: (dataIndex, row) => editableUpdate({ [dataIndex]: row[dataIndex] }).then(() => actionRef.current.reload()),
-        ...editable,
-      };
-    }
-    return null;
-  }, [editable, editableUpdate]);
-
   return (
     <ProDescriptions
       style={{
@@ -137,9 +112,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
       }}
       request={retrieve.run}
       {...props}
-      actionRef={actionRef}
       columns={newColumns}
-      editable={newEditable}
     />
   );
 }
