@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, message, Upload, UploadProps } from 'antd';
 import {
@@ -7,7 +7,7 @@ import {
   generateDeviceId,
 } from '@qt/web-common';
 import { UploadFile as AntdUploadFile } from 'antd/lib/upload/interface';
-import UserContext from '../contexts/UserContext';
+import useUser from '../hooks/useUser';
 
 type UploadFileProps = UploadProps & {
   value?: string;
@@ -22,7 +22,7 @@ const UploadFile: React.FC<UploadFileProps> = function(props) {
   const [fileList, setFileList] = useState<AntdUploadFile[]>(
     value ? [{ uid: value, name: value, url: value }] : []
   );
-  const { user } = useContext(UserContext);
+  const user = useUser();
 
   const customRequest = useCallback<UploadFileProps['customRequest']>(
     async (info) => {

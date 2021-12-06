@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Button, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { useTableUpdateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
 import { RequestConfig, UpdateService } from '../../hooks/useCRUDRequests';
 import getRowKey from '../../utils/getRowKey';
-import UserContext from '../../contexts/UserContext';
+import useUser from '../../hooks/useUser';
 
 export type UpdateRecordSchemaFormProps<
   T = CommonRecord,
@@ -50,7 +50,7 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
   } = props;
 
   const matchParams = useParams();
-  const { user } = useContext(UserContext);
+  const user = useUser();
 
   const service = useMemo(() => {
     if (update) {

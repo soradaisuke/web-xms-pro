@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import ProDescriptions, {
   ProDescriptionsItemProps,
   ProDescriptionsProps,
@@ -14,8 +14,8 @@ import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
-import UserContext from '../contexts/UserContext';
 import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
+import useUser from '../hooks/useUser';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,
@@ -70,7 +70,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const { requestConfig, columns } = props;
 
   const matchParams = useParams();
-  const { user } = useContext(UserContext);
+  const user = useUser();
 
   const service = useMemo(
     () =>

@@ -8,4 +8,5 @@ export { default as TriggerModal, TriggerModalProps, } from './components/Trigge
 export { default as TableTransfer, TableTransferProps, } from './components/TableTransfer';
 export { default as getImageSizeByFile } from './utils/getImageSizeByFile';
 export { default as useSyncTabKeyToUrl } from './hooks/useSyncTabKeyToUrl';
+export { default as useUser } from './hooks/useUser';
 export default xms;

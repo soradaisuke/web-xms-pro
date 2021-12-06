@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -8,7 +8,7 @@ import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { useTableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
 import { CreateService, RequestConfig } from '../../hooks/useCRUDRequests';
-import UserContext from '../../contexts/UserContext';
+import useUser from '../../hooks/useUser';
 
 export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
@@ -35,7 +35,7 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(p
   } = props;
 
   const matchParams = useParams();
-  const { user } = useContext(UserContext);
+  const user = useUser();
 
   const service = useMemo(() => {
     if (create) {

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { find, forEach, get, isBoolean, isFunction, isMap, isNumber, keys, map, toNumber } from 'lodash';
@@ -21,8 +21,8 @@ import getRowKey from '../utils/getRowKey';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
-import UserContext from '../contexts/UserContext';
 import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
+import useUser from '../hooks/useUser';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
@@ -129,7 +129,7 @@ const Table: React.FC<TableProps> = function(props) {
     form,
   } = props;
   const matchParams = useParams();
-  const { user } = useContext(UserContext);
+  const user = useUser();
   const formRef = useRef<ProFormInstance>();
 
   const ser = useMemo(
