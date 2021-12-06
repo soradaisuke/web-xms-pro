@@ -19,7 +19,7 @@ import useUser from '../hooks/useUser';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,
-  'columns' | 'editable'
+  'columns'
 > & {
   /** @name 数据请求配置 */
   requestConfig?: RequestConfig<CommonRecord>;
