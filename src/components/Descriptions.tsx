@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useRef } from 'react';
 import ProDescriptions, {
   ProDescriptionsItemProps,
   ProDescriptionsProps,
@@ -67,9 +67,10 @@ function makeMergedRender(
 }
 
 const Descriptions: React.FC<DescriptionsProps> = function(props) {
-  const { requestConfig, columns } = props;
+  const { requestConfig, columns, editable } = props;
 
   const matchParams = useParams();
+  const actionRef: DescriptionsProps['actionRef'] = useRef();
   const { user } = useContext(UserContext);
 
   const ser = useMemo(
@@ -104,6 +105,16 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
     [columns, del, ser, update, user]
   );
 
+  const newEditable = useMemo(() => {
+    if (editable) {
+      return {
+        onSave: (_, row) => update(row).then(() => actionRef.current.reload()),
+        ...editable,
+      };
+    }
+    return null;
+  }, [editable, update]);
+
   return (
     <ProDescriptions
       style={{
@@ -112,7 +123,9 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
       }}
       request={retrieve.run}
       {...props}
+      actionRef={actionRef}
       columns={newColumns}
+      editable={newEditable}
     />
   );
 }
