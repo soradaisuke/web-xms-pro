@@ -4,11 +4,14 @@ import { ParamsType } from '@ant-design/pro-provider';
 import { RequestConfig } from '../hooks/useCRUDRequests';
 import { CommonRecord } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
-export declare type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<ProDescriptionsProps<T, U>, 'columns'> & {
+export declare type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<ProDescriptionsProps<T, U>, 'columns' | 'editable'> & {
     /** @name 数据请求配置 */
     requestConfig?: RequestConfig<CommonRecord>;
     /** @name columns配置 */
     columns: XMSDescriptionsColumns[];
+    editable?: ProDescriptionsProps<T, U>['editable'] & {
+        requestConfig?: RequestConfig<CommonRecord>;
+    };
 };
 declare const Descriptions: React.FC<DescriptionsProps>;
 export default Descriptions;

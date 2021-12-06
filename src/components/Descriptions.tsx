@@ -19,12 +19,15 @@ import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,
-  'columns'
+  'columns' | 'editable'
 > & {
   /** @name 数据请求配置 */
   requestConfig?: RequestConfig<CommonRecord>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
+  editable?: ProDescriptionsProps<T, U>['editable'] & {
+    requestConfig?: RequestConfig<CommonRecord>;
+  }
 };
 
 function makeMergedRender(
@@ -73,15 +76,26 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const actionRef: DescriptionsProps['actionRef'] = useRef();
   const { user } = useContext(UserContext);
 
-  const ser = useMemo(
+  const service = useMemo(
     () =>
       isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig,
     [matchParams, requestConfig, user]
   );
 
-  const retrieve = useRetrieveOneRequest(ser);
-  const update = useDescriptionsUpdateRequest(ser);
-  const del = useDescriptionsDeleteRequest(ser);
+  const editableService = useMemo(
+    () => {
+      if (editable.requestConfig) {
+        return isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig;
+      }
+      return service;
+    },
+    [editable.requestConfig, matchParams, requestConfig, service, user]
+  );
+
+  const retrieve = useRetrieveOneRequest(service);
+  const update = useDescriptionsUpdateRequest(service);
+  const del = useDescriptionsDeleteRequest(service);
+  const editableUpdate = useDescriptionsUpdateRequest(editableService);
 
   const newColumns = useMemo(
     () =>
@@ -89,7 +103,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         const { link, render, valueType } = col;
         const newCol = {
           ...col,
-          render: makeMergedRender(render, update, del, ser, user),
+          render: makeMergedRender(render, update, del, service, user),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -102,18 +116,18 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         }
         return newCol;
       }),
-    [columns, del, ser, update, user]
+    [columns, del, service, update, user]
   );
 
   const newEditable = useMemo(() => {
     if (editable) {
       return {
-        onSave: (dataIndex, row) => update({ [dataIndex]: row[dataIndex] }).then(() => actionRef.current.reload()),
+        onSave: (dataIndex, row) => editableUpdate({ [dataIndex]: row[dataIndex] }).then(() => actionRef.current.reload()),
         ...editable,
       };
     }
     return null;
-  }, [editable, update]);
+  }, [editable, editableUpdate]);
 
   return (
     <ProDescriptions
