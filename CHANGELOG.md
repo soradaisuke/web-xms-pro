@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.27](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.26...v1.0.0-beta.27) (2021-12-06)
+
+
+### Bug Fixes
+
+* **NoTicket:** editable.requestConfig未使用 ([c2579bc](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/c2579bc2a56ef9cb2468e90e869ab265e265f257))
+
 ## [1.0.0-beta.26](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.25...v1.0.0-beta.26) (2021-12-06)
 
 
