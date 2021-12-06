@@ -108,7 +108,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const newEditable = useMemo(() => {
     if (editable) {
       return {
-        onSave: (_, row) => update(row).then(() => actionRef.current.reload()),
+        onSave: (dataIndex, row) => update({ [dataIndex]: row[dataIndex] }).then(() => actionRef.current.reload()),
         ...editable,
       };
     }
