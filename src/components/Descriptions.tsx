@@ -85,11 +85,11 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
   const editableService = useMemo(
     () => {
       if (editable.requestConfig) {
-        return isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig;
+        return isFunction(editable.requestConfig) ? editable.requestConfig(matchParams, user) : editable.requestConfig;
       }
       return service;
     },
-    [editable.requestConfig, matchParams, requestConfig, service, user]
+    [editable, matchParams, service, user]
   );
 
   const retrieve = useRetrieveOneRequest(service);
