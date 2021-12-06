@@ -6,10 +6,10 @@ import ProDescriptions, {
 import { useParams } from 'react-router-dom';
 import { isFunction, map } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
-import { RequestConfig, ServiceConfig, useRetrieveOneRequest } from '../hooks/useCRUDRequests';
+import { DeleteServiceConfig, RequestConfig, RetrieveOneServiceConfig } from '../hooks/useCRUDRequests';
 import { CommonRecord, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
-import { DescriptionsDeleteRequest, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
+import { DescriptionsDeleteRequest, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsRetrieveRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
@@ -22,7 +22,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   'columns'
 > & {
   /** @name 数据请求配置 */
-  requestConfig?: RequestConfig<CommonRecord>;
+  requestConfig?: RequestConfig<RetrieveOneServiceConfig>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
 };
@@ -31,7 +31,7 @@ function makeMergedRender(
   render: XMSDescriptionsColumns['render'],
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
-  requestConfig: ServiceConfig,
+  requestConfig: RetrieveOneServiceConfig,
   user: User
 ): ProDescriptionsItemProps['render'] {
   if (!render) {
@@ -74,13 +74,13 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
 
   const service = useMemo(
     () =>
-      isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig,
+      isFunction(requestConfig) ? requestConfig(matchParams, user) : (requestConfig ?? ''),
     [matchParams, requestConfig, user]
   );
 
-  const retrieve = useRetrieveOneRequest(service);
+  const retrieve = useDescriptionsRetrieveRequest(service);
   const update = useDescriptionsUpdateRequest(service);
-  const del = useDescriptionsDeleteRequest(service);
+  const del = useDescriptionsDeleteRequest(service as DeleteServiceConfig);
 
   const newColumns = useMemo(
     () =>
@@ -110,7 +110,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         padding: '20px',
         background: 'white',
       }}
-      request={retrieve.run}
+      request={retrieve}
       {...props}
       columns={newColumns}
     />

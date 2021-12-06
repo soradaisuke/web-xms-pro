@@ -8,7 +8,7 @@ import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { useTableUpdateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import { RequestConfig, UpdateService } from '../../hooks/useCRUDRequests';
+import { RequestConfig, UpdateServiceConfig } from '../../hooks/useCRUDRequests';
 import getRowKey from '../../utils/getRowKey';
 import useUser from '../../hooks/useUser';
 
@@ -21,12 +21,7 @@ export type UpdateRecordSchemaFormProps<
     record: T;
     /** @name ProTable或ProDescriptions的action实例 */
     containerAction: ActionType;
-    update?: (
-      matchParams: RouteParams,
-      record: T,
-      ...base: Parameters<UpdateService>
-    ) => ReturnType<UpdateService>;
-    requestConfig?: RequestConfig;
+    requestConfig?: RequestConfig<UpdateServiceConfig>;
     /** @name 对提交给后台的数据做转换 */
     normalizeSubmitValues?: (
       values: T,
@@ -41,7 +36,6 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
   const {
     normalizeInitialValues = (v) => v,
     normalizeSubmitValues = (v) => v,
-    update,
     requestConfig,
     containerAction,
     record,
@@ -52,13 +46,7 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
   const matchParams = useParams();
   const user = useUser();
 
-  const service = useMemo(() => {
-    if (update) {
-      return (...args: Parameters<UpdateService>) =>
-        update(matchParams, record, ...args);
-    }
-    return isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig;
-  }, [matchParams, record, requestConfig, update, user]);
+  const service = useMemo(() => isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig, [matchParams, requestConfig, user]);
 
   const req = useTableUpdateRequest(service, containerAction);
 

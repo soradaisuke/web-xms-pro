@@ -1,8 +1,10 @@
+import { ProDescriptionsProps } from '@ant-design/pro-descriptions';
 import { ActionType } from '@ant-design/pro-table';
 import { CommonRecord } from '../types/common';
-import { DeleteService, RetrieveOneRequest, ServiceConfig, UpdateService } from './useCRUDRequests';
-export declare type DescriptionsRetrieveRequest = RetrieveOneRequest;
+import { DeleteServiceConfig, RetrieveOneServiceConfig, UpdateServiceConfig } from './useCRUDRequests';
 export declare type DescriptionsUpdateRequest = (values: CommonRecord, action?: ActionType) => Promise<boolean>;
+export declare function useDescriptionsUpdateRequest(serviceConfig: UpdateServiceConfig, action?: ActionType): DescriptionsUpdateRequest;
 export declare type DescriptionsDeleteRequest = () => Promise<boolean>;
-export declare function useDescriptionsUpdateRequest(service: UpdateService | ServiceConfig, action?: ActionType): DescriptionsUpdateRequest;
-export declare function useDescriptionsDeleteRequest(service: DeleteService | ServiceConfig): DescriptionsDeleteRequest;
+export declare function useDescriptionsDeleteRequest(serviceConfig: DeleteServiceConfig): DescriptionsDeleteRequest;
+export declare type DescriptionsRetrieveRequest = ProDescriptionsProps['request'];
+export declare function useDescriptionsRetrieveRequest(serviceConfig: RetrieveOneServiceConfig): DescriptionsRetrieveRequest;

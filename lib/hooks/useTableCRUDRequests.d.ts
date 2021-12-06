@@ -1,10 +1,12 @@
-import { ActionType } from '@ant-design/pro-table';
+import { ParamsType } from '@ant-design/pro-provider';
+import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { CommonRecord } from '../types/common';
-import { CreateService, DeleteService, RetrieveRequest, ServiceConfig, UpdateService } from './useCRUDRequests';
-export declare type TableRetrieveRequest = RetrieveRequest;
+import { CreateServiceConfig, DeleteServiceConfig, RetrieveServiceConfig, UpdateServiceConfig } from './useCRUDRequests';
 export declare type TableCreateRequest = (values: CommonRecord, action?: ActionType) => Promise<boolean>;
+export declare function useTableCreateRequest(serviceConfig: CreateServiceConfig, action?: ActionType): TableCreateRequest;
 export declare type TableUpdateRequest = (values: CommonRecord, id?: string | number, action?: ActionType) => Promise<boolean>;
+export declare function useTableUpdateRequest(serviceConfig: UpdateServiceConfig, action?: ActionType): TableUpdateRequest;
 export declare type TableDeleteRequest = (id?: string | number, action?: ActionType) => Promise<boolean>;
-export declare function useTableCreateRequest(service: CreateService | ServiceConfig, action?: ActionType): TableCreateRequest;
-export declare function useTableUpdateRequest(service: UpdateService | ServiceConfig, action?: ActionType): TableUpdateRequest;
-export declare function useTableDeleteRequest(service: DeleteService | ServiceConfig, action?: ActionType): TableDeleteRequest;
+export declare function useTableDeleteRequest(serviceConfig: DeleteServiceConfig, action?: ActionType): TableDeleteRequest;
+export declare type TableRetrieveRequest = ProTableProps<CommonRecord, ParamsType>['request'];
+export declare function useTableRetrieveRequest(serviceConfig: RetrieveServiceConfig): TableRetrieveRequest;

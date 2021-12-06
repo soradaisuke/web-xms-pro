@@ -8,10 +8,10 @@ export declare enum ErrorShowType {
     ERROR_MESSAGE = 2,
     NOTIFICATION = 4
 }
-interface ResponseStructure extends CommonRecord {
+export interface ResponseStructure<T = any> extends CommonRecord {
     errcode: number;
     errmsg: string;
-    data?: CommonRecord;
+    data: T;
 }
 interface ErrorInfoStructure {
     success: boolean;

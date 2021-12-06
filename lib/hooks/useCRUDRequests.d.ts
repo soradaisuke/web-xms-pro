@@ -1,44 +1,38 @@
 import { BaseResult, OptionsWithFormat, Service } from '@ahooksjs/use-request/lib/types';
 import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
-export declare type ServiceConfigObject<T = any> = {
-    requestPath: string;
+import { ResponseStructure } from '../utils/request';
+declare type ServiceConfigObject<S = any, P extends any[] = any[], U = any> = {
+    requestPath?: string;
     requestOptions?: RequestOptionsInit;
-    useRequestOptions?: Partial<OptionsWithFormat<any, any[], T, T>>;
+    requestService?: S;
+    useRequestOptions?: Partial<OptionsWithFormat<ResponseStructure, P, U, U>>;
 };
-export declare type ServiceConfig<T = any> = string | ServiceConfigObject<T>;
-export declare type RequestConfig<T = any> = ServiceConfig<T> | ((matchParams: RouteParams, user: User) => ServiceConfig<T>);
-export declare type RetrieveResult = {
-    data: CommonRecord[];
-    success: boolean;
-    total: number;
-};
-export declare type RetrieveArgs = [
-    params: Record<string, string | number>,
-    sort: Record<string, 'ascend' | 'descend'>
-];
-export declare type RetrieveService = Service<RetrieveResult, RetrieveArgs>;
-export declare type RetrieveOneService = Service<CommonRecord, [
-    params: Record<string, string | number>
-]>;
-export declare type CreateService = Service<any, [values: CommonRecord]>;
-export declare type UpdateService = Service<any, [
-    values: CommonRecord,
-    id?: string | number
-]>;
-export declare type DeleteService = Service<any, [id?: string | number]>;
-export declare type RetrieveRequest = BaseResult<RetrieveResult, RetrieveArgs>;
-export declare type RetrieveOneRequest = BaseResult<CommonRecord, [
-    params: Record<string, string | number>
-]>;
-export declare type CreateRequest = BaseResult<any, [values: CommonRecord]>;
-export declare type UpdateRequest = BaseResult<any, [
-    values: CommonRecord,
-    id?: string | number
-]>;
-export declare type DeleteRequest = BaseResult<any, [id?: string | number]>;
-export declare function useCreateRequest(service: CreateService | ServiceConfig): CreateRequest;
-export declare function useRetrieveRequest(service: RetrieveService | ServiceConfig): RetrieveRequest;
-export declare function useRetrieveOneRequest(service: RetrieveOneService | ServiceConfig): RetrieveOneRequest;
-export declare function useUpdateRequest(service: UpdateService | ServiceConfig): UpdateRequest;
-export declare function useDeleteRequest(service: DeleteService | ServiceConfig): DeleteRequest;
+export declare type ServiceConfig<S = any, P extends any[] = any[], U = any> = string | ServiceConfigObject<S, P, U>;
+export declare type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RouteParams, user: User) => S);
+export declare type CreateArgs = [values: CommonRecord];
+export declare type CreateService = Service<ResponseStructure, CreateArgs>;
+export declare type CreateRequest = BaseResult<CommonRecord, CreateArgs>;
+export declare type CreateServiceConfig = ServiceConfig<CreateService, CreateArgs, CommonRecord>;
+export declare function useCreateRequest(serviceConfig: CreateServiceConfig, useRequestOptions?: Extract<CreateServiceConfig, ServiceConfigObject>['useRequestOptions']): CreateRequest;
+export declare type UpdateArgs = [values: CommonRecord, id?: string | number];
+export declare type UpdateService = Service<ResponseStructure, UpdateArgs>;
+export declare type UpdateRequest = BaseResult<CommonRecord, UpdateArgs>;
+export declare type UpdateServiceConfig = ServiceConfig<UpdateService, UpdateArgs, CommonRecord>;
+export declare function useUpdateRequest(serviceConfig: UpdateServiceConfig, useRequestOptions?: Extract<UpdateServiceConfig, ServiceConfigObject>['useRequestOptions']): UpdateRequest;
+export declare type DeleteArgs = [id?: string | number];
+export declare type DeleteService = Service<ResponseStructure, DeleteArgs>;
+export declare type DeleteRequest = BaseResult<CommonRecord, DeleteArgs>;
+export declare type DeleteServiceConfig = ServiceConfig<DeleteService, DeleteArgs, CommonRecord>;
+export declare function useDeleteRequest(serviceConfig: DeleteServiceConfig, useRequestOptions?: Extract<DeleteServiceConfig, ServiceConfigObject>['useRequestOptions']): DeleteRequest;
+export declare type RetrieveArgs = [page: number, pagesize: number, filter: CommonRecord, order: string];
+export declare type RetrieveService = Service<ResponseStructure, RetrieveArgs>;
+export declare type RetrieveRequest = BaseResult<CommonRecord, RetrieveArgs>;
+export declare type RetrieveServiceConfig = ServiceConfig<RetrieveService, RetrieveArgs, CommonRecord>;
+export declare function useRetrieveRequest(serviceConfig: RetrieveServiceConfig, useRequestOptions?: Extract<RetrieveServiceConfig, ServiceConfigObject>['useRequestOptions']): RetrieveRequest;
+export declare type RetrieveOneArgs = [params: Record<string, string | number>];
+export declare type RetrieveOneService = Service<ResponseStructure, RetrieveOneArgs>;
+export declare type RetrieveOneRequest = BaseResult<CommonRecord, RetrieveOneArgs>;
+export declare type RetrieveOneServiceConfig = ServiceConfig<RetrieveOneService, RetrieveOneArgs, CommonRecord>;
+export declare function useRetrieveOneRequest(serviceConfig: RetrieveOneServiceConfig, useRequestOptions?: Extract<RetrieveOneServiceConfig, ServiceConfigObject>['useRequestOptions']): RetrieveOneRequest;
+export {};

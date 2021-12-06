@@ -1,24 +1,21 @@
+import { ProDescriptionsProps } from '@ant-design/pro-descriptions';
 import { ActionType } from '@ant-design/pro-table';
 import { message } from 'antd';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonRecord } from '../types/common';
-import { DeleteService, RetrieveOneRequest, ServiceConfig, UpdateService, useDeleteRequest, useUpdateRequest } from './useCRUDRequests';
-
-export type DescriptionsRetrieveRequest = RetrieveOneRequest;
+import { DeleteServiceConfig, RetrieveOneServiceConfig, UpdateServiceConfig, useDeleteRequest, useRetrieveOneRequest, useUpdateRequest } from './useCRUDRequests';
 
 export type DescriptionsUpdateRequest = (
   values: CommonRecord,
   action?: ActionType
 ) => Promise<boolean>;
 
-export type DescriptionsDeleteRequest = () => Promise<boolean>;
-
 export function useDescriptionsUpdateRequest(
-  service: UpdateService | ServiceConfig,
+  serviceConfig: UpdateServiceConfig,
   action?: ActionType
 ): DescriptionsUpdateRequest {
-  const updateReq = useUpdateRequest(service);
+  const updateReq = useUpdateRequest(serviceConfig, { manual: true });
 
   return useCallback<DescriptionsUpdateRequest>(
     async (values, a) => {
@@ -35,10 +32,12 @@ export function useDescriptionsUpdateRequest(
   );
 }
 
+export type DescriptionsDeleteRequest = () => Promise<boolean>;
+
 export function useDescriptionsDeleteRequest(
-  service: DeleteService | ServiceConfig,
+  serviceConfig: DeleteServiceConfig
 ): DescriptionsDeleteRequest {
-  const deleteReq = useDeleteRequest(service);
+  const deleteReq = useDeleteRequest(serviceConfig);
   const navigate = useNavigate();
 
   return useCallback<DescriptionsDeleteRequest>(
@@ -53,5 +52,24 @@ export function useDescriptionsDeleteRequest(
       }
     },
     [deleteReq, navigate]
+  );
+}
+
+export type DescriptionsRetrieveRequest = ProDescriptionsProps['request'];
+
+export function useDescriptionsRetrieveRequest(
+  serviceConfig: RetrieveOneServiceConfig
+): DescriptionsRetrieveRequest {
+  const req = useRetrieveOneRequest(serviceConfig, { 
+    manual: true,
+    formatResult: (res) => ({
+      data: res.data,
+      success: true
+    })
+  });
+
+  return useCallback<DescriptionsRetrieveRequest>(
+    (params) => req.run(params),
+    [req]
   );
 }

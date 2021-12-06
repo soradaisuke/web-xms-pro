@@ -2,269 +2,215 @@ import { BaseResult, OptionsWithFormat, Service } from '@ahooksjs/use-request/li
 import {
   isPlainObject,
   isString,
-  join,
-  map,
   merge,
-  replace,
-  toPairs,
 } from 'lodash';
 import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
-import { request, useRequest } from '../utils/request';
+import { request, ResponseStructure, useRequest } from '../utils/request';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ServiceConfigObject<T = any> = {
-  requestPath: string;
+type ServiceConfigObject<S = any, P extends any[] = any[], U = any> = {
+  requestPath?: string;
   requestOptions?: RequestOptionsInit;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useRequestOptions?: Partial<OptionsWithFormat<any, any[], T, T>>
+  requestService?: S;
+  useRequestOptions?: Partial<OptionsWithFormat<ResponseStructure, P, U, U>>;
 };
 
-export type ServiceConfig<T = any> = string | ServiceConfigObject<T>;
-
-export type RequestConfig<T = any> = ServiceConfig<T> | ((matchParams: RouteParams, user: User) => ServiceConfig<T>);
-
-export type RetrieveResult = {
-  data: CommonRecord[];
-  success: boolean;
-  total: number;
-};
-
-export type RetrieveArgs = [
-  params: Record<string, string | number>,
-  sort: Record<string, 'ascend' | 'descend'>
-];
-
-export type RetrieveService = Service<RetrieveResult, RetrieveArgs>;
-
-export type RetrieveOneService = Service<
-  CommonRecord,
-  [params: Record<string, string | number>]
->;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ServiceConfig<S = any, P extends any[] = any[], U = any> = string | ServiceConfigObject<S, P, U>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CreateService = Service<any, [values: CommonRecord]>;
+export type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RouteParams, user: User) => S);
 
-export type UpdateService = Service<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  any,
-  [values: CommonRecord, id?: string | number]
->;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type DeleteService = Service<any, [id?: string | number]>;
-
-export type RetrieveRequest = BaseResult<RetrieveResult, RetrieveArgs>;
-
-export type RetrieveOneRequest = BaseResult<
-  CommonRecord,
-  [params: Record<string, string | number>]
->;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CreateRequest = BaseResult<any, [values: CommonRecord]>;
-
-export type UpdateRequest = BaseResult<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  any,
-  [values: CommonRecord, id?: string | number]
->;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type DeleteRequest = BaseResult<any, [id?: string | number]>;
-
+export type CreateArgs = [values: CommonRecord];
+export type CreateService = Service<ResponseStructure, CreateArgs>;
+export type CreateRequest = BaseResult<CommonRecord, CreateArgs>;
+export type CreateServiceConfig = ServiceConfig<CreateService, CreateArgs, CommonRecord>;
 export function useCreateRequest(
-  service: CreateService | ServiceConfig
+  serviceConfig: CreateServiceConfig,
+  useRequestOptions?: Extract<CreateServiceConfig, ServiceConfigObject>['useRequestOptions']
 ): CreateRequest {
-  let ser = service;
-  if (isString(service)) {
-    ser = (values) =>
-      request(service, {
+  let service: CreateService;
+  const options = merge({
+    formatResult: (response) => response.data,
+  }, useRequestOptions);
+
+  if (isString(serviceConfig)) {
+    service = (values) =>
+      request(serviceConfig, {
         data: values,
         method: 'post',
       });
-  } else if (isPlainObject(service)) {
-    ser = (values) =>
+  } else if (isPlainObject(serviceConfig)) {
+    service = serviceConfig.requestService ?? ((values) =>
       request(
-        (service as ServiceConfigObject).requestPath,
+        serviceConfig.requestPath,
         merge(
           {
             data: values,
             method: 'post',
           },
-          (service as ServiceConfigObject).requestOptions
+          serviceConfig.requestOptions
         )
-      );
+      ));
+    merge(options, serviceConfig.useRequestOptions);
   }
 
-  return useRequest(ser, merge(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (service as ServiceConfigObject).useRequestOptions as any, 
-    { manual: true }
-  ));
+  return useRequest(service, options);
 }
 
-export function useRetrieveRequest(
-  service: RetrieveService | ServiceConfig
-): RetrieveRequest {
-  let ser = service;
-  if (isString(service)) {
-    ser = (
-      params: Record<string, string | number>,
-      sort: Record<string, 'ascend' | 'descend'>
-    ) => {
-      const { current, pageSize, ...filter } = params;
-      const order: string = join(
-        map(toPairs(sort), (s) => `${s[0]} ${replace(s[1], 'end', '')}`),
-        ','
-      );
-
-      return request(service, {
-        params: {
-          page: current,
-          pagesize: pageSize,
-          filter: JSON.stringify(filter),
-          order,
-        },
-        method: 'get',
-      });
-    };
-  } else if (isPlainObject(service)) {
-    ser = (
-      params: Record<string, string | number>,
-      sort: Record<string, 'ascend' | 'descend'>
-    ) => {
-      const { current, pageSize, ...filter } = params;
-      const order: string = join(
-        map(toPairs(sort), (s) => `${s[0]} ${replace(s[1], 'end', '')}`),
-        ','
-      );
-
-      return request(
-        (service as ServiceConfigObject).requestPath,
-        merge(
-          {
-            params: {
-              page: current,
-              pagesize: pageSize,
-              filter: JSON.stringify(filter),
-              order,
-            },
-            method: 'get',
-          },
-          (service as ServiceConfigObject).requestOptions
-        )
-      );
-    };
-  }
-
-  return useRequest(ser, merge(
-    {
-      formatResult: (response) => ({
-        data: response.data.items,
-        success: true,
-        total: response.data.total,
-      }),
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (service as ServiceConfigObject).useRequestOptions as any,
-    {
-      manual: true,
-    }
-  ));
-}
-
-export function useRetrieveOneRequest(
-  service: RetrieveOneService | ServiceConfig
-): RetrieveOneRequest {
-  let ser = service;
-  if (isString(service)) {
-    ser = (params) =>
-      request(service, {
-        params,
-        method: 'get',
-      });
-  } else if (isPlainObject(service)) {
-    ser = (params) =>
-      request(
-        (service as ServiceConfigObject).requestPath,
-        merge(
-          {
-            params,
-            method: 'get',
-          },
-          (service as ServiceConfigObject).requestOptions
-        )
-      );
-  }
-
-  return useRequest(ser, merge(
-    {
-      formatResult: (response) => ({
-        data: response.data,
-        success: true,
-      }),
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (service as ServiceConfigObject).useRequestOptions as any,
-    {
-      manual: true,
-    }
-  ));
-}
-
+export type UpdateArgs = [values: CommonRecord, id?: string | number];
+export type UpdateService = Service<ResponseStructure, UpdateArgs>;
+export type UpdateRequest = BaseResult<CommonRecord, UpdateArgs>;
+export type UpdateServiceConfig = ServiceConfig<UpdateService, UpdateArgs, CommonRecord>;
 export function useUpdateRequest(
-  service: UpdateService | ServiceConfig
+  serviceConfig: UpdateServiceConfig,
+  useRequestOptions?: Extract<UpdateServiceConfig, ServiceConfigObject>['useRequestOptions']
 ): UpdateRequest {
-  let ser = service;
-  if (isString(service)) {
-    ser = (values, id) =>
-      request(`${service}${id ? `/${id}` : ''}`, {
+  let service: UpdateService;
+  const options = merge({
+    formatResult: (response) => response.data,
+  }, useRequestOptions);
+
+  if (isString(serviceConfig)) {
+    service = (values, id) =>
+      request(`${serviceConfig}${id ? `/${id}` : ''}`, {
         data: values,
         method: 'put',
       });
-  } else if (isPlainObject(service)) {
-    ser = (values, id) =>
+  } else if (isPlainObject(serviceConfig)) {
+    service = serviceConfig.requestService ?? ((values, id) =>
       request(
-        `${(service as ServiceConfigObject).requestPath}${id ? `/${id}` : ''}`,
+        `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
         merge(
           {
             data: values,
             method: 'put',
           },
-          (service as ServiceConfigObject).requestOptions
+          serviceConfig.requestOptions
         )
-      );
+      ));
+    merge(options, serviceConfig.useRequestOptions);
   }
 
-  return useRequest(ser, merge(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (service as ServiceConfigObject).useRequestOptions as any, 
-    { manual: true }
-  ));
+  return useRequest(service, options);
 }
 
+export type DeleteArgs = [id?: string | number];
+export type DeleteService = Service<ResponseStructure, DeleteArgs>;
+export type DeleteRequest = BaseResult<CommonRecord, DeleteArgs>;
+export type DeleteServiceConfig = ServiceConfig<DeleteService, DeleteArgs, CommonRecord>;
 export function useDeleteRequest(
-  service: DeleteService | ServiceConfig
+  serviceConfig: DeleteServiceConfig,
+  useRequestOptions?: Extract<DeleteServiceConfig, ServiceConfigObject>['useRequestOptions']
 ): DeleteRequest {
-  let ser = service;
-  if (isString(service)) {
-    ser = (id?) =>
-      request(`${service}${id ? `/${id}` : ''}`, { method: 'delete' });
-  } else if (isPlainObject(service)) {
-    ser = (id?) =>
+  let service: DeleteService;
+  const options = merge({
+    formatResult: (response) => response.data,
+  }, useRequestOptions);
+
+  if (isString(serviceConfig)) {
+    service = (id?) =>
+      request(`${serviceConfig}${id ? `/${id}` : ''}`, { method: 'delete' });
+  } else if (isPlainObject(serviceConfig)) {
+    service = serviceConfig.requestService ?? ((id?) =>
       request(
-        `${(service as ServiceConfigObject).requestPath}${id ? `/${id}` : ''}`,
+        `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
         merge(
           { method: 'delete' },
-          (service as ServiceConfigObject).requestOptions
+          serviceConfig.requestOptions
         )
-      );
+      ));
+    merge(options, serviceConfig.useRequestOptions);
   }
 
-  return useRequest(ser, merge(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (service as ServiceConfigObject).useRequestOptions as any, 
-    { manual: true }
-  ));
+  return useRequest(service, options);
+}
+
+export type RetrieveArgs = [page: number, pagesize: number, filter: CommonRecord, order: string];
+export type RetrieveService = Service<ResponseStructure, RetrieveArgs>;
+export type RetrieveRequest = BaseResult<CommonRecord, RetrieveArgs>;
+export type RetrieveServiceConfig = ServiceConfig<RetrieveService, RetrieveArgs, CommonRecord>;
+
+export function useRetrieveRequest(
+  serviceConfig: RetrieveServiceConfig,
+  useRequestOptions?: Extract<RetrieveServiceConfig, ServiceConfigObject>['useRequestOptions']
+): RetrieveRequest {
+  let service: RetrieveService;
+  const options = merge({
+    formatResult: (response) => response.data,
+  }, useRequestOptions);
+
+  if (isString(serviceConfig)) {
+    service = (
+      page, pagesize, filter, order
+    ) => request(serviceConfig, {
+        params: {
+          page,
+          pagesize,
+          order,
+          filter: JSON.stringify(filter),
+        },
+        method: 'get',
+    });
+  } else if (isPlainObject(serviceConfig)) {
+    service = serviceConfig.requestService ?? ((
+      page, pagesize, filter, order
+    ) => request(
+        serviceConfig.requestPath,
+        merge(
+          {
+            params: {
+              page,
+              pagesize,
+              order,
+              filter: JSON.stringify(filter),
+            },
+            method: 'get',
+          },
+          serviceConfig.requestOptions
+        )
+      )
+    );
+    merge(options, serviceConfig.useRequestOptions);
+  }
+
+  return useRequest(service, options);
+}
+
+export type RetrieveOneArgs = [params: Record<string, string | number>];
+export type RetrieveOneService = Service<ResponseStructure, RetrieveOneArgs>;
+export type RetrieveOneRequest = BaseResult<CommonRecord, RetrieveOneArgs>;
+export type RetrieveOneServiceConfig = ServiceConfig<RetrieveOneService, RetrieveOneArgs, CommonRecord>;
+export function useRetrieveOneRequest(
+  serviceConfig: RetrieveOneServiceConfig,
+  useRequestOptions?: Extract<RetrieveOneServiceConfig, ServiceConfigObject>['useRequestOptions']
+): RetrieveOneRequest {
+  let service: RetrieveOneService;
+  const options = merge({
+    formatResult: (response) => response.data,
+  }, useRequestOptions);
+
+  if (isString(serviceConfig)) {
+    service = (params) =>
+      request(serviceConfig, {
+        params,
+        method: 'get',
+      });
+  } else if (isPlainObject(serviceConfig)) {
+    service = (params) =>
+      request(
+        serviceConfig.requestPath,
+        merge(
+          {
+            params,
+            method: 'get',
+          },
+          serviceConfig.requestOptions
+        )
+      );
+    merge(options, serviceConfig.useRequestOptions);
+  }
+
+  return useRequest(service, options);
 }

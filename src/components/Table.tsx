@@ -9,12 +9,13 @@ import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import { RequestConfig, RetrieveResult, ServiceConfig, useRetrieveRequest } from '../hooks/useCRUDRequests';
+import { CreateServiceConfig, DeleteServiceConfig, RequestConfig, RetrieveServiceConfig, UpdateServiceConfig } from '../hooks/useCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
   TableDeleteRequest,
   TableUpdateRequest,
   useTableDeleteRequest,
+  useTableRetrieveRequest,
   useTableUpdateRequest,
 } from '../hooks/useTableCRUDRequests';
 import getRowKey from '../utils/getRowKey';
@@ -30,7 +31,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig<RetrieveResult>;
+    requestConfig?: RequestConfig<RetrieveServiceConfig>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -48,7 +49,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 
 function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
   toolBarRender: TableProps<T, U>['toolBarRender'],
-  requestConfig: ServiceConfig,
+  requestConfig: RetrieveServiceConfig,
   form: FormInstance,
   params: RouteParams
 ): ProTableProps<T, U>['toolBarRender'] {
@@ -61,7 +62,7 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
                 defaultCreateButtonRender: (config) => (
                   <CreateRecordSchemaForm
                     key="create"
-                    requestConfig={requestConfig}
+                    requestConfig={requestConfig as CreateServiceConfig}
                     containerAction={args[0]}
                     {...config}
                   />
@@ -81,7 +82,7 @@ function makeMergedRender(
   render: XMSTableColumns['render'],
   update: TableUpdateRequest,
   del: TableDeleteRequest,
-  requestConfig: ServiceConfig,
+  requestConfig: RetrieveServiceConfig,
   user: User
 ): ProColumns['render'] {
   if (!render) {
@@ -138,11 +139,11 @@ const Table: React.FC<TableProps> = function(props) {
     [matchParams, requestConfig, user]
   );
 
-  const retrieve = useRetrieveRequest(ser);
+  const retrieve = useTableRetrieveRequest(ser);
 
-  const update = useTableUpdateRequest(ser);
+  const update = useTableUpdateRequest(ser as UpdateServiceConfig);
 
-  const del = useTableDeleteRequest(ser);
+  const del = useTableDeleteRequest(ser as DeleteServiceConfig);
 
   const newColumns = useMemo(
     () =>
@@ -234,7 +235,7 @@ const Table: React.FC<TableProps> = function(props) {
 
   return (
     <ProTable
-      request={retrieve.run}
+      request={retrieve}
       {...props}
       form={newForm}
       formRef={formRef}

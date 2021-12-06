@@ -1,41 +1,30 @@
-import { ActionType } from '@ant-design/pro-table';
+import { ParamsType } from '@ant-design/pro-provider';
+import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { message } from 'antd';
+import { join, map, replace, toPairs } from 'lodash';
 import { useCallback } from 'react';
 import { CommonRecord } from '../types/common';
 import {
-  CreateService,
-  DeleteService,
-  RetrieveRequest,
-  ServiceConfig,
-  UpdateService,
+  CreateServiceConfig,
+  DeleteServiceConfig,
+  RetrieveServiceConfig,
+  UpdateServiceConfig,
   useCreateRequest,
   useDeleteRequest,
+  useRetrieveRequest,
   useUpdateRequest,
 } from './useCRUDRequests';
-
-export type TableRetrieveRequest = RetrieveRequest;
 
 export type TableCreateRequest = (
   values: CommonRecord,
   action?: ActionType
 ) => Promise<boolean>;
 
-export type TableUpdateRequest = (
-  values: CommonRecord,
-  id?: string | number,
-  action?: ActionType
-) => Promise<boolean>;
-
-export type TableDeleteRequest = (
-  id?: string | number,
-  action?: ActionType
-) => Promise<boolean>;
-
 export function useTableCreateRequest(
-  service: CreateService | ServiceConfig,
+  serviceConfig: CreateServiceConfig,
   action?: ActionType
 ): TableCreateRequest {
-  const createReq = useCreateRequest(service);
+  const createReq = useCreateRequest(serviceConfig, { manual: true });
 
   return useCallback<TableCreateRequest>(
     async (values, a) => {
@@ -52,11 +41,17 @@ export function useTableCreateRequest(
   );
 }
 
+export type TableUpdateRequest = (
+  values: CommonRecord,
+  id?: string | number,
+  action?: ActionType
+) => Promise<boolean>;
+
 export function useTableUpdateRequest(
-  service: UpdateService | ServiceConfig,
+  serviceConfig: UpdateServiceConfig,
   action?: ActionType
 ): TableUpdateRequest {
-  const updateReq = useUpdateRequest(service);
+  const updateReq = useUpdateRequest(serviceConfig, { manual: true });
 
   return useCallback<TableUpdateRequest>(
     async (values, id, a) => {
@@ -73,11 +68,16 @@ export function useTableUpdateRequest(
   );
 }
 
+export type TableDeleteRequest = (
+  id?: string | number,
+  action?: ActionType
+) => Promise<boolean>;
+
 export function useTableDeleteRequest(
-  service: DeleteService | ServiceConfig,
+  serviceConfig: DeleteServiceConfig,
   action?: ActionType
 ): TableDeleteRequest {
-  const deleteReq = useDeleteRequest(service);
+  const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
 
   return useCallback<TableDeleteRequest>(
     async (id, a) => {
@@ -91,5 +91,33 @@ export function useTableDeleteRequest(
       }
     },
     [action, deleteReq]
+  );
+}
+
+export type TableRetrieveRequest = ProTableProps<CommonRecord, ParamsType>['request'];
+
+export function useTableRetrieveRequest(
+  serviceConfig: RetrieveServiceConfig
+): TableRetrieveRequest {
+  const req = useRetrieveRequest(serviceConfig, { 
+    manual: true,
+    formatResult: (res) => ({
+      data: res.data.items,
+      total: res.data.total,
+      success: true
+    })
+  });
+
+  return useCallback<TableRetrieveRequest>(
+    (params, sort) => {
+      const { current, pageSize, ...filter } = params;
+      const order: string = join(
+        map(toPairs(sort), (s) => `${s[0]} ${replace(s[1], 'end', '')}`),
+        ','
+      );
+
+      return req.run(current, pageSize, filter, order);
+    },
+    [req]
   );
 }
