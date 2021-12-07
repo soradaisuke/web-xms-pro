@@ -101,7 +101,7 @@ const Layout: React.FC<LayoutProps> = function(props) {
   const location = useLocation();
   const user = useUser();
   const newRoute = useMemo(
-    () => validRoute(route, user?.permissions),
+    () => user ? validRoute(route, user.permissions) : null,
     [route, user]
   );
 
