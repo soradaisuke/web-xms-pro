@@ -77,6 +77,10 @@ function validRoute(route: Route, userPermissions: CommonRecord): Route {
 }
 
 function renderRoutes(props: Route) {
+  if (!props) {
+    return null;
+  }
+  
   const { routes, path, pageContainerProps = {} } = props;
   const children = [];
 
