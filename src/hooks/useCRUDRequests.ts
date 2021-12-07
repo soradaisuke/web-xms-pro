@@ -24,8 +24,8 @@ export type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RoutePar
 
 export type CreateArgs = [values: CommonRecord];
 export type CreateService = Service<ResponseStructure, CreateArgs>;
-export type CreateRequest = BaseResult<CommonRecord, CreateArgs>;
-export type CreateServiceConfig = ServiceConfig<CreateService, CreateArgs, CommonRecord>;
+export type CreateRequest = BaseResult<any, CreateArgs>;
+export type CreateServiceConfig = ServiceConfig<CreateService, CreateArgs, any>;
 export function useCreateRequest(
   serviceConfig: CreateServiceConfig,
   useRequestOptions?: Extract<CreateServiceConfig, ServiceConfigObject>['useRequestOptions']
@@ -61,8 +61,8 @@ export function useCreateRequest(
 
 export type UpdateArgs = [values: CommonRecord, id?: string | number];
 export type UpdateService = Service<ResponseStructure, UpdateArgs>;
-export type UpdateRequest = BaseResult<CommonRecord, UpdateArgs>;
-export type UpdateServiceConfig = ServiceConfig<UpdateService, UpdateArgs, CommonRecord>;
+export type UpdateRequest = BaseResult<any, UpdateArgs>;
+export type UpdateServiceConfig = ServiceConfig<UpdateService, UpdateArgs, any>;
 export function useUpdateRequest(
   serviceConfig: UpdateServiceConfig,
   useRequestOptions?: Extract<UpdateServiceConfig, ServiceConfigObject>['useRequestOptions']
@@ -98,8 +98,8 @@ export function useUpdateRequest(
 
 export type DeleteArgs = [id?: string | number];
 export type DeleteService = Service<ResponseStructure, DeleteArgs>;
-export type DeleteRequest = BaseResult<CommonRecord, DeleteArgs>;
-export type DeleteServiceConfig = ServiceConfig<DeleteService, DeleteArgs, CommonRecord>;
+export type DeleteRequest = BaseResult<any, DeleteArgs>;
+export type DeleteServiceConfig = ServiceConfig<DeleteService, DeleteArgs, any>;
 export function useDeleteRequest(
   serviceConfig: DeleteServiceConfig,
   useRequestOptions?: Extract<DeleteServiceConfig, ServiceConfigObject>['useRequestOptions']
