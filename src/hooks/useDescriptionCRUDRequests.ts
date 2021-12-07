@@ -37,7 +37,7 @@ export type DescriptionsDeleteRequest = () => Promise<boolean>;
 export function useDescriptionsDeleteRequest(
   serviceConfig: DeleteServiceConfig
 ): DescriptionsDeleteRequest {
-  const deleteReq = useDeleteRequest(serviceConfig);
+  const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
   const navigate = useNavigate();
 
   return useCallback<DescriptionsDeleteRequest>(

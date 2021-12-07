@@ -26,8 +26,8 @@ export enum ErrorShowType {
 
 export interface ResponseStructure<T = any> extends CommonRecord {
   errcode: number;
-  errmsg: string;
-  data: T;
+  errmsg?: string;
+  data?: T;
 }
 
 interface ErrorInfoStructure {
