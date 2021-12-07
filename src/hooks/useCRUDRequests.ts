@@ -9,15 +9,15 @@ import { CommonRecord, RouteParams, User } from '../types/common';
 import { request, ResponseStructure, useRequest } from '../utils/request';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ServiceConfigObject<S = any, P extends any[] = any[], U = any> = {
+type ServiceConfigObject<R extends ResponseStructure = ResponseStructure, P extends any[] = any[], U = any> = {
   requestPath?: string;
   requestOptions?: RequestOptionsInit;
-  requestService?: S;
-  useRequestOptions?: Partial<OptionsWithFormat<ResponseStructure, P, U, U>>;
+  requestService?: Service<R, P>;
+  useRequestOptions?: Partial<OptionsWithFormat<R, P, U, U>>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ServiceConfig<S = any, P extends any[] = any[], U = any> = string | ServiceConfigObject<S, P, U>;
+export type ServiceConfig<R extends ResponseStructure = ResponseStructure, P extends any[] = any[], U = any> = string | ServiceConfigObject<R, P, U>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RouteParams, user: User) => S);
@@ -25,7 +25,7 @@ export type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RoutePar
 export type CreateArgs = [values: CommonRecord];
 export type CreateService = Service<ResponseStructure, CreateArgs>;
 export type CreateRequest = BaseResult<any, CreateArgs>;
-export type CreateServiceConfig = ServiceConfig<CreateService, CreateArgs, any>;
+export type CreateServiceConfig = ServiceConfig<ResponseStructure, CreateArgs, any>;
 export function useCreateRequest(
   serviceConfig: CreateServiceConfig,
   useRequestOptions?: Extract<CreateServiceConfig, ServiceConfigObject>['useRequestOptions']
@@ -62,7 +62,7 @@ export function useCreateRequest(
 export type UpdateArgs = [values: CommonRecord, id?: string | number];
 export type UpdateService = Service<ResponseStructure, UpdateArgs>;
 export type UpdateRequest = BaseResult<any, UpdateArgs>;
-export type UpdateServiceConfig = ServiceConfig<UpdateService, UpdateArgs, any>;
+export type UpdateServiceConfig = ServiceConfig<ResponseStructure, UpdateArgs, any>;
 export function useUpdateRequest(
   serviceConfig: UpdateServiceConfig,
   useRequestOptions?: Extract<UpdateServiceConfig, ServiceConfigObject>['useRequestOptions']
@@ -99,7 +99,7 @@ export function useUpdateRequest(
 export type DeleteArgs = [id?: string | number];
 export type DeleteService = Service<ResponseStructure, DeleteArgs>;
 export type DeleteRequest = BaseResult<any, DeleteArgs>;
-export type DeleteServiceConfig = ServiceConfig<DeleteService, DeleteArgs, any>;
+export type DeleteServiceConfig = ServiceConfig<ResponseStructure, DeleteArgs, any>;
 export function useDeleteRequest(
   serviceConfig: DeleteServiceConfig,
   useRequestOptions?: Extract<DeleteServiceConfig, ServiceConfigObject>['useRequestOptions']
@@ -127,10 +127,14 @@ export function useDeleteRequest(
   return useRequest(service, options);
 }
 
+export type RetrieveResult = {
+  items: CommonRecord[];
+  total: number;
+}
 export type RetrieveArgs = [page: number, pagesize: number, filter: CommonRecord, order: string];
-export type RetrieveService = Service<ResponseStructure, RetrieveArgs>;
-export type RetrieveRequest = BaseResult<CommonRecord, RetrieveArgs>;
-export type RetrieveServiceConfig = ServiceConfig<RetrieveService, RetrieveArgs, CommonRecord>;
+export type RetrieveService = Service<ResponseStructure<RetrieveResult>, RetrieveArgs>;
+export type RetrieveRequest = BaseResult<any, RetrieveArgs>;
+export type RetrieveServiceConfig = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, any>;
 
 export function useRetrieveRequest(
   serviceConfig: RetrieveServiceConfig,
@@ -179,9 +183,9 @@ export function useRetrieveRequest(
 }
 
 export type RetrieveOneArgs = [params: Record<string, string | number>];
-export type RetrieveOneService = Service<ResponseStructure, RetrieveOneArgs>;
-export type RetrieveOneRequest = BaseResult<CommonRecord, RetrieveOneArgs>;
-export type RetrieveOneServiceConfig = ServiceConfig<RetrieveOneService, RetrieveOneArgs, CommonRecord>;
+export type RetrieveOneService = Service<ResponseStructure<CommonRecord>, RetrieveOneArgs>;
+export type RetrieveOneRequest = BaseResult<any, RetrieveOneArgs>;
+export type RetrieveOneServiceConfig = ServiceConfig<ResponseStructure<CommonRecord>, RetrieveOneArgs, any>;
 export function useRetrieveOneRequest(
   serviceConfig: RetrieveOneServiceConfig,
   useRequestOptions?: Extract<RetrieveOneServiceConfig, ServiceConfigObject>['useRequestOptions']

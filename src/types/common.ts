@@ -1,6 +1,11 @@
-export type RouteParams = Record<string, string>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CommonRecord = Record<string, any>;
+export type RouteParams = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key in string]: string
+};
+export type CommonRecord = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key in string]: any
+};
 export type XMSValueType = 'file' | 'link' | 'boolean';
 export type LinkConfig = (record: CommonRecord) => string;
 export type User = CommonRecord & {
