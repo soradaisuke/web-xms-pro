@@ -1,4 +1,5 @@
 import { ProDescriptionsProps } from '@ant-design/pro-descriptions';
+import { RequestData } from '@ant-design/pro-descriptions/lib/useFetchData';
 import { ActionType } from '@ant-design/pro-table';
 import { message } from 'antd';
 import { useCallback } from 'react';
@@ -55,12 +56,13 @@ export function useDescriptionsDeleteRequest(
   );
 }
 
+export type DescriptionsRetrieveServiceConfig = RetrieveOneServiceConfig<RequestData>;
 export type DescriptionsRetrieveRequest = ProDescriptionsProps['request'];
 
 export function useDescriptionsRetrieveRequest(
-  serviceConfig: RetrieveOneServiceConfig
+  serviceConfig: DescriptionsRetrieveServiceConfig
 ): DescriptionsRetrieveRequest {
-  const req = useRetrieveOneRequest(serviceConfig, { 
+  const req = useRetrieveOneRequest<RequestData>(serviceConfig, { 
     manual: true,
     formatResult: (res) => ({
       data: res.data,

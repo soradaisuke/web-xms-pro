@@ -1,4 +1,5 @@
 import { ProDescriptionsProps } from '@ant-design/pro-descriptions';
+import { RequestData } from '@ant-design/pro-descriptions/lib/useFetchData';
 import { ActionType } from '@ant-design/pro-table';
 import { CommonRecord } from '../types/common';
 import { DeleteServiceConfig, RetrieveOneServiceConfig, UpdateServiceConfig } from './useCRUDRequests';
@@ -6,5 +7,6 @@ export declare type DescriptionsUpdateRequest = (values: CommonRecord, action?: 
 export declare function useDescriptionsUpdateRequest(serviceConfig: UpdateServiceConfig, action?: ActionType): DescriptionsUpdateRequest;
 export declare type DescriptionsDeleteRequest = () => Promise<boolean>;
 export declare function useDescriptionsDeleteRequest(serviceConfig: DeleteServiceConfig): DescriptionsDeleteRequest;
+export declare type DescriptionsRetrieveServiceConfig = RetrieveOneServiceConfig<RequestData>;
 export declare type DescriptionsRetrieveRequest = ProDescriptionsProps['request'];
-export declare function useDescriptionsRetrieveRequest(serviceConfig: RetrieveOneServiceConfig): DescriptionsRetrieveRequest;
+export declare function useDescriptionsRetrieveRequest(serviceConfig: DescriptionsRetrieveServiceConfig): DescriptionsRetrieveRequest;

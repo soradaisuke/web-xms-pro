@@ -1,5 +1,5 @@
 import { ParamsType } from '@ant-design/pro-provider';
-import { ActionType, ProTableProps } from '@ant-design/pro-table';
+import { ActionType, ProTableProps, RequestData } from '@ant-design/pro-table';
 import { CommonRecord } from '../types/common';
 import { CreateServiceConfig, DeleteServiceConfig, RetrieveServiceConfig, UpdateServiceConfig } from './useCRUDRequests';
 export declare type TableCreateRequest = (values: CommonRecord, action?: ActionType) => Promise<boolean>;
@@ -8,5 +8,6 @@ export declare type TableUpdateRequest = (values: CommonRecord, id?: string | nu
 export declare function useTableUpdateRequest(serviceConfig: UpdateServiceConfig, action?: ActionType): TableUpdateRequest;
 export declare type TableDeleteRequest = (id?: string | number, action?: ActionType) => Promise<boolean>;
 export declare function useTableDeleteRequest(serviceConfig: DeleteServiceConfig, action?: ActionType): TableDeleteRequest;
+export declare type TableRetrieveServiceConfig = RetrieveServiceConfig<RequestData<CommonRecord>>;
 export declare type TableRetrieveRequest = ProTableProps<CommonRecord, ParamsType>['request'];
-export declare function useTableRetrieveRequest(serviceConfig: RetrieveServiceConfig): TableRetrieveRequest;
+export declare function useTableRetrieveRequest(serviceConfig: TableRetrieveServiceConfig): TableRetrieveRequest;

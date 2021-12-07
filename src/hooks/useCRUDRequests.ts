@@ -133,12 +133,12 @@ export type RetrieveResult = {
 }
 export type RetrieveArgs = [page: number, pagesize: number, filter: CommonRecord, order: string];
 export type RetrieveService = Service<ResponseStructure<RetrieveResult>, RetrieveArgs>;
-export type RetrieveRequest = BaseResult<any, RetrieveArgs>;
-export type RetrieveServiceConfig = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, any>;
+export type RetrieveRequest<R = any> = BaseResult<R, RetrieveArgs>;
+export type RetrieveServiceConfig<R = any> = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, R>;
 
-export function useRetrieveRequest(
-  serviceConfig: RetrieveServiceConfig,
-  useRequestOptions?: Extract<RetrieveServiceConfig, ServiceConfigObject>['useRequestOptions']
+export function useRetrieveRequest<R = any>(
+  serviceConfig: RetrieveServiceConfig<R>,
+  useRequestOptions?: Extract<RetrieveServiceConfig<R>, ServiceConfigObject>['useRequestOptions']
 ): RetrieveRequest {
   let service: RetrieveService;
   const options = merge({
@@ -184,11 +184,11 @@ export function useRetrieveRequest(
 
 export type RetrieveOneArgs = [params: Record<string, string | number>];
 export type RetrieveOneService = Service<ResponseStructure<CommonRecord>, RetrieveOneArgs>;
-export type RetrieveOneRequest = BaseResult<any, RetrieveOneArgs>;
-export type RetrieveOneServiceConfig = ServiceConfig<ResponseStructure<CommonRecord>, RetrieveOneArgs, any>;
-export function useRetrieveOneRequest(
-  serviceConfig: RetrieveOneServiceConfig,
-  useRequestOptions?: Extract<RetrieveOneServiceConfig, ServiceConfigObject>['useRequestOptions']
+export type RetrieveOneRequest<R = any> = BaseResult<R, RetrieveOneArgs>;
+export type RetrieveOneServiceConfig<R = any> = ServiceConfig<ResponseStructure<CommonRecord>, RetrieveOneArgs, R>;
+export function useRetrieveOneRequest<R = any>(
+  serviceConfig: RetrieveOneServiceConfig<R>,
+  useRequestOptions?: Extract<RetrieveOneServiceConfig<R>, ServiceConfigObject>['useRequestOptions']
 ): RetrieveOneRequest {
   let service: RetrieveOneService;
   const options = merge({

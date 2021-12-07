@@ -9,10 +9,11 @@ import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import { CreateServiceConfig, DeleteServiceConfig, RequestConfig, RetrieveServiceConfig, UpdateServiceConfig } from '../hooks/useCRUDRequests';
+import { CreateServiceConfig, DeleteServiceConfig, RequestConfig, UpdateServiceConfig } from '../hooks/useCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
   TableDeleteRequest,
+  TableRetrieveServiceConfig,
   TableUpdateRequest,
   useTableDeleteRequest,
   useTableRetrieveRequest,
@@ -31,7 +32,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig<RetrieveServiceConfig>;
+    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -49,7 +50,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 
 function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
   toolBarRender: TableProps<T, U>['toolBarRender'],
-  requestConfig: RetrieveServiceConfig,
+  requestConfig: TableRetrieveServiceConfig,
   form: FormInstance,
   params: RouteParams
 ): ProTableProps<T, U>['toolBarRender'] {
@@ -82,7 +83,7 @@ function makeMergedRender(
   render: XMSTableColumns['render'],
   update: TableUpdateRequest,
   del: TableDeleteRequest,
-  requestConfig: RetrieveServiceConfig,
+  requestConfig: TableRetrieveServiceConfig,
   user: User
 ): ProColumns['render'] {
   if (!render) {

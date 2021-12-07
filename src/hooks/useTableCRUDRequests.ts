@@ -1,5 +1,5 @@
 import { ParamsType } from '@ant-design/pro-provider';
-import { ActionType, ProTableProps } from '@ant-design/pro-table';
+import { ActionType, ProTableProps, RequestData } from '@ant-design/pro-table';
 import { message } from 'antd';
 import { join, map, replace, toPairs } from 'lodash';
 import { useCallback } from 'react';
@@ -94,12 +94,13 @@ export function useTableDeleteRequest(
   );
 }
 
+export type TableRetrieveServiceConfig = RetrieveServiceConfig<RequestData<CommonRecord>>;
 export type TableRetrieveRequest = ProTableProps<CommonRecord, ParamsType>['request'];
 
 export function useTableRetrieveRequest(
-  serviceConfig: RetrieveServiceConfig
+  serviceConfig: TableRetrieveServiceConfig
 ): TableRetrieveRequest {
-  const req = useRetrieveRequest(serviceConfig, { 
+  const req = useRetrieveRequest<RequestData<CommonRecord>>(serviceConfig, { 
     manual: true,
     formatResult: (res) => ({
       data: res.data.items,

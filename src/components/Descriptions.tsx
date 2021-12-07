@@ -6,10 +6,10 @@ import ProDescriptions, {
 import { useParams } from 'react-router-dom';
 import { isFunction, map } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
-import { DeleteServiceConfig, RequestConfig, RetrieveOneServiceConfig } from '../hooks/useCRUDRequests';
+import { DeleteServiceConfig, RequestConfig } from '../hooks/useCRUDRequests';
 import { CommonRecord, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
-import { DescriptionsDeleteRequest, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsRetrieveRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
+import { DescriptionsDeleteRequest, DescriptionsRetrieveServiceConfig, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsRetrieveRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
@@ -22,7 +22,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   'columns'
 > & {
   /** @name 数据请求配置 */
-  requestConfig?: RequestConfig<RetrieveOneServiceConfig>;
+  requestConfig?: RequestConfig<DescriptionsRetrieveServiceConfig>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
 };
@@ -31,7 +31,7 @@ function makeMergedRender(
   render: XMSDescriptionsColumns['render'],
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
-  requestConfig: RetrieveOneServiceConfig,
+  requestConfig: DescriptionsRetrieveServiceConfig,
   user: User
 ): ProDescriptionsItemProps['render'] {
   if (!render) {

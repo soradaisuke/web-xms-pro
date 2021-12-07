@@ -31,12 +31,12 @@ export declare type RetrieveResult = {
 };
 export declare type RetrieveArgs = [page: number, pagesize: number, filter: CommonRecord, order: string];
 export declare type RetrieveService = Service<ResponseStructure<RetrieveResult>, RetrieveArgs>;
-export declare type RetrieveRequest = BaseResult<any, RetrieveArgs>;
-export declare type RetrieveServiceConfig = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, any>;
-export declare function useRetrieveRequest(serviceConfig: RetrieveServiceConfig, useRequestOptions?: Extract<RetrieveServiceConfig, ServiceConfigObject>['useRequestOptions']): RetrieveRequest;
+export declare type RetrieveRequest<R = any> = BaseResult<R, RetrieveArgs>;
+export declare type RetrieveServiceConfig<R = any> = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, R>;
+export declare function useRetrieveRequest<R = any>(serviceConfig: RetrieveServiceConfig<R>, useRequestOptions?: Extract<RetrieveServiceConfig<R>, ServiceConfigObject>['useRequestOptions']): RetrieveRequest;
 export declare type RetrieveOneArgs = [params: Record<string, string | number>];
 export declare type RetrieveOneService = Service<ResponseStructure<CommonRecord>, RetrieveOneArgs>;
-export declare type RetrieveOneRequest = BaseResult<any, RetrieveOneArgs>;
-export declare type RetrieveOneServiceConfig = ServiceConfig<ResponseStructure<CommonRecord>, RetrieveOneArgs, any>;
-export declare function useRetrieveOneRequest(serviceConfig: RetrieveOneServiceConfig, useRequestOptions?: Extract<RetrieveOneServiceConfig, ServiceConfigObject>['useRequestOptions']): RetrieveOneRequest;
+export declare type RetrieveOneRequest<R = any> = BaseResult<R, RetrieveOneArgs>;
+export declare type RetrieveOneServiceConfig<R = any> = ServiceConfig<ResponseStructure<CommonRecord>, RetrieveOneArgs, R>;
+export declare function useRetrieveOneRequest<R = any>(serviceConfig: RetrieveOneServiceConfig<R>, useRequestOptions?: Extract<RetrieveOneServiceConfig<R>, ServiceConfigObject>['useRequestOptions']): RetrieveOneRequest;
 export {};
