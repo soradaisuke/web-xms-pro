@@ -33,7 +33,7 @@ const signout = () => {
 const UserProvider: React.FC<UserProviderProps> = function(props) {
   const { children, authPath } = props;
 
-  const [user, setUser] = useState<User>({});
+  const [user, setUser] = useState<User>(null);
   
   const auth = useRequest(() => request.get(authPath), {
     manual: true,
