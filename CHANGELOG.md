@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.41](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.40...v1.0.0-beta.41) (2022-01-14)
+
+
+### Features
+
+* **NoTicket:** 移除table里link的padding ([2f706d0](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/2f706d0d37122b813610dc4fbb400f3bdd6c9c7e))
+
 ## [1.0.0-beta.40](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.39...v1.0.0-beta.40) (2022-01-14)
 
 
