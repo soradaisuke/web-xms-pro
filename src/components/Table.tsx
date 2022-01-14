@@ -43,6 +43,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
             defaultCreateButtonRender: TableCreateButtonRender;
             form: FormInstance;
             params: RouteParams;
+            user: User;
           },
           ...base: Parameters<ToolBarProps<T>['toolBarRender']>
         ) => ReturnType<ToolBarProps<T>['toolBarRender']>);
@@ -52,7 +53,8 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
   toolBarRender: TableProps<T, U>['toolBarRender'],
   requestConfig: TableRetrieveServiceConfig,
   form: FormInstance,
-  params: RouteParams
+  params: RouteParams,
+  user: User
 ): ProTableProps<T, U>['toolBarRender'] {
   return useMemo<ProTableProps<T, U>['toolBarRender']>(
     () =>
@@ -70,11 +72,12 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
                 ),
                 form,
                 params,
+                user,
               },
               ...args
             )
         : null,
-    [toolBarRender, form, params, requestConfig]
+    [toolBarRender, form, params, user, requestConfig]
   );
 }
 
@@ -231,7 +234,8 @@ const Table: React.FC<TableProps> = function(props) {
     toolBarRender,
     ser,
     formRef.current,
-    matchParams
+    matchParams,
+    user
   );
 
   return (
