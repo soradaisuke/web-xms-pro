@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.40](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.39...v1.0.0-beta.40) (2022-01-14)
+
+
+### Features
+
+* **NoTicket:** toolBarRender传入user ([13563ab](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/13563abd07070dae82e909bfe44675252df02deb))
+
 ## [1.0.0-beta.39](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.38...v1.0.0-beta.39) (2022-01-14)
 
 
