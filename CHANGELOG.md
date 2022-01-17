@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.43](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.42...v1.0.0-beta.43) (2022-01-17)
+
+
+### Bug Fixes
+
+* **NoTicket:** style lint ([bca673d](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/bca673d00b8695ce46cfd4f24fa2e6599498a8f4))
+
 ## [1.0.0-beta.42](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2022-01-17)
 
 
