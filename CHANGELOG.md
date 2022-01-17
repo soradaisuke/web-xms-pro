@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.42](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.41...v1.0.0-beta.42) (2022-01-17)
+
+
+### Features
+
+* **NoTicket:** 默认上下线操作支持修改提交数据 ([425d595](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/425d595e510fa8c972514e5a0566bd3ec64f0305))
+
+
+### Bug Fixes
+
+* **NoTicket:** column.ellipse在link里颜色不对 ([6874f8b](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/6874f8b28cc0d3346c7e69b86d82269b512d3021))
+* **NoTicket:** column.ellipse对于link不生效 ([88be157](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/88be15792e3efbfb16a344e524e557fceacc5c3a))
+
 ## [1.0.0-beta.41](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.40...v1.0.0-beta.41) (2022-01-14)
 
 
