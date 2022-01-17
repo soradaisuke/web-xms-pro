@@ -16,7 +16,7 @@ export declare type TableProps<T = CommonRecord, U = ParamsType> = Omit<ProTable
     toolBarRender?: Extract<ProTableProps<T, U>['toolBarRender'], boolean> | ((config: {
         defaultCreateButtonRender: TableCreateButtonRender;
         form: FormInstance;
-        params: RouteParams;
+        matchParams: RouteParams;
         user: User;
     }, ...base: Parameters<ToolBarProps<T>['toolBarRender']>) => ReturnType<ToolBarProps<T>['toolBarRender']>);
 };

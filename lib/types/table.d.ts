@@ -12,7 +12,7 @@ export declare type TableDeleteConfig = {
     /** @name Popconfirm配置 */
     popConfirmProps?: PopconfirmProps;
 };
-export declare type TableOnlineOfflineConfig = {
+export declare type TableOnlineOfflineConfig = Pick<UpdateRecordSchemaFormProps, 'normalizeSubmitValues'> & {
     onlineStatus?: number;
     offlineStatus?: number;
     onlineText?: string;

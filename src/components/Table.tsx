@@ -42,7 +42,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
           config: {
             defaultCreateButtonRender: TableCreateButtonRender;
             form: FormInstance;
-            params: RouteParams;
+            matchParams: RouteParams;
             user: User;
           },
           ...base: Parameters<ToolBarProps<T>['toolBarRender']>
@@ -53,7 +53,7 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
   toolBarRender: TableProps<T, U>['toolBarRender'],
   requestConfig: TableRetrieveServiceConfig,
   form: FormInstance,
-  params: RouteParams,
+  matchParams: RouteParams,
   user: User
 ): ProTableProps<T, U>['toolBarRender'] {
   return useMemo<ProTableProps<T, U>['toolBarRender']>(
@@ -71,13 +71,13 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
                   />
                 ),
                 form,
-                params,
+                matchParams,
                 user,
               },
               ...args
             )
         : null,
-    [toolBarRender, form, params, user, requestConfig]
+    [toolBarRender, form, matchParams, user, requestConfig]
   );
 }
 
@@ -87,7 +87,8 @@ function makeMergedRender(
   update: TableUpdateRequest,
   del: TableDeleteRequest,
   requestConfig: TableRetrieveServiceConfig,
-  user: User
+  user: User,
+  matchParams: RouteParams
 ): ProColumns['render'] {
   if (!render) {
     return null;
@@ -115,7 +116,7 @@ function makeMergedRender(
         update: defaultUpdate,
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
-        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, defaultUpdate),
+        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, matchParams, defaultUpdate),
         defaultSwapButtonRender: makeDefaultSwapButtonRender(defaultUpdateButtonRender),
       },
       ...args
@@ -156,7 +157,7 @@ const Table: React.FC<TableProps> = function(props) {
           col;
         const newCol = {
           ...col,
-          render: makeMergedRender(rowKey, render, update, del, ser, user),
+          render: makeMergedRender(rowKey, render, update, del, ser, user, matchParams),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -178,7 +179,7 @@ const Table: React.FC<TableProps> = function(props) {
         }
         return newCol;
       }),
-    [columns, del, rowKey, ser, update, user]
+    [columns, del, matchParams, rowKey, ser, update, user]
   );
 
   const newSearch = useMemo<TableProps['search']>(() => {

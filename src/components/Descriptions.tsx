@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { isFunction, map } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
 import { DeleteServiceConfig, RequestConfig } from '../hooks/useCRUDRequests';
-import { CommonRecord, User } from '../types/common';
+import { CommonRecord, RouteParams, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
 import { DescriptionsDeleteRequest, DescriptionsRetrieveServiceConfig, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsRetrieveRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
@@ -32,7 +32,8 @@ function makeMergedRender(
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
   requestConfig: DescriptionsRetrieveServiceConfig,
-  user: User
+  user: User,
+  matchParams: RouteParams
 ): ProDescriptionsItemProps['render'] {
   if (!render) {
     return null;
@@ -58,7 +59,7 @@ function makeMergedRender(
         update: defaultUpdate,
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
-        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, defaultUpdate),
+        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, matchParams, defaultUpdate),
         defaultSwapButtonRender: makeDefaultSwapButtonRender(defaultUpdateButtonRender),
       },
       ...args
@@ -88,7 +89,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         const { link, render, valueType } = col;
         const newCol = {
           ...col,
-          render: makeMergedRender(render, update, del, service, user),
+          render: makeMergedRender(render, update, del, service, user, matchParams),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -101,7 +102,7 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         }
         return newCol;
       }),
-    [columns, del, service, update, user]
+    [columns, del, matchParams, service, update, user]
   );
 
   return (

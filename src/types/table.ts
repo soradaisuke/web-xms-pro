@@ -16,7 +16,7 @@ export type TableDeleteConfig = {
   popConfirmProps?: PopconfirmProps;
 };
 
-export type TableOnlineOfflineConfig = {
+export type TableOnlineOfflineConfig = Pick<UpdateRecordSchemaFormProps, 'normalizeSubmitValues'> & {
   onlineStatus?: number;
   offlineStatus?: number;
   onlineText?: string;
