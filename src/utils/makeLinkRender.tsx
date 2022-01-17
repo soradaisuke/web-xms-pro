@@ -10,7 +10,7 @@ export default function makeLinkRender(link: LinkConfig ): ProColumns['render'] 
     const url = link(record);
     if (includes(url, '//')) {
       return (
-        <Button href={url} target="_blank" type="link" style={{ padding: '0px' }}>
+        <Button href={url} target="_blank" type="link" style={{ padding: '0px', width: '100%' }}>
           {dom}
         </Button>
       );
