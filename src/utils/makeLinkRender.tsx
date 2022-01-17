@@ -4,6 +4,7 @@ import { includes } from "lodash";
 import React from "react";
 import { Link } from "react-router-dom";
 import { LinkConfig } from "../types/common";
+import '../styles/link.less';
 
 export default function makeLinkRender(link: LinkConfig ): ProColumns['render'] {
   return function(dom, record) {
