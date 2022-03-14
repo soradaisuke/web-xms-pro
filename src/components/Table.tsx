@@ -1,7 +1,18 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import { find, forEach, get, isBoolean, isFunction, isMap, isNumber, keys, map, toNumber } from 'lodash';
+import {
+  find,
+  forEach,
+  get,
+  isBoolean,
+  isFunction,
+  isMap,
+  isNumber,
+  keys,
+  map,
+  toNumber,
+} from 'lodash';
 import { useParams } from 'react-router-dom';
 import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
@@ -9,7 +20,12 @@ import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import { CreateServiceConfig, DeleteServiceConfig, RequestConfig, UpdateServiceConfig } from '../hooks/useCRUDRequests';
+import {
+  CreateServiceConfig,
+  DeleteServiceConfig,
+  RequestConfig,
+  UpdateServiceConfig,
+} from '../hooks/useCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
   TableDeleteRequest,
@@ -116,15 +132,21 @@ function makeMergedRender(
         update: defaultUpdate,
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
-        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, matchParams, defaultUpdate),
-        defaultSwapButtonRender: makeDefaultSwapButtonRender(defaultUpdateButtonRender),
+        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(
+          record,
+          matchParams,
+          defaultUpdate
+        ),
+        defaultSwapButtonRender: makeDefaultSwapButtonRender(
+          defaultUpdateButtonRender
+        ),
       },
       ...args
     );
   };
 }
 
-const Table: React.FC<TableProps> = function(props) {
+const Table: React.FC<TableProps> = function (props) {
   const {
     rowKey,
     requestConfig,
@@ -140,7 +162,9 @@ const Table: React.FC<TableProps> = function(props) {
 
   const ser = useMemo(
     () =>
-      isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig,
+      isFunction(requestConfig)
+        ? requestConfig(matchParams, user)
+        : requestConfig,
     [matchParams, requestConfig, user]
   );
 
@@ -157,7 +181,15 @@ const Table: React.FC<TableProps> = function(props) {
           col;
         const newCol = {
           ...col,
-          render: makeMergedRender(rowKey, render, update, del, ser, user, matchParams),
+          render: makeMergedRender(
+            rowKey,
+            render,
+            update,
+            del,
+            ser,
+            user,
+            matchParams
+          ),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -203,19 +235,25 @@ const Table: React.FC<TableProps> = function(props) {
     };
   }, [newColumns, search]);
 
-  const defaultSyncToUrl = useCallback((values, type) => {
-    if (type === 'get') {
-      const newValues = { ...values };
-      forEach(keys(newValues), key => {
-        const column = find(newColumns, c => c.dataIndex === key);
-        if (isMap(column?.valueEnum) && isNumber(column.valueEnum.keys().next().value)) {
-          newValues[key] = toNumber(newValues[key]);
-        }
-      })
-      return newValues;
-    }
-    return values;
-  }, [newColumns]);
+  const defaultSyncToUrl = useCallback(
+    (values, type) => {
+      if (type === 'get') {
+        const newValues = { ...values };
+        forEach(keys(newValues), (key) => {
+          const column = find(newColumns, (c) => c.dataIndex === key);
+          if (
+            isMap(column?.valueEnum) &&
+            isNumber(column.valueEnum.keys().next().value)
+          ) {
+            newValues[key] = toNumber(newValues[key]);
+          }
+        });
+        return newValues;
+      }
+      return values;
+    },
+    [newColumns]
+  );
 
   const newForm = useMemo<TableProps['form']>(
     () => ({
@@ -223,7 +261,7 @@ const Table: React.FC<TableProps> = function(props) {
       ...(form || {}),
       syncToUrl: (values, type) => {
         if (isFunction(form?.syncToUrl)) {
-          return form.syncToUrl(defaultSyncToUrl(values, type), type)
+          return form.syncToUrl(defaultSyncToUrl(values, type), type);
         }
         return defaultSyncToUrl(values, type);
       },
@@ -251,6 +289,6 @@ const Table: React.FC<TableProps> = function(props) {
       columns={newColumns}
     />
   );
-}
+};
 
 export default Table;

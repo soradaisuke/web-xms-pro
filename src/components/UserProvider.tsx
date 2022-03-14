@@ -30,11 +30,11 @@ const signout = () => {
   window.location.replace(window.location.origin);
 };
 
-const UserProvider: React.FC<UserProviderProps> = function(props) {
+const UserProvider: React.FC<UserProviderProps> = function (props) {
   const { children, authPath } = props;
 
   const [user, setUser] = useState<User>(null);
-  
+
   const auth = useRequest(() => request.get(authPath), {
     manual: true,
     onSuccess: (result) => {
@@ -42,18 +42,17 @@ const UserProvider: React.FC<UserProviderProps> = function(props) {
     },
   });
 
-  const value = useMemo(() => ({
-    user,
-    signin,
-    signout,
-    auth,
-  }), [auth, user]);
-
-  return (
-    <UserContext.Provider value={value}>
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      signin,
+      signout,
+      auth,
+    }),
+    [auth, user]
   );
-}
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
 
 export default UserProvider;

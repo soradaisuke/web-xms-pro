@@ -15,7 +15,7 @@ type UploadFileProps = UploadProps & {
   platform?: 'upyun' | 'aliyun';
 };
 
-const UploadFile: React.FC<UploadFileProps> = function(props) {
+const UploadFile: React.FC<UploadFileProps> = function (props) {
   const { value, onChange, platform } = props;
 
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ const UploadFile: React.FC<UploadFileProps> = function(props) {
       {fileList && fileList.length ? null : uploadButton}
     </Upload>
   );
-}
+};
 
 UploadFile.defaultProps = {
   value: null,

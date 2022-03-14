@@ -5,18 +5,27 @@ import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateReco
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
 import { CommonRecord, LinkConfig, User, XMSValueType } from './common';
 
-export type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> & Pick<CreateRecordSchemaFormProps, 'columns'>;
+export type TableCreateConfig = Partial<
+  Omit<CreateRecordSchemaFormProps, 'columns'>
+> &
+  Pick<CreateRecordSchemaFormProps, 'columns'>;
 
-export type TableUpdateConfig = Partial<Omit<UpdateRecordSchemaFormProps, 'columns'>> & Pick<UpdateRecordSchemaFormProps, 'columns'> & {
-  key?: string
-};
+export type TableUpdateConfig = Partial<
+  Omit<UpdateRecordSchemaFormProps, 'columns'>
+> &
+  Pick<UpdateRecordSchemaFormProps, 'columns'> & {
+    key?: string;
+  };
 
 export type TableDeleteConfig = {
   /** @name Popconfirm配置 */
   popConfirmProps?: PopconfirmProps;
 };
 
-export type TableOnlineOfflineConfig = Pick<UpdateRecordSchemaFormProps, 'normalizeSubmitValues'> & {
+export type TableOnlineOfflineConfig = Pick<
+  UpdateRecordSchemaFormProps,
+  'normalizeSubmitValues'
+> & {
   onlineStatus?: number;
   offlineStatus?: number;
   onlineText?: string;
@@ -43,7 +52,7 @@ export type XMSTableColumns = Omit<
   valueType?: ProColumns['valueType'] | XMSValueType;
   render?: (
     config: {
-      user: User,
+      user: User;
       update: (values: CommonRecord) => Promise<boolean>;
       defaultUpdateButtonRender: TableUpdateButtonRender;
       defaultDeleteButtonRender: TableDeleteButtonRender;

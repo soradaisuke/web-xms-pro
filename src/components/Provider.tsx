@@ -15,7 +15,7 @@ export type ProviderProps = {
   models: Models;
 };
 
-const Provider: React.FC<ProviderProps> = function(props) {
+const Provider: React.FC<ProviderProps> = function (props) {
   const { children, models } = props;
 
   return (
@@ -36,6 +36,6 @@ const Provider: React.FC<ProviderProps> = function(props) {
       {children}
     </XmsContext.Provider>
   );
-}
+};
 
 export default Provider;

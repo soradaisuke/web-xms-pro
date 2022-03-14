@@ -80,7 +80,7 @@ function renderRoutes(props: Route) {
   if (!props) {
     return null;
   }
-  
+
   const { routes, path, pageContainerProps = {} } = props;
   const children = [];
 
@@ -100,28 +100,38 @@ function renderRoutes(props: Route) {
   );
 }
 
-const Layout: React.FC<LayoutProps> = function(props) {
+const Layout: React.FC<LayoutProps> = function (props) {
   const { route, title } = props;
   const location = useLocation();
   const user = useUser();
   const newRoute = useMemo(
-    () => user ? validRoute(route, user.permissions) : null,
+    () => (user ? validRoute(route, user.permissions) : null),
     [route, user]
   );
 
-  const menuHeaderRender = useCallback((logo) => (
-    <>
-      {logo}
-      <span style={{ color: 'white', marginLeft: 5 }}>蜻蜓FM</span>
-    </>
-  ), []);
-  const menuItemRender = useCallback((item, dom) => <Link to={item.path}>{dom}</Link>, []);
-  const waterMarkProps = useMemo(() => ({
-    content: `蜻蜓FM${user ? ` ${user.nickname} ${user.phone}` : ''}`,
-  }), [user]);
-  const headerContentRender = useCallback(() => (
-    <span style={{ fontWeight: 600, fontSize: '25px' }}>{title}</span>
-  ), [title]);
+  const menuHeaderRender = useCallback(
+    (logo) => (
+      <>
+        {logo}
+        <span style={{ color: 'white', marginLeft: 5 }}>蜻蜓FM</span>
+      </>
+    ),
+    []
+  );
+  const menuItemRender = useCallback(
+    (item, dom) => <Link to={item.path}>{dom}</Link>,
+    []
+  );
+  const waterMarkProps = useMemo(
+    () => ({
+      content: `蜻蜓FM${user ? ` ${user.nickname} ${user.phone}` : ''}`,
+    }),
+    [user]
+  );
+  const headerContentRender = useCallback(
+    () => <span style={{ fontWeight: 600, fontSize: '25px' }}>{title}</span>,
+    [title]
+  );
   const rightContentRender = useCallback(() => <Account />, []);
 
   return (
@@ -146,6 +156,6 @@ const Layout: React.FC<LayoutProps> = function(props) {
       </ProLayout>
     </div>
   );
-}
+};
 
 export default Layout;

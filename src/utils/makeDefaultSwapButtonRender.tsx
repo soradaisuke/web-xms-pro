@@ -1,10 +1,12 @@
-import { SwapOutlined } from "@ant-design/icons";
-import { Button, Tooltip } from "antd";
-import React from "react";
-import { TableSwapButtonRender, TableUpdateButtonRender } from "../types/table";
+import { SwapOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
+import React from 'react';
+import { TableSwapButtonRender, TableUpdateButtonRender } from '../types/table';
 
-export default function makeDefaultSwapButtonRender(defaultUpdateButtonRender: TableUpdateButtonRender): TableSwapButtonRender {
-  return function(config = {}) {
+export default function makeDefaultSwapButtonRender(
+  defaultUpdateButtonRender: TableUpdateButtonRender
+): TableSwapButtonRender {
+  return function (config = {}) {
     return defaultUpdateButtonRender({
       key: 'swap',
       columns: [

@@ -32,7 +32,7 @@ function makeMergedRender<T = CommonRecord>(
     );
 }
 
-const RecordSchemaForm: React.FC<RecordSchemaFormProps> = function(props) {
+const RecordSchemaForm: React.FC<RecordSchemaFormProps> = function (props) {
   const { layoutType, modalProps = {}, columns, record } = props;
   const formRef = useRef<ProFormInstance>();
 
@@ -111,6 +111,6 @@ const RecordSchemaForm: React.FC<RecordSchemaFormProps> = function(props) {
       onVisibleChange={onVisibleChange}
     />
   );
-}
+};
 
 export default RecordSchemaForm;

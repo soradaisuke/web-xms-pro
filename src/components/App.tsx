@@ -1,14 +1,12 @@
-import React, { useContext, useMemo, useState } from 'react';
-import { ConfigProvider, Input, Select, Switch } from 'antd';
+import React, { useState } from 'react';
+import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ProSettings, SettingDrawer } from '@ant-design/pro-layout';
 import { merge } from 'lodash';
-import ProProvider from '@ant-design/pro-provider';
 import Layout, { LayoutProps } from './Layout';
 import Provider, { Models } from './Provider';
-import UploadImage from './UploadImage';
-import UploadFile from './UploadFile';
+import XmsProProvider from './XmsProProvider';
 import 'moment/locale/zh-cn';
 
 export type AppProps = {
@@ -20,9 +18,7 @@ export type AppProps = {
   models?: Models;
 };
 
-const App: React.FC<AppProps> = function(props) {
-  const values = useContext(ProProvider);
-
+const App: React.FC<AppProps> = function (props) {
   const { layoutProps, settings: propSettings, models } = props;
 
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>(
@@ -38,60 +34,9 @@ const App: React.FC<AppProps> = function(props) {
     )
   );
 
-  const value = useMemo(() => ({
-    ...values,
-    valueTypeMap: {
-      image: {
-        renderFormItem: (_, renderProps) => (
-          <UploadImage {...renderProps?.fieldProps} />
-        ),
-      },
-      file: {
-        renderFormItem: (_, renderProps) => (
-          <UploadFile {...renderProps?.fieldProps} />
-        ),
-      },
-      link: {
-        render: (text, renderProps) => (
-          <a href={text} target="_blank" rel="noreferrer">
-            <div
-              style={{
-                wordBreak: 'break-all',
-                width: renderProps?.fieldProps?.width ?? 200,
-              }}
-            >
-              {text}
-            </div>
-          </a>
-        ),
-        renderFormItem: (_, renderProps) => (
-          <Input placeholder="请输入链接" {...renderProps?.fieldProps} />
-        ),
-      },
-      boolean: {
-        render: (text) => <Switch checked={text} />,
-        renderFormItem: (_, renderProps) => (
-          <Select
-            options={[
-              {
-                label: '是',
-                value: true,
-              },
-              {
-                label: '否',
-                value: false,
-              },
-            ]}
-            {...renderProps?.fieldProps}
-          />
-        ),
-      },
-    },
-  }), [values]);
-
   return (
     <ConfigProvider locale={zhCN}>
-      <ProProvider.Provider value={value}>
+      <XmsProProvider>
         <Router>
           <Provider models={models}>
             <Layout {...layoutProps} {...settings} />
@@ -105,9 +50,9 @@ const App: React.FC<AppProps> = function(props) {
             disableUrlParams
           />
         </Router>
-      </ProProvider.Provider>
+      </XmsProProvider>
     </ConfigProvider>
   );
-}
+};
 
 export default App;

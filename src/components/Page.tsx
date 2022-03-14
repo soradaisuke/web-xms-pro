@@ -51,9 +51,12 @@ function renderContent(props: PageProps, key?: string): ReactNode {
   return null;
 }
 
-const Page: React.FC<PageProps> = function(props) {
+const Page: React.FC<PageProps> = function (props) {
   const { tabList = [], title } = props;
-  const { tabActiveKey, onTabChange } = useSyncTabKeyToUrl('tab_key', tabList?.[0]?.key);
+  const { tabActiveKey, onTabChange } = useSyncTabKeyToUrl(
+    'tab_key',
+    tabList?.[0]?.key
+  );
   const matchParams = useParams();
 
   const getTitle = useMemo<() => Promise<PageContainerProps['title']>>(
@@ -82,6 +85,6 @@ const Page: React.FC<PageProps> = function(props) {
         )}
     </PageContainer>
   );
-}
+};
 
 export default Page;

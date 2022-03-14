@@ -29,7 +29,12 @@ export declare type RetrieveResult = {
     items: CommonRecord[];
     total: number;
 };
-export declare type RetrieveArgs = [page: number, pagesize: number, filter: CommonRecord, order: string];
+export declare type RetrieveArgs = [
+    page: number,
+    pagesize: number,
+    filter: CommonRecord,
+    order: string
+];
 export declare type RetrieveService = Service<ResponseStructure<RetrieveResult>, RetrieveArgs>;
 export declare type RetrieveRequest<R = any> = BaseResult<R, RetrieveArgs>;
 export declare type RetrieveServiceConfig<R = any> = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, R>;

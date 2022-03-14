@@ -8,7 +8,7 @@ interface ExecutorProps {
   namespace: string;
 }
 
-const Executor: React.FC<ExecutorProps> = function(props) {
+const Executor: React.FC<ExecutorProps> = function (props) {
   const { hook, onUpdate, namespace } = props;
 
   const updateRef = useRef(onUpdate);
@@ -90,6 +90,6 @@ const Executor: React.FC<ExecutorProps> = function(props) {
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <></>;
-}
+};
 
 export default Executor;

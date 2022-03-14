@@ -3,10 +3,10 @@ import React from 'react';
 import { User } from '../types/common';
 
 const UserContext = React.createContext<{
-  user: User,
-  auth: BaseResult<any, []>,
-  signin: () => void,
-  signout: () => void
+  user: User;
+  auth: BaseResult<any, []>;
+  signin: () => void;
+  signout: () => void;
 }>({
   user: null,
   auth: null,

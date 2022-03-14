@@ -5,7 +5,14 @@ import { message } from 'antd';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CommonRecord } from '../types/common';
-import { DeleteServiceConfig, RetrieveOneServiceConfig, UpdateServiceConfig, useDeleteRequest, useRetrieveOneRequest, useUpdateRequest } from './useCRUDRequests';
+import {
+  DeleteServiceConfig,
+  RetrieveOneServiceConfig,
+  UpdateServiceConfig,
+  useDeleteRequest,
+  useRetrieveOneRequest,
+  useUpdateRequest,
+} from './useCRUDRequests';
 
 export type DescriptionsUpdateRequest = (
   values: CommonRecord,
@@ -41,33 +48,31 @@ export function useDescriptionsDeleteRequest(
   const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
   const navigate = useNavigate();
 
-  return useCallback<DescriptionsDeleteRequest>(
-    async () => {
-      try {
-        await deleteReq.run();
-        message.success('提交成功');
-        navigate(-1);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    },
-    [deleteReq, navigate]
-  );
+  return useCallback<DescriptionsDeleteRequest>(async () => {
+    try {
+      await deleteReq.run();
+      message.success('提交成功');
+      navigate(-1);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }, [deleteReq, navigate]);
 }
 
-export type DescriptionsRetrieveServiceConfig = RetrieveOneServiceConfig<RequestData>;
+export type DescriptionsRetrieveServiceConfig =
+  RetrieveOneServiceConfig<RequestData>;
 export type DescriptionsRetrieveRequest = ProDescriptionsProps['request'];
 
 export function useDescriptionsRetrieveRequest(
   serviceConfig: DescriptionsRetrieveServiceConfig
 ): DescriptionsRetrieveRequest {
-  const req = useRetrieveOneRequest<RequestData>(serviceConfig, { 
+  const req = useRetrieveOneRequest<RequestData>(serviceConfig, {
     manual: true,
     formatResult: (res) => ({
       data: res.data,
-      success: true
-    })
+      success: true,
+    }),
   });
 
   return useCallback<DescriptionsRetrieveRequest>(

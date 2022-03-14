@@ -18,7 +18,7 @@ type UploadImageProps = UploadProps & {
   imgCropProps?: ImgCropProps;
 };
 
-const UploadImage: React.FC<UploadImageProps> = function(props) {
+const UploadImage: React.FC<UploadImageProps> = function (props) {
   const { value, onChange, imgCropProps, beforeUpload, width, height } = props;
 
   const [loading, setLoading] = useState(false);
@@ -104,7 +104,7 @@ const UploadImage: React.FC<UploadImageProps> = function(props) {
   }
 
   return upload;
-}
+};
 
 UploadImage.defaultProps = {
   value: null,

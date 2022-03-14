@@ -94,19 +94,24 @@ export function useTableDeleteRequest(
   );
 }
 
-export type TableRetrieveServiceConfig = RetrieveServiceConfig<RequestData<CommonRecord>>;
-export type TableRetrieveRequest = ProTableProps<CommonRecord, ParamsType>['request'];
+export type TableRetrieveServiceConfig = RetrieveServiceConfig<
+  RequestData<CommonRecord>
+>;
+export type TableRetrieveRequest = ProTableProps<
+  CommonRecord,
+  ParamsType
+>['request'];
 
 export function useTableRetrieveRequest(
   serviceConfig: TableRetrieveServiceConfig
 ): TableRetrieveRequest {
-  const req = useRetrieveRequest<RequestData<CommonRecord>>(serviceConfig, { 
+  const req = useRetrieveRequest<RequestData<CommonRecord>>(serviceConfig, {
     manual: true,
     formatResult: (res) => ({
       data: res.data.items,
       total: res.data.total,
-      success: true
-    })
+      success: true,
+    }),
   });
 
   return useCallback<TableRetrieveRequest>(

@@ -9,7 +9,14 @@ import { ParamsType } from '@ant-design/pro-provider';
 import { DeleteServiceConfig, RequestConfig } from '../hooks/useCRUDRequests';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
-import { DescriptionsDeleteRequest, DescriptionsRetrieveServiceConfig, DescriptionsUpdateRequest, useDescriptionsDeleteRequest, useDescriptionsRetrieveRequest, useDescriptionsUpdateRequest } from '../hooks/useDescriptionCRUDRequests';
+import {
+  DescriptionsDeleteRequest,
+  DescriptionsRetrieveServiceConfig,
+  DescriptionsUpdateRequest,
+  useDescriptionsDeleteRequest,
+  useDescriptionsRetrieveRequest,
+  useDescriptionsUpdateRequest,
+} from '../hooks/useDescriptionCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
@@ -59,15 +66,21 @@ function makeMergedRender(
         update: defaultUpdate,
         defaultUpdateButtonRender,
         defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
-        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(record, matchParams, defaultUpdate),
-        defaultSwapButtonRender: makeDefaultSwapButtonRender(defaultUpdateButtonRender),
+        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(
+          record,
+          matchParams,
+          defaultUpdate
+        ),
+        defaultSwapButtonRender: makeDefaultSwapButtonRender(
+          defaultUpdateButtonRender
+        ),
       },
       ...args
     );
   };
 }
 
-const Descriptions: React.FC<DescriptionsProps> = function(props) {
+const Descriptions: React.FC<DescriptionsProps> = function (props) {
   const { requestConfig, columns } = props;
 
   const matchParams = useParams();
@@ -75,7 +88,9 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
 
   const service = useMemo(
     () =>
-      isFunction(requestConfig) ? requestConfig(matchParams, user) : (requestConfig ?? ''),
+      isFunction(requestConfig)
+        ? requestConfig(matchParams, user)
+        : requestConfig ?? '',
     [matchParams, requestConfig, user]
   );
 
@@ -89,7 +104,14 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
         const { link, render, valueType } = col;
         const newCol = {
           ...col,
-          render: makeMergedRender(render, update, del, service, user, matchParams),
+          render: makeMergedRender(
+            render,
+            update,
+            del,
+            service,
+            user,
+            matchParams
+          ),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
@@ -116,6 +138,6 @@ const Descriptions: React.FC<DescriptionsProps> = function(props) {
       columns={newColumns}
     />
   );
-}
+};
 
 export default Descriptions;

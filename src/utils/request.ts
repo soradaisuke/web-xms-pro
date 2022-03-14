@@ -138,10 +138,7 @@ function useRequest<
   R extends ResponseStructure = ResponseStructure,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   P extends any[] = any
->(
-  service: CombineService<R, P>,
-  options?: BaseOptions<R, P>
-): BaseResult<R, P>;
+>(service: CombineService<R, P>, options?: BaseOptions<R, P>): BaseResult<R, P>;
 
 function useRequest<
   R extends ResponseStructure = ResponseStructure,

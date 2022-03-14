@@ -8,7 +8,10 @@ import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { useTableUpdateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import { RequestConfig, UpdateServiceConfig } from '../../hooks/useCRUDRequests';
+import {
+  RequestConfig,
+  UpdateServiceConfig,
+} from '../../hooks/useCRUDRequests';
 import getRowKey from '../../utils/getRowKey';
 import useUser from '../../hooks/useUser';
 
@@ -32,7 +35,9 @@ export type UpdateRecordSchemaFormProps<
     normalizeInitialValues?: (record: T, matchParams: RouteParams) => T;
   };
 
-const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(props) {
+const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function (
+  props
+) {
   const {
     normalizeInitialValues = (v) => v,
     normalizeSubmitValues = (v) => v,
@@ -46,7 +51,13 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
   const matchParams = useParams();
   const user = useUser();
 
-  const service = useMemo(() => isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig, [matchParams, requestConfig, user]);
+  const service = useMemo(
+    () =>
+      isFunction(requestConfig)
+        ? requestConfig(matchParams, user)
+        : requestConfig,
+    [matchParams, requestConfig, user]
+  );
 
   const req = useTableUpdateRequest(service, containerAction);
 
@@ -63,11 +74,7 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
     <RecordSchemaForm
       trigger={
         <Tooltip title="编辑">
-          <Button
-            icon={<EditOutlined />}
-            shape="circle"
-            type="primary"
-          />
+          <Button icon={<EditOutlined />} shape="circle" type="primary" />
         </Tooltip>
       }
       layoutType="ModalForm"
@@ -77,6 +84,6 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function(p
       {...otherProps}
     />
   );
-}
+};
 
 export default UpdateRecordSchemaForm;

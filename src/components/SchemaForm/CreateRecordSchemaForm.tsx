@@ -7,7 +7,10 @@ import { isFunction } from 'lodash';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { useTableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import { CreateServiceConfig, RequestConfig } from '../../hooks/useCRUDRequests';
+import {
+  CreateServiceConfig,
+  RequestConfig,
+} from '../../hooks/useCRUDRequests';
 import useUser from '../../hooks/useUser';
 
 export type CreateRecordSchemaFormProps<T = CommonRecord> =
@@ -21,7 +24,9 @@ export type CreateRecordSchemaFormProps<T = CommonRecord> =
     ) => T | Promise<T>;
   };
 
-const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(props) {
+const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function (
+  props
+) {
   const {
     normalizeSubmitValues = (v) => v,
     requestConfig,
@@ -32,7 +37,13 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(p
   const matchParams = useParams();
   const user = useUser();
 
-  const service = useMemo(() => isFunction(requestConfig) ? requestConfig(matchParams, user) : requestConfig, [matchParams, requestConfig, user]);
+  const service = useMemo(
+    () =>
+      isFunction(requestConfig)
+        ? requestConfig(matchParams, user)
+        : requestConfig,
+    [matchParams, requestConfig, user]
+  );
 
   const req = useTableCreateRequest(service, containerAction);
 
@@ -53,6 +64,6 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function(p
       {...otherProps}
     />
   );
-}
+};
 
 export default CreateRecordSchemaForm;

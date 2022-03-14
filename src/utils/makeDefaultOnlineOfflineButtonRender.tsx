@@ -1,12 +1,16 @@
-import { CloudDownloadOutlined, CloudUploadOutlined } from "@ant-design/icons";
-import { Button, Popconfirm, Tooltip } from "antd";
-import { get } from "lodash";
-import React, { useCallback } from "react";
-import { CommonRecord, RouteParams } from "../types/common";
-import { TableOnlineOfflineButtonRender } from "../types/table";
+import { CloudDownloadOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Tooltip } from 'antd';
+import { get } from 'lodash';
+import React, { useCallback } from 'react';
+import { CommonRecord, RouteParams } from '../types/common';
+import { TableOnlineOfflineButtonRender } from '../types/table';
 
-export default function makeDefaultOnlineOfflineButtonRender(record: CommonRecord, matchParams: RouteParams, update: (values: CommonRecord) => Promise<boolean>): TableOnlineOfflineButtonRender {
-  return function(config = {}) {
+export default function makeDefaultOnlineOfflineButtonRender(
+  record: CommonRecord,
+  matchParams: RouteParams,
+  update: (values: CommonRecord) => Promise<boolean>
+): TableOnlineOfflineButtonRender {
+  return function (config = {}) {
     const {
       onlineStatus = 1,
       offlineStatus = 0,
@@ -20,16 +24,23 @@ export default function makeDefaultOnlineOfflineButtonRender(record: CommonRecor
 
     const onConfirm = useCallback(
       async () =>
-        update(await normalizeSubmitValues({ [statusKey]: status === onlineStatus ? offlineStatus : onlineStatus }, matchParams, record)),
+        update(
+          await normalizeSubmitValues(
+            {
+              [statusKey]:
+                status === onlineStatus ? offlineStatus : onlineStatus,
+            },
+            matchParams,
+            record
+          )
+        ),
       [normalizeSubmitValues, statusKey, status, onlineStatus, offlineStatus]
     );
 
     return (
       <Popconfirm
         key="status"
-        title={`确定${
-          status === onlineStatus ? offlineText : onlineText
-        }？`}
+        title={`确定${status === onlineStatus ? offlineText : onlineText}？`}
         onConfirm={onConfirm}
         okText="确定"
         cancelText="取消"
@@ -50,5 +61,5 @@ export default function makeDefaultOnlineOfflineButtonRender(record: CommonRecor
         </Tooltip>
       </Popconfirm>
     );
-  }
+  };
 }
