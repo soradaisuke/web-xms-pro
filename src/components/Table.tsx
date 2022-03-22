@@ -1,17 +1,14 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import {
   find,
-  forEach,
   get,
   isBoolean,
   isFunction,
-  isMap,
-  isNumber,
-  keys,
   map,
   toNumber,
+  mapValues,
 } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { FormInstance } from 'antd';
@@ -41,6 +38,7 @@ import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOffl
 import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
 import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 import useUser from '../hooks/useUser';
+import isNumeric from '../utils/isNumeric';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
@@ -146,6 +144,24 @@ function makeMergedRender(
   };
 }
 
+function defaultSyncToUrl(values, type) {
+  if (type === 'get') {
+    return mapValues(values, v => {
+      if (v === 'true') {
+        return true;
+      }
+      if (v === 'false') {
+        return false;
+      }
+      if (isNumeric(v)) {
+        return toNumber(v);
+      }
+      return v;
+    });
+  }
+  return values;
+};
+
 const Table: React.FC<TableProps> = function (props) {
   const {
     rowKey,
@@ -235,26 +251,6 @@ const Table: React.FC<TableProps> = function (props) {
     };
   }, [newColumns, search]);
 
-  const defaultSyncToUrl = useCallback(
-    (values, type) => {
-      if (type === 'get') {
-        const newValues = { ...values };
-        forEach(keys(newValues), (key) => {
-          const column = find(newColumns, (c) => c.dataIndex === key);
-          if (
-            isMap(column?.valueEnum) &&
-            isNumber(column.valueEnum.keys().next().value)
-          ) {
-            newValues[key] = toNumber(newValues[key]);
-          }
-        });
-        return newValues;
-      }
-      return values;
-    },
-    [newColumns]
-  );
-
   const newForm = useMemo<TableProps['form']>(
     () => ({
       syncToInitialValues: false,
@@ -266,7 +262,7 @@ const Table: React.FC<TableProps> = function (props) {
         return defaultSyncToUrl(values, type);
       },
     }),
-    [defaultSyncToUrl, form]
+    [form]
   );
 
   const mergedToolBarRender = useMergedToolBarRender(
