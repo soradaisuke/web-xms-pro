@@ -9,6 +9,11 @@ import '../styles/link.less';
 export default function makeLinkRender(link: LinkConfig): ProColumns['render'] {
   return function (dom, record) {
     const url = link(record);
+
+    if (!url) {
+      return dom;
+    }
+
     if (includes(url, '//')) {
       return (
         <Button
@@ -21,6 +26,6 @@ export default function makeLinkRender(link: LinkConfig): ProColumns['render'] {
         </Button>
       );
     }
-    return <Link to={link(record)}>{dom}</Link>;
+    return <Link to={url}>{dom}</Link>;
   };
 }
