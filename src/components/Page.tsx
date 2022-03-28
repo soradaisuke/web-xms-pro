@@ -73,6 +73,7 @@ const Page: React.FC<PageProps> = function (props) {
 
   return (
     <PageContainer
+      style={{ background: '#fff' }}
       {...props}
       title={data}
       tabActiveKey={tabActiveKey}

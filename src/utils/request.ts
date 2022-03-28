@@ -15,6 +15,7 @@ import {
   CombineService,
   OptionsWithFormat,
 } from '@ahooksjs/use-request/lib/types';
+import { toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 
 export enum ErrorShowType {
@@ -51,12 +52,13 @@ type ErrorAdapter = (
 ) => ErrorInfoStructure;
 
 const defaultErrorAdapter: ErrorAdapter = (
-  resData: ResponseStructure
+  resData: ResponseStructure,
+  ctx: Context
 ): ErrorInfoStructure => {
   const errorInfo: ErrorInfoStructure = {
     success: resData.errcode === 0,
-    errorCode: resData.errcode,
-    errorMessage: resData.errmsg,
+    errorCode: resData.errcode || ctx.res.status,
+    errorMessage: resData.errmsg || toString(resData),
   };
 
   return errorInfo;
