@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.47](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.46...v1.0.0-beta.47) (2022-03-30)
+
+
+### Features
+
+* **NoTicket:** 页面添加默认白色背景 ([bb3d589](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/bb3d5892d3af188fdaf54fb396d162351d6705b1))
+
 ## [1.0.0-beta.46](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.45...v1.0.0-beta.46) (2022-03-28)
 
 
