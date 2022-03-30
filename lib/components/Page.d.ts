@@ -4,6 +4,7 @@ import { TabPaneProps } from 'antd';
 import { TableProps } from './Table';
 import { DescriptionsProps } from './Descriptions';
 import { RouteParams } from '../types/common';
+import './Page.less';
 export declare type ContentConfig = {
     /** @name pro-table配置 */
     tableProps?: TableProps;

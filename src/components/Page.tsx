@@ -8,6 +8,7 @@ import Table, { TableProps } from './Table';
 import Descriptions, { DescriptionsProps } from './Descriptions';
 import { RouteParams } from '../types/common';
 import useSyncTabKeyToUrl from '../hooks/useSyncTabKeyToUrl';
+import './Page.less';
 
 export type ContentConfig = {
   /** @name pro-table配置 */
