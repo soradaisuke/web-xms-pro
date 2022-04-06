@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.51](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.50...v1.0.0-beta.51) (2022-04-06)
+
+
+### Bug Fixes
+
+* **NoTicket:** page container修改padding ([1389a5b](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/1389a5bd904603501fff5744ecce515286d98cfa))
+
 ## [1.0.0-beta.50](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.49...v1.0.0-beta.50) (2022-04-06)
 
 
