@@ -44,6 +44,7 @@ const XmsProProvider: React.FC<any> = function (props) {
           render: (text) => <Switch checked={text} />,
           renderFormItem: (_, renderProps) => (
             <Select
+              allowClear
               options={[
                 {
                   label: '是',
