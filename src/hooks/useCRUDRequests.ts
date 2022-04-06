@@ -3,7 +3,7 @@ import {
   OptionsWithFormat,
   Service,
 } from '@ahooksjs/use-request/lib/types';
-import { isPlainObject, isString, merge } from 'lodash';
+import { isPlainObject, isString, merge, omitBy } from 'lodash';
 import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { request, ResponseStructure, useRequest } from '../utils/request';
@@ -209,12 +209,12 @@ export function useRetrieveRequest<R = any>(
   if (isString(serviceConfig)) {
     service = (page, pagesize, filter, order) =>
       request(serviceConfig, {
-        params: {
+        params: omitBy({
           page,
           pagesize,
           order,
           filter: JSON.stringify(filter),
-        },
+        }, v => v === null || v === undefined || v === ''),
         method: 'get',
       });
   } else if (isPlainObject(serviceConfig)) {
@@ -225,12 +225,12 @@ export function useRetrieveRequest<R = any>(
           serviceConfig.requestPath,
           merge(
             {
-              params: {
+              params: omitBy({
                 page,
                 pagesize,
                 order,
                 filter: JSON.stringify(filter),
-              },
+              }, v => v === null || v === undefined || v === ''),
               method: 'get',
             },
             serviceConfig.requestOptions
