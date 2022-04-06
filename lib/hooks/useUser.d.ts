@@ -1,1 +1,1 @@
-export default function useUser(): import("../types/common").User;
+export default function useUser(): import("..").User;
