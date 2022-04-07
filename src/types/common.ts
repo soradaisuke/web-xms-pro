@@ -16,3 +16,6 @@ export type User = CommonRecord & {
   // eslint-disable-next-line camelcase
   sso_token?: string;
 };
+export type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};
