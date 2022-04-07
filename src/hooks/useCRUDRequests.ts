@@ -209,12 +209,15 @@ export function useRetrieveRequest<R = any>(
   if (isString(serviceConfig)) {
     service = (page, pagesize, filter, order) =>
       request(serviceConfig, {
-        params: omitBy({
-          page,
-          pagesize,
-          order,
-          filter: JSON.stringify(filter),
-        }, v => v === null || v === undefined || v === ''),
+        params: omitBy(
+          {
+            page,
+            pagesize,
+            order,
+            filter: JSON.stringify(filter),
+          },
+          (v) => v === null || v === undefined || v === ''
+        ),
         method: 'get',
       });
   } else if (isPlainObject(serviceConfig)) {
@@ -225,12 +228,15 @@ export function useRetrieveRequest<R = any>(
           serviceConfig.requestPath,
           merge(
             {
-              params: omitBy({
-                page,
-                pagesize,
-                order,
-                filter: JSON.stringify(filter),
-              }, v => v === null || v === undefined || v === ''),
+              params: omitBy(
+                {
+                  page,
+                  pagesize,
+                  order,
+                  filter: JSON.stringify(filter),
+                },
+                (v) => v === null || v === undefined || v === ''
+              ),
               method: 'get',
             },
             serviceConfig.requestOptions

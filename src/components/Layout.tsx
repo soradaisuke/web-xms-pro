@@ -2,20 +2,12 @@ import React, { useCallback, useMemo } from 'react';
 import ProLayout, { BasicLayoutProps } from '@ant-design/pro-layout';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { Route as AntRoute } from '@ant-design/pro-layout/lib/typings';
-import {
-  concat,
-  filter,
-  find,
-  get,
-  isArray,
-  isFunction,
-  isString,
-  map,
-} from 'lodash';
+import { concat, filter, map } from 'lodash';
 import Account from './Account';
 import Page, { PageProps } from './Page';
 import { CommonRecord } from '../types/common';
 import useUser from '../hooks/useUser';
+import { hasPermission } from '../utils';
 
 export type Route = Omit<AntRoute, 'routes'> & {
   /** @name 路由所需用户权限 */
@@ -30,37 +22,6 @@ export type LayoutProps = Omit<BasicLayoutProps, 'route'> & {
   /** @name 路由配置 */
   route?: Route;
 };
-
-function hasPermission(
-  needPermissions:
-    | string
-    | string[]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | ((userPermissions: CommonRecord) => boolean),
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  userPermissions: CommonRecord
-): boolean {
-  if (!needPermissions) {
-    return true;
-  }
-
-  if (!userPermissions) {
-    return false;
-  }
-
-  const permissions = isString(needPermissions)
-    ? [needPermissions]
-    : needPermissions;
-
-  if (
-    (isFunction(permissions) && !permissions(userPermissions)) ||
-    (isArray(permissions) && !find(permissions, (p) => get(userPermissions, p)))
-  ) {
-    return false;
-  }
-
-  return true;
-}
 
 function validRoute(route: Route, userPermissions: CommonRecord): Route {
   if (!hasPermission(route.permissions, userPermissions)) {

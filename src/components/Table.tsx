@@ -146,7 +146,7 @@ function makeMergedRender(
 
 function defaultSyncToUrl(values, type) {
   if (type === 'get') {
-    return mapValues(values, v => {
+    return mapValues(values, (v) => {
       if (v === 'true') {
         return true;
       }
@@ -160,7 +160,7 @@ function defaultSyncToUrl(values, type) {
     });
   }
   return values;
-};
+}
 
 const Table: React.FC<TableProps> = function (props) {
   const {
