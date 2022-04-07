@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.55](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.54...v1.0.0-beta.55) (2022-04-07)
+
+
+### Features
+
+* **NoTicket:** RecursivePartial ([eddfa8b](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/eddfa8b48bf90a9c0a91c4011c4f5cc8c3b31820))
+
 ## [1.0.0-beta.54](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.53...v1.0.0-beta.54) (2022-04-07)
 
 
