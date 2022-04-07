@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.54](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.53...v1.0.0-beta.54) (2022-04-07)
+
+
+### Features
+
+* **NoTicket:** hasPermission & useFormListItemAction ([8178bbe](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/8178bbe5d582a2a467cf7174c9f48f1ffee00cce))
+
 ## [1.0.0-beta.53](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.52...v1.0.0-beta.53) (2022-04-07)
 
 
