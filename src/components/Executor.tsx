@@ -1,16 +1,14 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 
-interface ExecutorProps {
+type ExecutorProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   hook: () => any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onUpdate: (val: any) => void;
   namespace: string;
-}
+};
 
-const Executor: React.FC<ExecutorProps> = function (props) {
-  const { hook, onUpdate, namespace } = props;
-
+function Executor({ hook, onUpdate, namespace }: ExecutorProps) {
   const updateRef = useRef(onUpdate);
   updateRef.current = onUpdate;
   const initialLoad = useRef(false);
@@ -90,6 +88,6 @@ const Executor: React.FC<ExecutorProps> = function (props) {
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <></>;
-};
+}
 
 export default Executor;

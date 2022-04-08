@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from 'react';
 import { PageContainer, PageContainerProps } from '@ant-design/pro-layout';
 import { find, isFunction } from 'lodash';
-import { TabPaneProps } from 'antd';
+import { Result, TabPaneProps } from 'antd';
 import { useParams } from 'react-router-dom';
 import useRequest from '@ahooksjs/use-request';
 import Table, { TableProps } from './Table';
@@ -21,6 +21,7 @@ export type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> &
   ContentConfig & {
     children?: ReactNode;
     tabList?: (TabPaneProps & ContentConfig & { key: string })[];
+    error?: Error;
     title?:
       | PageContainerProps['title']
       | ((
@@ -35,7 +36,11 @@ function renderContent(props: PageProps, key?: string): ReactNode {
     return null;
   }
 
-  const { tableProps, decriptionsProps, children } = props;
+  const { tableProps, decriptionsProps, children, error } = props;
+
+  if (error) {
+    return <Result status="error" title={error.message} />;
+  }
 
   if (children) {
     return children;
@@ -52,8 +57,7 @@ function renderContent(props: PageProps, key?: string): ReactNode {
   return null;
 }
 
-const Page: React.FC<PageProps> = function (props) {
-  const { tabList = [], title } = props;
+function Page({ tabList, title, ...rest }: PageProps) {
   const { tabActiveKey, onTabChange } = useSyncTabKeyToUrl(
     'tab_key',
     tabList?.[0]?.key
@@ -75,18 +79,27 @@ const Page: React.FC<PageProps> = function (props) {
   return (
     <PageContainer
       style={{ background: '#fff' }}
-      {...props}
+      {...rest}
       title={data}
       tabActiveKey={tabActiveKey}
       onTabChange={onTabChange}
     >
-      {renderContent(props) ||
+      {renderContent(rest) ||
         renderContent(
           find(tabList, (tab) => tab.key === tabActiveKey),
           tabActiveKey
         )}
     </PageContainer>
   );
+}
+
+Page.defaultProps = {
+  tableProps: null,
+  decriptionsProps: null,
+  children: null,
+  tabList: [],
+  error: null,
+  title: null,
 };
 
 export default Page;

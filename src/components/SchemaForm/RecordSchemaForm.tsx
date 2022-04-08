@@ -1,6 +1,11 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { FormSchema } from '@ant-design/pro-form/lib/components/SchemaForm';
-import { BetaSchemaForm, ProFormInstance } from '@ant-design/pro-form';
+import {
+  BetaSchemaForm,
+  DrawerFormProps,
+  ModalFormProps,
+  ProFormInstance,
+} from '@ant-design/pro-form';
 import { isFunction, map, omit, merge } from 'lodash';
 import { ProSchema } from '@ant-design/pro-utils';
 import { CommonRecord } from '../../types/common';
@@ -32,21 +37,13 @@ function makeMergedRender<T = CommonRecord>(
     );
 }
 
-const RecordSchemaForm: React.FC<RecordSchemaFormProps> = function (props) {
-  const { layoutType, modalProps = {}, columns, record } = props;
+function RecordSchemaForm<T = CommonRecord>({
+  layoutType,
+  columns,
+  record,
+  ...rest
+}: RecordSchemaFormProps<T>) {
   const formRef = useRef<ProFormInstance>();
-
-  const otherProps = useMemo(() => {
-    if (layoutType === 'ModalForm') {
-      return {
-        modalProps: {
-          ...modalProps,
-          destroyOnClose: true,
-        },
-      };
-    }
-    return {};
-  }, [layoutType, modalProps]);
 
   const onVisibleChange = useCallback((visible: boolean) => {
     if (visible) {
@@ -54,7 +51,29 @@ const RecordSchemaForm: React.FC<RecordSchemaFormProps> = function (props) {
     }
   }, []);
 
-  const newColumns = useMemo(() => {
+  const componentProps = useMemo(() => {
+    if (layoutType === 'ModalForm') {
+      return {
+        onVisibleChange,
+        modalProps: {
+          ...((rest as ModalFormProps<T>).modalProps ?? {}),
+          destroyOnClose: true,
+        },
+      };
+    }
+    if (layoutType === 'DrawerForm') {
+      return {
+        onVisibleChange,
+        drawerProps: {
+          ...((rest as DrawerFormProps<T>).drawerProps ?? {}),
+          destroyOnClose: true,
+        },
+      };
+    }
+    return {};
+  }, [layoutType, onVisibleChange, rest]);
+
+  const newColumns = useMemo<FormSchema<T>['columns']>(() => {
     function transformColumn(col: XMSFormColumns) {
       const {
         valueType,
@@ -99,18 +118,26 @@ const RecordSchemaForm: React.FC<RecordSchemaFormProps> = function (props) {
       return newCol;
     }
 
-    return map(columns, (col) => transformColumn(col));
+    return map(columns, (col) =>
+      transformColumn(col)
+    ) as FormSchema<T>['columns'];
   }, [columns, record]);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <BetaSchemaForm
-      {...props}
-      {...otherProps}
+      {...rest}
+      {...componentProps}
+      layoutType={layoutType}
       columns={newColumns}
       formRef={formRef}
-      onVisibleChange={onVisibleChange}
     />
   );
+}
+
+RecordSchemaForm.defaultProps = {
+  record: null,
 };
 
 export default RecordSchemaForm;

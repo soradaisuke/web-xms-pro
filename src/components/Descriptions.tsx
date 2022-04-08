@@ -29,7 +29,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   'columns'
 > & {
   /** @name 数据请求配置 */
-  requestConfig?: RequestConfig<DescriptionsRetrieveServiceConfig>;
+  requestConfig: RequestConfig<DescriptionsRetrieveServiceConfig>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
 };
@@ -80,9 +80,7 @@ function makeMergedRender(
   };
 }
 
-const Descriptions: React.FC<DescriptionsProps> = function (props) {
-  const { requestConfig, columns } = props;
-
+function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
   const matchParams = useParams();
   const user = useUser();
 
@@ -98,7 +96,7 @@ const Descriptions: React.FC<DescriptionsProps> = function (props) {
   const update = useDescriptionsUpdateRequest(service);
   const del = useDescriptionsDeleteRequest(service as DeleteServiceConfig);
 
-  const newColumns = useMemo(
+  const newColumns = useMemo<ProDescriptionsProps['columns']>(
     () =>
       map(columns, (col) => {
         const { link, render, valueType } = col;
@@ -123,7 +121,7 @@ const Descriptions: React.FC<DescriptionsProps> = function (props) {
           };
         }
         return newCol;
-      }),
+      }) as ProDescriptionsProps['columns'],
     [columns, del, matchParams, service, update, user]
   );
 
@@ -134,10 +132,10 @@ const Descriptions: React.FC<DescriptionsProps> = function (props) {
         background: 'white',
       }}
       request={retrieve}
-      {...props}
+      {...rest}
       columns={newColumns}
     />
   );
-};
+}
 
 export default Descriptions;

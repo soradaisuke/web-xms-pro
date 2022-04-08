@@ -36,22 +36,21 @@ const defaultTableProps = {
   toolBarRender: false,
 };
 
-const TableTransfer = function <
+function TableTransfer<
   T extends TableTransferItem = TableTransferItem,
   U = ParamsType
->(props: PropsWithChildren<TableTransferProps<T, U>>) {
-  const {
-    preserve,
-    tableProps,
-    leftTableProps,
-    rightTableProps,
-    dataSource,
-    targetKeys,
-    onChange,
-    initialTargetDataSource,
-    initialTargetKeys,
-  } = props;
-
+>({
+  preserve,
+  tableProps,
+  leftTableProps,
+  rightTableProps,
+  dataSource,
+  targetKeys,
+  onChange,
+  initialTargetDataSource,
+  initialTargetKeys,
+  ...rest
+}: PropsWithChildren<TableTransferProps<T, U>>) {
   const leftProps = useMemo(
     () => merge({}, defaultTableProps, tableProps, leftTableProps),
     [tableProps, leftTableProps]
@@ -191,7 +190,7 @@ const TableTransfer = function <
 
   return (
     <Transfer<T>
-      {...props}
+      {...rest}
       dataSource={transferDataSource}
       targetKeys={transferTargetKeys}
       onChange={onTransferChange}
@@ -199,6 +198,15 @@ const TableTransfer = function <
       {renderChildren}
     </Transfer>
   );
+}
+
+TableTransfer.defaultProps = {
+  leftTableProps: null,
+  rightTableProps: null,
+  tableProps: null,
+  preserve: null,
+  initialTargetDataSource: null,
+  initialTargetKeys: null,
 };
 
 export default TableTransfer;

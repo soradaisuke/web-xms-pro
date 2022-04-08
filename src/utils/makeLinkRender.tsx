@@ -7,7 +7,7 @@ import { LinkConfig } from '../types/common';
 import '../styles/link.less';
 
 export default function makeLinkRender(link: LinkConfig): ProColumns['render'] {
-  return function (dom, record) {
+  const render = (dom, record) => {
     const url = link(record);
 
     if (!url) {
@@ -28,4 +28,5 @@ export default function makeLinkRender(link: LinkConfig): ProColumns['render'] {
     }
     return <Link to={url}>{dom}</Link>;
   };
+  return render;
 }

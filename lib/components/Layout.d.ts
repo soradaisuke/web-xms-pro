@@ -1,4 +1,4 @@
-import React from 'react';
+/// <reference types="react" />
 import { BasicLayoutProps } from '@ant-design/pro-layout';
 import { Route as AntRoute } from '@ant-design/pro-layout/lib/typings';
 import { PageProps } from './Page';
@@ -12,7 +12,7 @@ export declare type Route = Omit<AntRoute, 'routes'> & {
 };
 export declare type LayoutProps = Omit<BasicLayoutProps, 'route'> & {
     /** @name 路由配置 */
-    route?: Route;
+    route: Route;
 };
-declare const Layout: React.FC<LayoutProps>;
+declare function Layout({ route, title, ...rest }: LayoutProps): JSX.Element;
 export default Layout;

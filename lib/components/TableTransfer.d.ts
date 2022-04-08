@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { TransferProps } from 'antd';
 import { DragTableProps } from '@ant-design/pro-table';
 import { ParamsType } from '@ant-design/pro-provider';
@@ -12,5 +12,15 @@ export declare type TableTransferProps<T extends TableTransferItem = TableTransf
     initialTargetDataSource?: TransferProps<T>['dataSource'];
     initialTargetKeys?: TransferProps<T>['targetKeys'];
 };
-declare const TableTransfer: <T extends TableTransferItem = TableTransferItem, U = ParamsType>(props: React.PropsWithChildren<TableTransferProps<T, U>>) => JSX.Element;
+declare function TableTransfer<T extends TableTransferItem = TableTransferItem, U = ParamsType>({ preserve, tableProps, leftTableProps, rightTableProps, dataSource, targetKeys, onChange, initialTargetDataSource, initialTargetKeys, ...rest }: PropsWithChildren<TableTransferProps<T, U>>): JSX.Element;
+declare namespace TableTransfer {
+    var defaultProps: {
+        leftTableProps: any;
+        rightTableProps: any;
+        tableProps: any;
+        preserve: any;
+        initialTargetDataSource: any;
+        initialTargetKeys: any;
+    };
+}
 export default TableTransfer;

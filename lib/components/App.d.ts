@@ -1,4 +1,4 @@
-import React from 'react';
+/// <reference types="react" />
 import { ProSettings } from '@ant-design/pro-layout';
 import { LayoutProps } from './Layout';
 import { Models } from './Provider';
@@ -11,5 +11,10 @@ export declare type AppProps = {
     /** @name 全局models */
     models?: Models;
 };
-declare const App: React.FC<AppProps>;
+declare function App({ layoutProps, settings: propSettings, models }: AppProps): JSX.Element;
+declare namespace App {
+    var defaultProps: {
+        models: any[];
+    };
+}
 export default App;

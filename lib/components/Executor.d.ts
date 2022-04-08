@@ -1,8 +1,8 @@
-import React from 'react';
-interface ExecutorProps {
+/// <reference types="react" />
+declare type ExecutorProps = {
     hook: () => any;
     onUpdate: (val: any) => void;
     namespace: string;
-}
-declare const Executor: React.FC<ExecutorProps>;
+};
+declare function Executor({ hook, onUpdate, namespace }: ExecutorProps): JSX.Element;
 export default Executor;

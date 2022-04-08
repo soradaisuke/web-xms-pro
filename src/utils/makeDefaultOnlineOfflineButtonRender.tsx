@@ -10,7 +10,7 @@ export default function makeDefaultOnlineOfflineButtonRender(
   matchParams: RouteParams,
   update: (values: CommonRecord) => Promise<boolean>
 ): TableOnlineOfflineButtonRender {
-  return function (config = {}) {
+  const useRender: TableOnlineOfflineButtonRender = (config = {}) => {
     const {
       onlineStatus = 1,
       offlineStatus = 0,
@@ -62,4 +62,6 @@ export default function makeDefaultOnlineOfflineButtonRender(
       </Popconfirm>
     );
   };
+
+  return useRender;
 }

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { PageContainerProps } from '@ant-design/pro-layout';
 import { TabPaneProps } from 'antd';
 import { TableProps } from './Table';
@@ -16,7 +16,18 @@ export declare type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> & 
     tabList?: (TabPaneProps & ContentConfig & {
         key: string;
     })[];
+    error?: Error;
     title?: PageContainerProps['title'] | ((params: RouteParams) => PageContainerProps['title'] | Promise<PageContainerProps['title']>);
 };
-declare const Page: React.FC<PageProps>;
+declare function Page({ tabList, title, ...rest }: PageProps): JSX.Element;
+declare namespace Page {
+    var defaultProps: {
+        tableProps: any;
+        decriptionsProps: any;
+        children: any;
+        tabList: any[];
+        error: any;
+        title: any;
+    };
+}
 export default Page;

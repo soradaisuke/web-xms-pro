@@ -24,7 +24,7 @@ export type UpdateRecordSchemaFormProps<
     record: T;
     /** @name ProTable或ProDescriptions的action实例 */
     containerAction: ActionType;
-    requestConfig?: RequestConfig<UpdateServiceConfig>;
+    requestConfig: RequestConfig<UpdateServiceConfig>;
     /** @name 对提交给后台的数据做转换 */
     normalizeSubmitValues?: (
       values: T,
@@ -35,19 +35,15 @@ export type UpdateRecordSchemaFormProps<
     normalizeInitialValues?: (record: T, matchParams: RouteParams) => T;
   };
 
-const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function (
-  props
-) {
-  const {
-    normalizeInitialValues = (v) => v,
-    normalizeSubmitValues = (v) => v,
-    requestConfig,
-    containerAction,
-    record,
-    rowKey,
-    ...otherProps
-  } = props;
-
+function UpdateRecordSchemaForm({
+  normalizeInitialValues,
+  normalizeSubmitValues,
+  requestConfig,
+  containerAction,
+  record,
+  rowKey,
+  ...rest
+}: UpdateRecordSchemaFormProps) {
   const matchParams = useParams();
   const user = useUser();
 
@@ -72,6 +68,8 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function (
 
   return (
     <RecordSchemaForm
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       trigger={
         <Tooltip title="编辑">
           <Button icon={<EditOutlined />} shape="circle" type="primary" />
@@ -81,9 +79,14 @@ const UpdateRecordSchemaForm: React.FC<UpdateRecordSchemaFormProps> = function (
       initialValues={normalizeInitialValues(record, matchParams)}
       onFinish={onFinish}
       record={record}
-      {...otherProps}
+      {...rest}
     />
   );
+}
+
+UpdateRecordSchemaForm.defaultProps = {
+  normalizeSubmitValues: (v) => v,
+  normalizeInitialValues: (v) => v,
 };
 
 export default UpdateRecordSchemaForm;

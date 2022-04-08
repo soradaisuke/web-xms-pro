@@ -17,23 +17,19 @@ export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
     /** @name ProTable或ProDescriptions的action实例 */
     containerAction: ActionType;
-    requestConfig?: RequestConfig<CreateServiceConfig>;
+    requestConfig: RequestConfig<CreateServiceConfig>;
     normalizeSubmitValues?: (
       values: T,
       matchParams: RouteParams
     ) => T | Promise<T>;
   };
 
-const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function (
-  props
-) {
-  const {
-    normalizeSubmitValues = (v) => v,
-    requestConfig,
-    containerAction,
-    ...otherProps
-  } = props;
-
+function CreateRecordSchemaForm({
+  normalizeSubmitValues,
+  requestConfig,
+  containerAction,
+  ...rest
+}: CreateRecordSchemaFormProps) {
   const matchParams = useParams();
   const user = useUser();
 
@@ -54,6 +50,8 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function (
 
   return (
     <RecordSchemaForm
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       trigger={
         <Button icon={<PlusOutlined />} type="primary">
           新建
@@ -61,9 +59,13 @@ const CreateRecordSchemaForm: React.FC<CreateRecordSchemaFormProps> = function (
       }
       layoutType="ModalForm"
       onFinish={onFinish}
-      {...otherProps}
+      {...rest}
     />
   );
+}
+
+CreateRecordSchemaForm.defaultProps = {
+  normalizeSubmitValues: (v) => v,
 };
 
 export default CreateRecordSchemaForm;

@@ -15,9 +15,7 @@ type UploadFileProps = UploadProps & {
   platform?: 'upyun' | 'aliyun';
 };
 
-const UploadFile: React.FC<UploadFileProps> = function (props) {
-  const { value, onChange, platform } = props;
-
+function UploadFile({ value, onChange, platform, ...rest }: UploadFileProps) {
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<AntdUploadFile[]>(
     value ? [{ uid: value, name: value, url: value }] : []
@@ -63,14 +61,14 @@ const UploadFile: React.FC<UploadFileProps> = function (props) {
   return (
     <Upload
       customRequest={customRequest}
-      {...props}
+      {...rest}
       fileList={fileList}
       onRemove={onRemove}
     >
       {fileList && fileList.length ? null : uploadButton}
     </Upload>
   );
-};
+}
 
 UploadFile.defaultProps = {
   value: null,

@@ -3,5 +3,5 @@ export declare type UserProviderProps = {
     children: React.ReactNode;
     authPath: string;
 };
-declare const UserProvider: React.FC<UserProviderProps>;
+declare function UserProvider({ children, authPath }: UserProviderProps): JSX.Element;
 export default UserProvider;

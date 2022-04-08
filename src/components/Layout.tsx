@@ -20,7 +20,7 @@ export type Route = Omit<AntRoute, 'routes'> & {
 
 export type LayoutProps = Omit<BasicLayoutProps, 'route'> & {
   /** @name 路由配置 */
-  route?: Route;
+  route: Route;
 };
 
 function validRoute(route: Route, userPermissions: CommonRecord): Route {
@@ -61,8 +61,7 @@ function renderRoutes(props: Route) {
   );
 }
 
-const Layout: React.FC<LayoutProps> = function (props) {
-  const { route, title } = props;
+function Layout({ route, title, ...rest }: LayoutProps) {
   const location = useLocation();
   const user = useUser();
   const newRoute = useMemo(
@@ -105,7 +104,7 @@ const Layout: React.FC<LayoutProps> = function (props) {
       <ProLayout
         logo="https://sss.qtfm.cn/favicon.ico"
         menuHeaderRender={menuHeaderRender}
-        {...props}
+        {...rest}
         route={newRoute}
         location={location}
         menuItemRender={menuItemRender}
@@ -117,6 +116,6 @@ const Layout: React.FC<LayoutProps> = function (props) {
       </ProLayout>
     </div>
   );
-};
+}
 
 export default Layout;

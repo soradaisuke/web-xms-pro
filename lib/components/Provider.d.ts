@@ -5,5 +5,5 @@ export declare type ProviderProps = {
     children: React.ReactNode;
     models: Models;
 };
-declare const Provider: React.FC<ProviderProps>;
+declare function Provider({ children, models }: ProviderProps): JSX.Element;
 export default Provider;

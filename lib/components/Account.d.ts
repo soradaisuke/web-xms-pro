@@ -1,3 +1,3 @@
-import React from 'react';
-declare const Account: React.FC;
+/// <reference types="react" />
+declare function Account(): JSX.Element;
 export default Account;

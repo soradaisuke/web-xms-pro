@@ -15,9 +15,7 @@ export type ProviderProps = {
   models: Models;
 };
 
-const Provider: React.FC<ProviderProps> = function (props) {
-  const { children, models } = props;
-
+function Provider({ children, models }: ProviderProps) {
   return (
     <XmsContext.Provider value={dispatcher}>
       {Object.entries(models).map((pair) => (
@@ -36,6 +34,6 @@ const Provider: React.FC<ProviderProps> = function (props) {
       {children}
     </XmsContext.Provider>
   );
-};
+}
 
 export default Provider;

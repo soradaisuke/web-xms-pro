@@ -18,9 +18,7 @@ export type AppProps = {
   models?: Models;
 };
 
-const App: React.FC<AppProps> = function (props) {
-  const { layoutProps, settings: propSettings, models } = props;
-
+function App({ layoutProps, settings: propSettings, models }: AppProps) {
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>(
     merge(
       {
@@ -53,6 +51,10 @@ const App: React.FC<AppProps> = function (props) {
       </XmsProProvider>
     </ConfigProvider>
   );
+}
+
+App.defaultProps = {
+  models: [],
 };
 
 export default App;

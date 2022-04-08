@@ -1,3 +1,3 @@
-import React from 'react';
-declare const XmsProProvider: React.FC<any>;
+import { PropsWithChildren } from 'react';
+declare function XmsProProvider({ children }: PropsWithChildren<any>): JSX.Element;
 export default XmsProProvider;

@@ -1,13 +1,11 @@
-import React, { useContext, useMemo } from 'react';
+import React, { PropsWithChildren, useContext, useMemo } from 'react';
 import { Input, Select, Switch } from 'antd';
 import ProProvider from '@ant-design/pro-provider';
 import UploadImage from './UploadImage';
 import UploadFile from './UploadFile';
 
-const XmsProProvider: React.FC<any> = function (props) {
+function XmsProProvider({ children }: PropsWithChildren<any>) {
   const values = useContext(ProProvider);
-
-  const { children } = props;
 
   const value = useMemo(
     () => ({
@@ -65,6 +63,6 @@ const XmsProProvider: React.FC<any> = function (props) {
   );
 
   return <ProProvider.Provider value={value}>{children}</ProProvider.Provider>;
-};
+}
 
 export default XmsProProvider;

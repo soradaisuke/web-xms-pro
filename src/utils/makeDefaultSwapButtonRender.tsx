@@ -6,8 +6,8 @@ import { TableSwapButtonRender, TableUpdateButtonRender } from '../types/table';
 export default function makeDefaultSwapButtonRender(
   defaultUpdateButtonRender: TableUpdateButtonRender
 ): TableSwapButtonRender {
-  return function (config = {}) {
-    return defaultUpdateButtonRender({
+  const render = (config = {}) =>
+    defaultUpdateButtonRender({
       key: 'swap',
       columns: [
         {
@@ -23,6 +23,8 @@ export default function makeDefaultSwapButtonRender(
           },
         },
       ],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       trigger: (
         <Tooltip title="调序">
           <Button
@@ -34,5 +36,6 @@ export default function makeDefaultSwapButtonRender(
       ),
       ...(config || {}),
     });
-  };
+
+  return render;
 }

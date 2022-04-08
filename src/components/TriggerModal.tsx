@@ -5,8 +5,7 @@ export type TriggerModalProps = PropsWithChildren<ModalProps> & {
   trigger: JSX.Element;
 };
 
-const TriggerModal: React.FC<TriggerModalProps> = function (props) {
-  const { trigger, onOk, onCancel, ...modalProps } = props;
+function TriggerModal({ trigger, onOk, onCancel, ...rest }: TriggerModalProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const onMergedOk = useCallback(
@@ -28,7 +27,7 @@ const TriggerModal: React.FC<TriggerModalProps> = function (props) {
   return (
     <>
       <Modal
-        {...modalProps}
+        {...rest}
         visible={isModalVisible}
         onOk={onMergedOk}
         onCancel={onMergedCancel}
@@ -43,6 +42,6 @@ const TriggerModal: React.FC<TriggerModalProps> = function (props) {
         })}
     </>
   );
-};
+}
 
 export default React.memo(TriggerModal);

@@ -18,9 +18,15 @@ type UploadImageProps = UploadProps & {
   imgCropProps?: ImgCropProps;
 };
 
-const UploadImage: React.FC<UploadImageProps> = function (props) {
-  const { value, onChange, imgCropProps, beforeUpload, width, height } = props;
-
+function UploadImage({
+  value,
+  onChange,
+  imgCropProps,
+  beforeUpload,
+  width,
+  height,
+  ...rest
+}: UploadImageProps) {
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>(
     value ? [{ uid: value, name: value, url: value }] : []
@@ -87,7 +93,7 @@ const UploadImage: React.FC<UploadImageProps> = function (props) {
       <Upload
         accept="image/jpeg, image/png"
         customRequest={customRequest}
-        {...props}
+        {...rest}
         beforeUpload={mergedBeforeUpload}
         fileList={fileList}
         onRemove={onRemove}
@@ -96,7 +102,7 @@ const UploadImage: React.FC<UploadImageProps> = function (props) {
         {fileList && fileList.length ? null : uploadButton}
       </Upload>
     ),
-    [customRequest, props, mergedBeforeUpload, fileList, onRemove, uploadButton]
+    [customRequest, rest, mergedBeforeUpload, fileList, onRemove, uploadButton]
   );
 
   if (imgCropProps) {
@@ -104,7 +110,7 @@ const UploadImage: React.FC<UploadImageProps> = function (props) {
   }
 
   return upload;
-};
+}
 
 UploadImage.defaultProps = {
   value: null,

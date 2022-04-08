@@ -6,7 +6,7 @@ import { TableDeleteButtonRender } from '../types/table';
 export default function makeDefaultDeleteButtonRender(
   del: () => Promise<boolean>
 ): TableDeleteButtonRender {
-  return function (config = {}) {
+  const render: TableDeleteButtonRender = (config = {}) => {
     const { popConfirmProps = {} } = config;
     return (
       <Popconfirm
@@ -28,4 +28,6 @@ export default function makeDefaultDeleteButtonRender(
       </Popconfirm>
     );
   };
+
+  return render;
 }

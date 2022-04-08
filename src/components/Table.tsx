@@ -46,7 +46,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
+    requestConfig: RequestConfig<TableRetrieveServiceConfig>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -162,16 +162,16 @@ function defaultSyncToUrl(values, type) {
   return values;
 }
 
-const Table: React.FC<TableProps> = function (props) {
-  const {
-    rowKey,
-    requestConfig,
-    columns,
-    toolBarRender,
-    search,
-    params,
-    form,
-  } = props;
+function Table<T = CommonRecord, U = ParamsType>({
+  rowKey,
+  requestConfig,
+  columns,
+  toolBarRender,
+  search,
+  params,
+  form,
+  ...rest
+}: TableProps<T, U>) {
   const matchParams = useParams();
   const user = useUser();
   const formRef = useRef<ProFormInstance>();
@@ -190,7 +190,7 @@ const Table: React.FC<TableProps> = function (props) {
 
   const del = useTableDeleteRequest(ser as DeleteServiceConfig);
 
-  const newColumns = useMemo(
+  const newColumns = useMemo<ProTableProps<T, U>['columns']>(
     () =>
       map(columns, (col) => {
         const { link, render, valueType, defaultSortOrder, sortDirections } =
@@ -226,7 +226,7 @@ const Table: React.FC<TableProps> = function (props) {
           newCol.sorter = true;
         }
         return newCol;
-      }),
+      }) as ProTableProps<T, U>['columns'],
     [columns, del, matchParams, rowKey, ser, update, user]
   );
 
@@ -276,7 +276,7 @@ const Table: React.FC<TableProps> = function (props) {
   return (
     <ProTable
       request={retrieve}
-      {...props}
+      {...rest}
       form={newForm}
       formRef={formRef}
       search={newSearch}
@@ -285,6 +285,11 @@ const Table: React.FC<TableProps> = function (props) {
       columns={newColumns}
     />
   );
+}
+
+Table.defaultProps = {
+  params: null,
+  toolBarRender: null,
 };
 
 export default Table;

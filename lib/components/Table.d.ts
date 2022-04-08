@@ -1,4 +1,4 @@
-import React from 'react';
+/// <reference types="react" />
 import { ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { FormInstance } from 'antd';
@@ -9,7 +9,7 @@ import { RequestConfig } from '../hooks/useCRUDRequests';
 import { TableRetrieveServiceConfig } from '../hooks/useTableCRUDRequests';
 export declare type TableProps<T = CommonRecord, U = ParamsType> = Omit<ProTableProps<T, U>, 'columns' | 'toolBarRender' | 'params'> & Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
+    requestConfig: RequestConfig<TableRetrieveServiceConfig>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -20,5 +20,11 @@ export declare type TableProps<T = CommonRecord, U = ParamsType> = Omit<ProTable
         user: User;
     }, ...base: Parameters<ToolBarProps<T>['toolBarRender']>) => ReturnType<ToolBarProps<T>['toolBarRender']>);
 };
-declare const Table: React.FC<TableProps>;
+declare function Table<T = CommonRecord, U = ParamsType>({ rowKey, requestConfig, columns, toolBarRender, search, params, form, ...rest }: TableProps<T, U>): JSX.Element;
+declare namespace Table {
+    var defaultProps: {
+        params: any;
+        toolBarRender: any;
+    };
+}
 export default Table;
