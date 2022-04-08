@@ -29,7 +29,7 @@ export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   'columns'
 > & {
   /** @name 数据请求配置 */
-  requestConfig: RequestConfig<DescriptionsRetrieveServiceConfig>;
+  requestConfig?: RequestConfig<DescriptionsRetrieveServiceConfig>;
   /** @name columns配置 */
   columns: XMSDescriptionsColumns[];
 };
@@ -137,5 +137,9 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
     />
   );
 }
+
+Descriptions.defaultProps = {
+  requestConfig: null,
+};
 
 export default Descriptions;

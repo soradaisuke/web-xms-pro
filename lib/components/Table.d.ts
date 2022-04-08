@@ -9,7 +9,7 @@ import { RequestConfig } from '../hooks/useCRUDRequests';
 import { TableRetrieveServiceConfig } from '../hooks/useTableCRUDRequests';
 export declare type TableProps<T = CommonRecord, U = ParamsType> = Omit<ProTableProps<T, U>, 'columns' | 'toolBarRender' | 'params'> & Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig: RequestConfig<TableRetrieveServiceConfig>;
+    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -25,6 +25,7 @@ declare namespace Table {
     var defaultProps: {
         params: any;
         toolBarRender: any;
+        requestConfig: any;
     };
 }
 export default Table;

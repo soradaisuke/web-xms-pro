@@ -46,7 +46,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig: RequestConfig<TableRetrieveServiceConfig>;
+    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -277,6 +277,7 @@ function Table<T = CommonRecord, U = ParamsType>({
     <ProTable
       request={retrieve}
       {...rest}
+      rowKey={rowKey}
       form={newForm}
       formRef={formRef}
       search={newSearch}
@@ -290,6 +291,7 @@ function Table<T = CommonRecord, U = ParamsType>({
 Table.defaultProps = {
   params: null,
   toolBarRender: null,
+  requestConfig: null,
 };
 
 export default Table;

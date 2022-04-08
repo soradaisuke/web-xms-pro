@@ -9,7 +9,7 @@ export declare type UpdateRecordSchemaFormProps<T = CommonRecord, U = ParamsType
     record: T;
     /** @name ProTable或ProDescriptions的action实例 */
     containerAction: ActionType;
-    requestConfig: RequestConfig<UpdateServiceConfig>;
+    requestConfig?: RequestConfig<UpdateServiceConfig>;
     /** @name 对提交给后台的数据做转换 */
     normalizeSubmitValues?: (values: T, matchParams: RouteParams, record: T) => T | Promise<T>;
     /** @name 对提交给form的初始数据做转换 */
@@ -20,6 +20,7 @@ declare namespace UpdateRecordSchemaForm {
     var defaultProps: {
         normalizeSubmitValues: (v: any) => any;
         normalizeInitialValues: (v: any) => any;
+        requestConfig: any;
     };
 }
 export default UpdateRecordSchemaForm;

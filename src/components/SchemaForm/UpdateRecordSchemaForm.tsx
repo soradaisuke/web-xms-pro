@@ -24,7 +24,7 @@ export type UpdateRecordSchemaFormProps<
     record: T;
     /** @name ProTable或ProDescriptions的action实例 */
     containerAction: ActionType;
-    requestConfig: RequestConfig<UpdateServiceConfig>;
+    requestConfig?: RequestConfig<UpdateServiceConfig>;
     /** @name 对提交给后台的数据做转换 */
     normalizeSubmitValues?: (
       values: T,
@@ -87,6 +87,7 @@ function UpdateRecordSchemaForm({
 UpdateRecordSchemaForm.defaultProps = {
   normalizeSubmitValues: (v) => v,
   normalizeInitialValues: (v) => v,
+  requestConfig: null
 };
 
 export default UpdateRecordSchemaForm;

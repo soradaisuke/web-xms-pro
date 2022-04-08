@@ -17,7 +17,7 @@ export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
     /** @name ProTable或ProDescriptions的action实例 */
     containerAction: ActionType;
-    requestConfig: RequestConfig<CreateServiceConfig>;
+    requestConfig?: RequestConfig<CreateServiceConfig>;
     normalizeSubmitValues?: (
       values: T,
       matchParams: RouteParams
@@ -66,6 +66,7 @@ function CreateRecordSchemaForm({
 
 CreateRecordSchemaForm.defaultProps = {
   normalizeSubmitValues: (v) => v,
+  requestConfig: null,
 };
 
 export default CreateRecordSchemaForm;

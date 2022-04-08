@@ -1,7 +1,7 @@
 import { CloudDownloadOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { get } from 'lodash';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { CommonRecord, RouteParams } from '../types/common';
 import { TableOnlineOfflineButtonRender } from '../types/table';
 
@@ -10,7 +10,7 @@ export default function makeDefaultOnlineOfflineButtonRender(
   matchParams: RouteParams,
   update: (values: CommonRecord) => Promise<boolean>
 ): TableOnlineOfflineButtonRender {
-  const useRender: TableOnlineOfflineButtonRender = (config = {}) => {
+  const render: TableOnlineOfflineButtonRender = (config = {}) => {
     const {
       onlineStatus = 1,
       offlineStatus = 0,
@@ -22,19 +22,15 @@ export default function makeDefaultOnlineOfflineButtonRender(
 
     const status = get(record, statusKey);
 
-    const onConfirm = useCallback(
-      async () =>
-        update(
-          await normalizeSubmitValues(
-            {
-              [statusKey]:
-                status === onlineStatus ? offlineStatus : onlineStatus,
-            },
-            matchParams,
-            record
-          )
-        ),
-      [normalizeSubmitValues, statusKey, status, onlineStatus, offlineStatus]
+    const onConfirm = async () => update(
+      await normalizeSubmitValues(
+        {
+          [statusKey]:
+            status === onlineStatus ? offlineStatus : onlineStatus,
+        },
+        matchParams,
+        record
+      )
     );
 
     return (
@@ -63,5 +59,5 @@ export default function makeDefaultOnlineOfflineButtonRender(
     );
   };
 
-  return useRender;
+  return render;
 }
