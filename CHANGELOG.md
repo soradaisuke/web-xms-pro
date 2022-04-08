@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.57](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.56...v1.0.0-beta.57) (2022-04-08)
+
+
+### Bug Fixes
+
+* **NoTicket:** react warning ([05ac983](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/05ac98335fab8347cc271090b0910e9841989b09))
+
 ## [1.0.0-beta.56](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.55...v1.0.0-beta.56) (2022-04-08)
 
 
