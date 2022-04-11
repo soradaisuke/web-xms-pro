@@ -138,7 +138,7 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
     return (
       <Result
         status="error"
-        title={error.name}
+        title={error.message}
         extra={[
           <Button
             type="primary"

@@ -1,7 +1,7 @@
 import React, { ReactNode, useMemo } from 'react';
 import { PageContainer, PageContainerProps } from '@ant-design/pro-layout';
 import { find, isFunction } from 'lodash';
-import { Result, TabPaneProps } from 'antd';
+import { Button, Result, TabPaneProps } from 'antd';
 import { useParams } from 'react-router-dom';
 import useRequest from '@ahooksjs/use-request';
 import Table, { TableProps } from './Table';
@@ -22,6 +22,7 @@ export type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> &
     children?: ReactNode;
     tabList?: (TabPaneProps & ContentConfig & { key: string })[];
     error?: Error;
+    reload?: () => void;
     title?:
       | PageContainerProps['title']
       | ((
@@ -36,10 +37,24 @@ function renderContent(props: PageProps, key?: string): ReactNode {
     return null;
   }
 
-  const { tableProps, decriptionsProps, children, error } = props;
+  const { tableProps, decriptionsProps, children, error, reload } = props;
 
   if (error) {
-    return <Result status="error" title={error.message} />;
+    return (
+      <Result
+        status="error"
+        title={error.message}
+        extra={
+          reload
+            ? [
+                <Button type="primary" key="retry" onClick={() => reload()}>
+                  重试
+                </Button>,
+              ]
+            : []
+        }
+      />
+    );
   }
 
   if (children) {
@@ -98,6 +113,7 @@ Page.defaultProps = {
   children: null,
   tabList: [],
   error: null,
+  reload: null,
   title: null,
 };
 

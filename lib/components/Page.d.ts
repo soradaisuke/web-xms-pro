@@ -17,6 +17,7 @@ export declare type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> & 
         key: string;
     })[];
     error?: Error;
+    reload?: () => void;
     title?: PageContainerProps['title'] | ((params: RouteParams) => PageContainerProps['title'] | Promise<PageContainerProps['title']>);
 };
 declare function Page({ tabList, title, ...rest }: PageProps): JSX.Element;
@@ -27,6 +28,7 @@ declare namespace Page {
         children: any;
         tabList: any[];
         error: any;
+        reload: any;
         title: any;
     };
 }
