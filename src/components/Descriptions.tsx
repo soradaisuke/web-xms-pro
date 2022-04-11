@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import ProDescriptions, {
   ProDescriptionsItemProps,
   ProDescriptionsProps,
 } from '@ant-design/pro-descriptions';
 import { useParams } from 'react-router-dom';
 import { isFunction, map } from 'lodash';
+import { Button, Result } from 'antd';
 import { ParamsType } from '@ant-design/pro-provider';
+import { ProCoreActionType } from '@ant-design/pro-utils';
 import { DeleteServiceConfig, RequestConfig } from '../hooks/useCRUDRequests';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
@@ -83,6 +85,8 @@ function makeMergedRender(
 function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
   const matchParams = useParams();
   const user = useUser();
+  const ref = useRef<ProCoreActionType>();
+  const [error, setError] = useState<Error>();
 
   const service = useMemo(
     () =>
@@ -125,11 +129,36 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
     [columns, del, matchParams, service, update, user]
   );
 
+  const onRequestError = useCallback<ProDescriptionsProps['onRequestError']>(
+    (e) => setError(e),
+    []
+  );
+
+  if (error) {
+    return (
+      <Result
+        status="error"
+        title={error.name}
+        extra={[
+          <Button
+            type="primary"
+            key="retry"
+            onClick={() => ref.current?.reload()}
+          >
+            重试
+          </Button>,
+        ]}
+      />
+    );
+  }
+
   return (
     <ProDescriptions
       request={retrieve}
       {...rest}
+      actionRef={ref}
       columns={newColumns}
+      onRequestError={onRequestError}
     />
   );
 }
