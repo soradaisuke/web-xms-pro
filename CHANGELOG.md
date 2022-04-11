@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.58](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.57...v1.0.0-beta.58) (2022-04-11)
+
+
+### Features
+
+* **NoTicket:** boolean类型在表格里显示文字 ([62c44dc](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/62c44dc8d282dab5ac153f502d3040e493451470))
+* **NoTicket:** Descriptions默认错误处理和重试 ([3035419](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/3035419d241bd33fed9de023845c4a7716ba7815))
+
+
+### Bug Fixes
+
+* **NoTicket:** 移除不必要的style ([5963ee0](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/5963ee0c4918c8057087ee0f8484f020652bb5f0))
+
 ## [1.0.0-beta.57](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.56...v1.0.0-beta.57) (2022-04-08)
 
 
