@@ -87,7 +87,7 @@ function UpdateRecordSchemaForm({
 UpdateRecordSchemaForm.defaultProps = {
   normalizeSubmitValues: (v) => v,
   normalizeInitialValues: (v) => v,
-  requestConfig: null
+  requestConfig: null,
 };
 
 export default UpdateRecordSchemaForm;

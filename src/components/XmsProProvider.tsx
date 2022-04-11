@@ -39,7 +39,13 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
           ),
         },
         boolean: {
-          render: (text) => <Switch checked={text} />,
+          render: (text) => (
+            <Switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              checked={text}
+            />
+          ),
           renderFormItem: (_, renderProps) => (
             <Select
               allowClear
