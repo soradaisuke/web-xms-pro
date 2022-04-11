@@ -78,7 +78,6 @@ function Page({ tabList, title, ...rest }: PageProps) {
 
   return (
     <PageContainer
-      style={{ background: '#fff' }}
       {...rest}
       title={data}
       tabActiveKey={tabActiveKey}

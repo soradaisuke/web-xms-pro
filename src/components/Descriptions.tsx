@@ -127,10 +127,6 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
 
   return (
     <ProDescriptions
-      style={{
-        padding: '20px',
-        background: 'white',
-      }}
       request={retrieve}
       {...rest}
       columns={newColumns}
