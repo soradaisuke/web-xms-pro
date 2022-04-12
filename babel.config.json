@@ -3,5 +3,12 @@
     "@babel/preset-env",
     "@babel/preset-react",
     "@babel/preset-typescript"
+  ],
+  "plugins": [
+    "lodash",
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }, "antd"],
+    ["import", { "libraryName": "ahooks", "camel2DashComponentName": false }, "ahooks"],
+    ["import", { "libraryName": "@qt/web-common", "camel2DashComponentName": false }, "@qt/web-common"],
+    ["import", { "libraryName": "@qt/env", "camel2DashComponentName": false }, "@qt/env"]
   ]
 }

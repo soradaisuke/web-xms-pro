@@ -3,7 +3,7 @@ import { PageContainer, PageContainerProps } from '@ant-design/pro-layout';
 import { find, isFunction } from 'lodash';
 import { Button, Result, TabPaneProps } from 'antd';
 import { useParams } from 'react-router-dom';
-import useRequest from '@ahooksjs/use-request';
+import { useRequest } from 'ahooks';
 import Table, { TableProps } from './Table';
 import Descriptions, { DescriptionsProps } from './Descriptions';
 import { RouteParams } from '../types/common';
