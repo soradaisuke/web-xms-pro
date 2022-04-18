@@ -15,7 +15,7 @@ import {
   CombineService,
   OptionsWithFormat,
 } from '@ahooksjs/use-request/lib/types';
-import { toString } from 'lodash';
+import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 
 export enum ErrorShowType {
@@ -217,6 +217,19 @@ function extendRequestConfig(requestOptions: RequestOptions): void {
   const customMiddlewares = requestOptions.middlewares || [];
   customMiddlewares.forEach((mw) => {
     request.use(mw);
+  });
+
+  request.interceptors.request.use((url, options) => {
+    if (options.method === 'put') {
+      return {
+        url,
+        options: {
+          ...options,
+          data: mapValues(options.data, (v) => (isUndefined(v) ? null : v)),
+        },
+      };
+    }
+    return { url, options };
   });
 
   // Add user custom interceptors

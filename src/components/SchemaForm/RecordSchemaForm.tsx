@@ -132,6 +132,7 @@ function RecordSchemaForm<T = CommonRecord>({
       layoutType={layoutType}
       columns={newColumns}
       formRef={formRef}
+      omitNil={false}
     />
   );
 }
