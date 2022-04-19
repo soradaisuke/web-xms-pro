@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.63](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.62...v1.0.0-beta.63) (2022-04-19)
+
+
+### Bug Fixes
+
+* **NoTicket:** antd使用es目录的style以兼容pro组件 ([b4d0a8c](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/b4d0a8c096e80fd8991c88d3667eda8d611cbe0b))
+
 ## [1.0.0-beta.62](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.61...v1.0.0-beta.62) (2022-04-19)
 
 
