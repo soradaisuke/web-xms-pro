@@ -6,8 +6,9 @@
   ],
   "plugins": [
     "lodash",
-    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }, "antd"],
+    ["import", { "libraryName": "antd", "style": true }, "antd"],
     ["import", { "libraryName": "ahooks", "camel2DashComponentName": false }, "ahooks"],
+    ["import", { "libraryName": "@ant-design/icons", "libraryDirectory": "lib/icons", "camel2DashComponentName": false }, "@ant-design/icons"],
     ["import", { "libraryName": "@qt/web-common", "camel2DashComponentName": false }, "@qt/web-common"],
     ["import", { "libraryName": "@qt/env", "camel2DashComponentName": false }, "@qt/env"]
   ]
