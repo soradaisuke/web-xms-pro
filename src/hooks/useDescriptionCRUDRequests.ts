@@ -3,7 +3,9 @@ import { RequestData } from '@ant-design/pro-descriptions/lib/useFetchData';
 import { ActionType } from '@ant-design/pro-table';
 import { message } from 'antd';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { useNavigate, useHistory } from 'react-router-dom';
 import { CommonRecord } from '../types/common';
 import {
   DeleteServiceConfig,
@@ -46,18 +48,23 @@ export function useDescriptionsDeleteRequest(
   serviceConfig: DeleteServiceConfig
 ): DescriptionsDeleteRequest {
   const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
-  const navigate = useNavigate();
+  const navigate = useNavigate?.();
+  const history = useHistory?.();
 
   return useCallback<DescriptionsDeleteRequest>(async () => {
     try {
       await deleteReq.run();
       message.success('提交成功');
-      navigate(-1);
+      if (navigate) {
+        navigate(-1)
+      } else if (history) {
+        history.goBack();
+      }
       return true;
     } catch (e) {
       return false;
     }
-  }, [deleteReq, navigate]);
+  }, [deleteReq, history, navigate]);
 }
 
 export type DescriptionsRetrieveServiceConfig =
