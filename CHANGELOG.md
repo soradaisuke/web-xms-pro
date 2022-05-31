@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.64](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.63...v1.0.0-beta.64) (2022-05-31)
+
+
+### Bug Fixes
+
+* **NoTicket:** 兼容react-router 5&6的页面后退操作 ([f79b238](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/f79b2389ea5fd45a9a2966d1d93da4fc654a90ca))
+
 ## [1.0.0-beta.63](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.62...v1.0.0-beta.63) (2022-04-19)
 
 
