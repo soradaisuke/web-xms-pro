@@ -92,7 +92,7 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
     () =>
       isFunction(requestConfig)
         ? requestConfig(matchParams, user)
-        : requestConfig ?? '',
+        : requestConfig ?? null,
     [matchParams, requestConfig, user]
   );
 
@@ -154,7 +154,7 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
 
   return (
     <ProDescriptions
-      request={retrieve}
+      request={service ? retrieve : null}
       {...rest}
       actionRef={ref}
       columns={newColumns}
