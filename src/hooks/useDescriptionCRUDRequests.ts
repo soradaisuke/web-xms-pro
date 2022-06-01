@@ -56,7 +56,7 @@ export function useDescriptionsDeleteRequest(
       await deleteReq.run();
       message.success('提交成功');
       if (navigate) {
-        navigate(-1)
+        navigate(-1);
       } else if (history) {
         history.goBack();
       }

@@ -79,8 +79,6 @@ function RecordSchemaForm<T = CommonRecord>({
         valueType,
         initialValue,
         renderFormItem,
-        formItemProps,
-        fieldProps,
         columns: cols,
       } = col;
       let newCol = {
@@ -105,10 +103,6 @@ function RecordSchemaForm<T = CommonRecord>({
 
       if (valueType === 'switch') {
         newCol.initialValue = initialValue || false;
-      }
-
-      if (valueType === 'formList') {
-        newCol.fieldProps = merge({}, formItemProps, fieldProps);
       }
 
       if (record) {
