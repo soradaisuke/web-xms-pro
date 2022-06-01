@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.67](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.66...v1.0.0-beta.67) (2022-06-01)
+
+
+### Bug Fixes
+
+* **NoTicket:** @ant-design/pro-form固定版本1.68.0，因为1.69.0开始有个DrawerForm白屏的bug ([032500b](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/032500bb199daaebbcb26274e57a7e34fe3a39d0))
+
 ## [1.0.0-beta.66](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.65...v1.0.0-beta.66) (2022-06-01)
 
 
