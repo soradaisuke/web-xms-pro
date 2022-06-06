@@ -8,26 +8,30 @@ import { useCallback } from 'react';
 import { useNavigate, useHistory } from 'react-router-dom';
 import { CommonRecord } from '../types/common';
 import {
-  DeleteServiceConfig,
-  RetrieveOneServiceConfig,
-  UpdateServiceConfig,
+  DeleteArgs,
+  RetrieveOneArgs,
+  ServiceConfig,
+  UpdateArgs,
   useDeleteRequest,
   useRetrieveOneRequest,
   useUpdateRequest,
 } from './useCRUDRequests';
 
-export type DescriptionsUpdateRequest = (
-  values: CommonRecord,
+export type DescriptionsUpdateRequest<P = CommonRecord> = (
+  values: P,
   action?: ActionType
 ) => Promise<boolean>;
 
-export function useDescriptionsUpdateRequest(
-  serviceConfig: UpdateServiceConfig,
+export function useDescriptionsUpdateRequest<
+  R = CommonRecord,
+  P = CommonRecord
+>(
+  serviceConfig: ServiceConfig<R, UpdateArgs<P>>,
   action?: ActionType
-): DescriptionsUpdateRequest {
-  const updateReq = useUpdateRequest(serviceConfig, { manual: true });
+): DescriptionsUpdateRequest<P> {
+  const updateReq = useUpdateRequest<R, P>(serviceConfig, { manual: true });
 
-  return useCallback<DescriptionsUpdateRequest>(
+  return useCallback<DescriptionsUpdateRequest<P>>(
     async (values, a) => {
       try {
         await updateReq.run(values);
@@ -44,10 +48,10 @@ export function useDescriptionsUpdateRequest(
 
 export type DescriptionsDeleteRequest = () => Promise<boolean>;
 
-export function useDescriptionsDeleteRequest(
-  serviceConfig: DeleteServiceConfig
+export function useDescriptionsDeleteRequest<R = CommonRecord>(
+  serviceConfig: ServiceConfig<R, DeleteArgs>
 ): DescriptionsDeleteRequest {
-  const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
+  const deleteReq = useDeleteRequest<R>(serviceConfig, { manual: true });
   const navigate = useNavigate?.();
   const history = useHistory?.();
 
@@ -67,14 +71,10 @@ export function useDescriptionsDeleteRequest(
   }, [deleteReq, history, navigate]);
 }
 
-export type DescriptionsRetrieveServiceConfig =
-  RetrieveOneServiceConfig<RequestData>;
-export type DescriptionsRetrieveRequest = ProDescriptionsProps['request'];
-
-export function useDescriptionsRetrieveRequest(
-  serviceConfig: DescriptionsRetrieveServiceConfig
-): DescriptionsRetrieveRequest {
-  const req = useRetrieveOneRequest<RequestData>(serviceConfig, {
+export function useDescriptionsRetrieveRequest<R = CommonRecord>(
+  serviceConfig: ServiceConfig<R, RetrieveOneArgs>
+): ProDescriptionsProps<R>['request'] {
+  const req = useRetrieveOneRequest<R, RequestData<R>>(serviceConfig, {
     manual: true,
     formatResult: (res) => ({
       data: res.data,
@@ -82,7 +82,7 @@ export function useDescriptionsRetrieveRequest(
     }),
   });
 
-  return useCallback<DescriptionsRetrieveRequest>(
+  return useCallback<ProDescriptionsProps<R>['request']>(
     (params) => req.run(params),
     [req]
   );

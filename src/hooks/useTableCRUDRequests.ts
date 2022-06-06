@@ -1,32 +1,33 @@
-import { ParamsType } from '@ant-design/pro-provider';
 import { ActionType, ProTableProps, RequestData } from '@ant-design/pro-table';
 import { message } from 'antd';
 import { join, map, replace, toPairs } from 'lodash';
 import { useCallback } from 'react';
 import { CommonRecord } from '../types/common';
 import {
-  CreateServiceConfig,
-  DeleteServiceConfig,
-  RetrieveServiceConfig,
-  UpdateServiceConfig,
+  CreateArgs,
+  DeleteArgs,
+  RetrieveArgs,
+  RetrieveResult,
+  ServiceConfig,
+  UpdateArgs,
   useCreateRequest,
   useDeleteRequest,
   useRetrieveRequest,
   useUpdateRequest,
 } from './useCRUDRequests';
 
-export type TableCreateRequest = (
-  values: CommonRecord,
+export type TableCreateRequest<P = CommonRecord> = (
+  values: P,
   action?: ActionType
 ) => Promise<boolean>;
 
-export function useTableCreateRequest(
-  serviceConfig: CreateServiceConfig,
+export function useTableCreateRequest<R = CommonRecord, P = CommonRecord>(
+  serviceConfig: ServiceConfig<R, CreateArgs<P>>,
   action?: ActionType
-): TableCreateRequest {
-  const createReq = useCreateRequest(serviceConfig, { manual: true });
+): TableCreateRequest<P> {
+  const createReq = useCreateRequest<R, P>(serviceConfig, { manual: true });
 
-  return useCallback<TableCreateRequest>(
+  return useCallback<TableCreateRequest<P>>(
     async (values, a) => {
       try {
         await createReq.run(values);
@@ -41,19 +42,19 @@ export function useTableCreateRequest(
   );
 }
 
-export type TableUpdateRequest = (
-  values: CommonRecord,
+export type TableUpdateRequest<P = CommonRecord> = (
+  values: P,
   id?: string | number,
   action?: ActionType
 ) => Promise<boolean>;
 
-export function useTableUpdateRequest(
-  serviceConfig: UpdateServiceConfig,
+export function useTableUpdateRequest<R = CommonRecord, P = CommonRecord>(
+  serviceConfig: ServiceConfig<R, UpdateArgs<P>>,
   action?: ActionType
-): TableUpdateRequest {
-  const updateReq = useUpdateRequest(serviceConfig, { manual: true });
+): TableUpdateRequest<P> {
+  const updateReq = useUpdateRequest<R, P>(serviceConfig, { manual: true });
 
-  return useCallback<TableUpdateRequest>(
+  return useCallback<TableUpdateRequest<P>>(
     async (values, id, a) => {
       try {
         await updateReq.run(values, id);
@@ -73,11 +74,11 @@ export type TableDeleteRequest = (
   action?: ActionType
 ) => Promise<boolean>;
 
-export function useTableDeleteRequest(
-  serviceConfig: DeleteServiceConfig,
+export function useTableDeleteRequest<R = CommonRecord>(
+  serviceConfig: ServiceConfig<R, DeleteArgs>,
   action?: ActionType
 ): TableDeleteRequest {
-  const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
+  const deleteReq = useDeleteRequest<R>(serviceConfig, { manual: true });
 
   return useCallback<TableDeleteRequest>(
     async (id, a) => {
@@ -94,27 +95,22 @@ export function useTableDeleteRequest(
   );
 }
 
-export type TableRetrieveServiceConfig = RetrieveServiceConfig<
-  RequestData<CommonRecord>
->;
-export type TableRetrieveRequest = ProTableProps<
-  CommonRecord,
-  ParamsType
->['request'];
+export function useTableRetrieveRequest<R = CommonRecord, P = CommonRecord>(
+  serviceConfig: ServiceConfig<RetrieveResult<R>, RetrieveArgs>
+): ProTableProps<R, P>['request'] {
+  const req = useRetrieveRequest<CommonRecord, RequestData<CommonRecord>>(
+    serviceConfig,
+    {
+      manual: true,
+      formatResult: (res) => ({
+        data: res.data.items,
+        total: res.data.total,
+        success: true,
+      }),
+    }
+  );
 
-export function useTableRetrieveRequest(
-  serviceConfig: TableRetrieveServiceConfig
-): TableRetrieveRequest {
-  const req = useRetrieveRequest<RequestData<CommonRecord>>(serviceConfig, {
-    manual: true,
-    formatResult: (res) => ({
-      data: res.data.items,
-      total: res.data.total,
-      success: true,
-    }),
-  });
-
-  return useCallback<TableRetrieveRequest>(
+  return useCallback<ProTableProps<R, P>['request']>(
     (params, sort) => {
       const { current, pageSize, ...filter } = params;
       const order: string = join(
@@ -122,7 +118,9 @@ export function useTableRetrieveRequest(
         ','
       );
 
-      return req.run(current, pageSize, filter, order);
+      return req.run(current, pageSize, filter, order) as Promise<
+        Partial<RequestData<R>>
+      >;
     },
     [req]
   );

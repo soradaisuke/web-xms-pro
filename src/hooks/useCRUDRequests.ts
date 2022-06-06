@@ -8,46 +8,30 @@ import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { request, ResponseStructure, useRequest } from '../utils/request';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ServiceConfigObject<
-  R extends ResponseStructure = ResponseStructure,
-  P extends any[] = any[],
-  U = any
-> = {
+type ServiceConfigObject<R = any, P extends any[] = any[], U = any> = {
   requestPath?: string;
   requestOptions?: RequestOptionsInit;
-  requestService?: Service<R, P>;
-  useRequestOptions?: Partial<OptionsWithFormat<R, P, U, U>>;
+  requestService?: Service<ResponseStructure<R>, P>;
+  useRequestOptions?: Partial<OptionsWithFormat<ResponseStructure<R>, P, U, U>>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ServiceConfig<
-  R extends ResponseStructure = ResponseStructure,
-  P extends any[] = any[],
-  U = any
-> = string | ServiceConfigObject<R, P, U>;
+export type ServiceConfig<R = any, P extends any[] = any[], U = any> =
+  | string
+  | ServiceConfigObject<R, P, U>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RequestConfig<S extends ServiceConfig> =
   | S
   | ((matchParams: RouteParams, user: User) => S);
 
-export type CreateArgs = [values: CommonRecord];
-export type CreateService = Service<ResponseStructure, CreateArgs>;
-export type CreateRequest = BaseResult<any, CreateArgs>;
-export type CreateServiceConfig = ServiceConfig<
-  ResponseStructure,
-  CreateArgs,
-  any
->;
-export function useCreateRequest(
-  serviceConfig: CreateServiceConfig,
-  useRequestOptions?: Extract<
-    CreateServiceConfig,
-    ServiceConfigObject
-  >['useRequestOptions']
-): CreateRequest {
-  let service: CreateService;
+export type CreateArgs<P = CommonRecord> = [values: P];
+
+export function useCreateRequest<R = CommonRecord, P = CommonRecord>(
+  serviceConfig: ServiceConfig<R, CreateArgs<P>>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<ResponseStructure<R>, CreateArgs<P>, R, R>
+  >
+): BaseResult<R, CreateArgs<P>> {
+  let service: Service<ResponseStructure<R>, CreateArgs<P>>;
   const options = merge(
     {
       formatResult: (response) => response.data,
@@ -81,22 +65,15 @@ export function useCreateRequest(
   return useRequest(service, options);
 }
 
-export type UpdateArgs = [values: CommonRecord, id?: string | number];
-export type UpdateService = Service<ResponseStructure, UpdateArgs>;
-export type UpdateRequest = BaseResult<any, UpdateArgs>;
-export type UpdateServiceConfig = ServiceConfig<
-  ResponseStructure,
-  UpdateArgs,
-  any
->;
-export function useUpdateRequest(
-  serviceConfig: UpdateServiceConfig,
-  useRequestOptions?: Extract<
-    UpdateServiceConfig,
-    ServiceConfigObject
-  >['useRequestOptions']
-): UpdateRequest {
-  let service: UpdateService;
+export type UpdateArgs<P = CommonRecord> = [values: P, id?: string | number];
+
+export function useUpdateRequest<R = CommonRecord, P = CommonRecord>(
+  serviceConfig: ServiceConfig<R, UpdateArgs<P>>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<ResponseStructure<R>, UpdateArgs<P>, R, R>
+  >
+): BaseResult<R, UpdateArgs<P>> {
+  let service: Service<ResponseStructure<R>, UpdateArgs<P>>;
   const options = merge(
     {
       formatResult: (response) => response.data,
@@ -131,21 +108,14 @@ export function useUpdateRequest(
 }
 
 export type DeleteArgs = [id?: string | number];
-export type DeleteService = Service<ResponseStructure, DeleteArgs>;
-export type DeleteRequest = BaseResult<any, DeleteArgs>;
-export type DeleteServiceConfig = ServiceConfig<
-  ResponseStructure,
-  DeleteArgs,
-  any
->;
-export function useDeleteRequest(
-  serviceConfig: DeleteServiceConfig,
-  useRequestOptions?: Extract<
-    DeleteServiceConfig,
-    ServiceConfigObject
-  >['useRequestOptions']
-): DeleteRequest {
-  let service: DeleteService;
+
+export function useDeleteRequest<R = CommonRecord>(
+  serviceConfig: ServiceConfig<R, DeleteArgs>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<ResponseStructure<R>, DeleteArgs, R, R>
+  >
+): BaseResult<R, DeleteArgs> {
+  let service: Service<ResponseStructure<R>, DeleteArgs>;
   const options = merge(
     {
       formatResult: (response) => response.data,
@@ -170,8 +140,8 @@ export function useDeleteRequest(
   return useRequest(service, options);
 }
 
-export type RetrieveResult = {
-  items: CommonRecord[];
+export type RetrieveResult<R = CommonRecord> = {
+  items: R[];
   total: number;
 };
 export type RetrieveArgs = [
@@ -180,25 +150,26 @@ export type RetrieveArgs = [
   filter: CommonRecord,
   order: string
 ];
-export type RetrieveService = Service<
-  ResponseStructure<RetrieveResult>,
-  RetrieveArgs
->;
-export type RetrieveRequest<R = any> = BaseResult<R, RetrieveArgs>;
-export type RetrieveServiceConfig<R = any> = ServiceConfig<
-  ResponseStructure<RetrieveResult>,
-  RetrieveArgs,
-  R
->;
 
-export function useRetrieveRequest<R = any>(
-  serviceConfig: RetrieveServiceConfig<R>,
-  useRequestOptions?: Extract<
-    RetrieveServiceConfig<R>,
-    ServiceConfigObject
-  >['useRequestOptions']
-): RetrieveRequest {
-  let service: RetrieveService;
+export function useRetrieveRequest<R = CommonRecord, U = CommonRecord>(
+  serviceConfig: ServiceConfig<RetrieveResult<R>, RetrieveArgs>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<ResponseStructure<R>, RetrieveArgs, U, U>
+  >
+): BaseResult<U, RetrieveArgs>;
+
+export function useRetrieveRequest<R = CommonRecord>(
+  serviceConfig: ServiceConfig<RetrieveResult<R>, RetrieveArgs>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<
+      ResponseStructure<RetrieveResult<R>>,
+      RetrieveArgs,
+      RetrieveResult<R>,
+      RetrieveResult<R>
+    >
+  >
+): BaseResult<RetrieveResult<R>, RetrieveArgs> {
+  let service: Service<ResponseStructure<RetrieveResult<R>>, RetrieveArgs>;
   const options = merge(
     {
       formatResult: (response) => response.data,
@@ -248,25 +219,23 @@ export function useRetrieveRequest<R = any>(
   return useRequest(service, options);
 }
 
-export type RetrieveOneArgs = [params: Record<string, string | number>];
-export type RetrieveOneService = Service<
-  ResponseStructure<CommonRecord>,
-  RetrieveOneArgs
->;
-export type RetrieveOneRequest<R = any> = BaseResult<R, RetrieveOneArgs>;
-export type RetrieveOneServiceConfig<R = any> = ServiceConfig<
-  ResponseStructure<CommonRecord>,
-  RetrieveOneArgs,
-  R
->;
-export function useRetrieveOneRequest<R = any>(
-  serviceConfig: RetrieveOneServiceConfig<R>,
-  useRequestOptions?: Extract<
-    RetrieveOneServiceConfig<R>,
-    ServiceConfigObject
-  >['useRequestOptions']
-): RetrieveOneRequest {
-  let service: RetrieveOneService;
+export type RetrieveOneArgs = [params: CommonRecord];
+
+export function useRetrieveOneRequest<R = CommonRecord, U = CommonRecord>(
+  serviceConfig: ServiceConfig<R, RetrieveOneArgs>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<ResponseStructure<R>, RetrieveOneArgs, U, U>
+  >
+): BaseResult<U, RetrieveOneArgs>;
+
+export function useRetrieveOneRequest<R = CommonRecord>(
+  serviceConfig: ServiceConfig<R, RetrieveOneArgs>,
+  useRequestOptions?: Partial<
+    OptionsWithFormat<ResponseStructure<R>, RetrieveOneArgs, R, R>
+  >
+): BaseResult<R, RetrieveOneArgs> {
+  let service: Service<ResponseStructure<R>, RetrieveOneArgs>;
+
   const options = merge(
     {
       formatResult: (response) => response.data,

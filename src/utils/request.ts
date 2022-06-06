@@ -127,27 +127,33 @@ const request = extend({
 });
 
 function useRequest<
-  R extends ResponseStructure = ResponseStructure,
+  R = CommonRecord,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   P extends any[] = any,
   U = CommonRecord
 >(
-  service: CombineService<R, P>,
-  options: OptionsWithFormat<R, P, U, U>
+  service: CombineService<ResponseStructure<R>, P>,
+  options: OptionsWithFormat<ResponseStructure<R>, P, U, U>
 ): BaseResult<U, P>;
 
 function useRequest<
-  R extends ResponseStructure = ResponseStructure,
+  R = CommonRecord,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   P extends any[] = any
->(service: CombineService<R, P>, options?: BaseOptions<R, P>): BaseResult<R, P>;
+>(
+  service: CombineService<ResponseStructure<R>, P>,
+  options?: BaseOptions<ResponseStructure<R>, P>
+): BaseResult<R, P>;
 
 function useRequest<
-  R extends ResponseStructure = ResponseStructure,
+  R = CommonRecord,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   P extends any[] = any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
->(service: CombineService<R, P>, options: any = {}): any {
+>(
+  service: CombineService<ResponseStructure<R>, P>,
+  options: any = {}
+): BaseResult<R, P> {
   return useAhooksRequest(service, {
     formatResult: (res) => res?.data,
     requestMethod: (requestOptions) => {
