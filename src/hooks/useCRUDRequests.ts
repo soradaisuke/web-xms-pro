@@ -12,13 +12,14 @@ import { request, ResponseStructure, useRequest } from '../utils/request';
 export type ServiceConfigObject<
   TData = CommonRecord,
   TParams extends any[] = any[]
-> = {
-  requestPath?: string;
-  requestOptions?: RequestOptionsInit;
-  requestService?: Service<ResponseStructure<TData>, TParams>;
-  useRequestOptions?: Options<ResponseStructure<TData>, TParams>;
-  useRequestPlugins?: Plugin<ResponseStructure<TData>, TParams>[];
-};
+> =
+  | {
+      requestService: Service<ResponseStructure<TData>, TParams>;
+    }
+  | {
+      requestPath: string;
+      requestOptions?: RequestOptionsInit;
+    };
 
 export type ServiceConfig<
   TData = CommonRecord,
@@ -51,8 +52,6 @@ export function useCreateRequest<
   plugins?: Plugin<ResponseStructure<TData>, TParams>[]
 ): Result<ResponseStructure<TData>, TParams> {
   let service: CreateService<TData, TParams>;
-  const opts = merge({}, options);
-  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (values) =>
@@ -61,10 +60,11 @@ export function useCreateRequest<
         method: 'post',
       });
   } else if (isPlainObject(serviceConfig)) {
-    service =
-      serviceConfig.requestService ??
-      ((values) =>
-        request(
+    if ('requestService' in serviceConfig) {
+      service = serviceConfig.requestService;
+    } else if ('requestPath' in serviceConfig) {
+      service = (values) =>
+        request<TData>(
           serviceConfig.requestPath,
           merge(
             {
@@ -73,12 +73,11 @@ export function useCreateRequest<
             },
             serviceConfig.requestOptions
           )
-        ));
-    merge(opts, serviceConfig.useRequestOptions);
-    merge(plugs, serviceConfig.useRequestPlugins);
+        );
+    }
   }
 
-  return useRequest(service, opts, plugs);
+  return useRequest(service, options, plugins);
 }
 
 type UpdateArgs = [values: CommonRecord, id?: string | number];
@@ -102,8 +101,6 @@ export function useUpdateRequest<
   plugins?: Plugin<ResponseStructure<TData>, TParams>[]
 ): Result<ResponseStructure<TData>, TParams> {
   let service: UpdateService<TData, TParams>;
-  const opts = merge({}, options);
-  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (values, id?) =>
@@ -112,9 +109,10 @@ export function useUpdateRequest<
         method: 'put',
       });
   } else if (isPlainObject(serviceConfig)) {
-    service =
-      serviceConfig.requestService ??
-      ((values, id?) =>
+    if ('requestService' in serviceConfig) {
+      service = serviceConfig.requestService;
+    } else if ('requestPath' in serviceConfig) {
+      service = (values, id?) =>
         request(
           `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
           merge(
@@ -124,12 +122,11 @@ export function useUpdateRequest<
             },
             serviceConfig.requestOptions
           )
-        ));
-    merge(opts, serviceConfig.useRequestOptions);
-    merge(plugs, serviceConfig.useRequestPlugins);
+        );
+    }
   }
 
-  return useRequest(service, opts, plugs);
+  return useRequest(service, options, plugins);
 }
 
 type DeleteArgs = [id?: string | number];
@@ -153,25 +150,23 @@ export function useDeleteRequest<
   plugins?: Plugin<ResponseStructure<TData>, TParams>[]
 ): Result<ResponseStructure<TData>, TParams> {
   let service: DeleteService<TData, TParams>;
-  const opts = merge({}, options);
-  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (id?) =>
       request(`${serviceConfig}${id ? `/${id}` : ''}`, { method: 'delete' });
   } else if (isPlainObject(serviceConfig)) {
-    service =
-      serviceConfig.requestService ??
-      ((id?) =>
+    if ('requestService' in serviceConfig) {
+      service = serviceConfig.requestService;
+    } else if ('requestPath' in serviceConfig) {
+      service = (id?) =>
         request(
           `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
           merge({ method: 'delete' }, serviceConfig.requestOptions)
-        ));
-    merge(opts, serviceConfig.useRequestOptions);
-    merge(plugs, serviceConfig.useRequestPlugins);
+        );
+    }
   }
 
-  return useRequest(service, opts, plugs);
+  return useRequest(service, options, plugins);
 }
 
 type RetrieveResult<TData = CommonRecord> = {
@@ -205,8 +200,6 @@ export function useRetrieveRequest<
   plugins?: Plugin<ResponseStructure<RetrieveResult<TData>>, TParams>[]
 ): Result<ResponseStructure<RetrieveResult<TData>>, TParams> {
   let service: RetrieveService<TData, TParams>;
-  const opts = merge({}, options);
-  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (page, pagesize, filter, order) =>
@@ -223,9 +216,10 @@ export function useRetrieveRequest<
         method: 'get',
       });
   } else if (isPlainObject(serviceConfig)) {
-    service =
-      serviceConfig.requestService ??
-      ((page, pagesize, filter, order) =>
+    if ('requestService' in serviceConfig) {
+      service = serviceConfig.requestService;
+    } else if ('requestPath' in serviceConfig) {
+      service = (page, pagesize, filter, order) =>
         request(
           serviceConfig.requestPath,
           merge(
@@ -243,15 +237,14 @@ export function useRetrieveRequest<
             },
             serviceConfig.requestOptions
           )
-        ));
-    merge(opts, serviceConfig.useRequestOptions);
-    merge(plugs, serviceConfig.useRequestPlugins);
+        );
+    }
   }
 
-  return useRequest(service, opts, plugs);
+  return useRequest(service, options, plugins);
 }
 
-type RetrieveOneArgs = [params: Record<string, string | number>];
+type RetrieveOneArgs = [params: CommonRecord];
 
 type RetrieveOneService<
   TData = CommonRecord,
@@ -272,8 +265,6 @@ export function useRetrieveOneRequest<
   plugins?: Plugin<ResponseStructure<TData>, TParams>[]
 ): Result<ResponseStructure<TData>, TParams> {
   let service: RetrieveOneService<TData, TParams>;
-  const opts = merge({}, options);
-  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (params) =>
@@ -282,20 +273,22 @@ export function useRetrieveOneRequest<
         method: 'get',
       });
   } else if (isPlainObject(serviceConfig)) {
-    service = (params) =>
-      request(
-        serviceConfig.requestPath,
-        merge(
-          {
-            params,
-            method: 'get',
-          },
-          serviceConfig.requestOptions
-        )
-      );
-    merge(opts, serviceConfig.useRequestOptions);
-    merge(plugs, serviceConfig.useRequestPlugins);
+    if ('requestService' in serviceConfig) {
+      service = serviceConfig.requestService;
+    } else if ('requestPath' in serviceConfig) {
+      service = (params) =>
+        request(
+          serviceConfig.requestPath,
+          merge(
+            {
+              params,
+              method: 'get',
+            },
+            serviceConfig.requestOptions
+          )
+        );
+    }
   }
 
-  return useRequest(service, opts, plugs);
+  return useRequest(service, options, plugins);
 }

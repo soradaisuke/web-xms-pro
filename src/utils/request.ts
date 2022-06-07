@@ -126,15 +126,15 @@ function makeErrorHandler(
 }
 
 interface Request<R = false> extends RequestMethod<R> {
-  <T = any>(url: string, options: RequestOptionsWithResponse): Promise<
-    RequestResponse<ResponseStructure<T>>
-  >;
-  <T = any>(url: string, options: RequestOptionsWithoutResponse): Promise<
-    ResponseStructure<T>
-  >;
   <T = any>(url: string, options?: RequestOptionsInit): R extends true
     ? Promise<RequestResponse<ResponseStructure<T>>>
     : Promise<ResponseStructure<T>>;
+  <T = any>(url: string, options: RequestOptionsWithoutResponse): Promise<
+    ResponseStructure<T>
+  >;
+  <T = any>(url: string, options: RequestOptionsWithResponse): Promise<
+    RequestResponse<ResponseStructure<T>>
+  >;
   get: Request<R>;
   post: Request<R>;
   delete: Request<R>;

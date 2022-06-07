@@ -1,7 +1,15 @@
 import { ParamsType } from '@ant-design/pro-provider';
 import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { message } from 'antd';
-import { isFunction, isString, join, map, replace, toPairs } from 'lodash';
+import {
+  isEmpty,
+  isFunction,
+  isString,
+  join,
+  map,
+  replace,
+  toPairs,
+} from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import {
@@ -185,8 +193,8 @@ export function useTableRequests<
         retrieve: cfg,
       };
     }
-    const { requestPath, create, update, delete: del, retrieve, ...rest } = cfg;
-    const commonConfig = requestPath ? { ...rest, requestPath } : null;
+    const { create, update, delete: del, retrieve, ...rest } = cfg;
+    const commonConfig = isEmpty(rest) ? null : rest;
     return {
       create: create ?? commonConfig,
       update: update ?? commonConfig,

@@ -1,12 +1,14 @@
 import { ProDescriptionsProps } from '@ant-design/pro-descriptions';
 import { ActionType } from '@ant-design/pro-table';
+import { Options, Plugin } from 'ahooks/lib/useRequest/src/types';
 import { message } from 'antd';
-import { isFunction, isString } from 'lodash';
+import { concat, isEmpty, isFunction, isString, merge } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useNavigate, useHistory } from 'react-router-dom';
 import { CommonRecord, RouteParams, User } from '../types/common';
+import { ResponseStructure } from '../utils/request';
 import {
   DeleteServiceConfig,
   RequestConfig,
@@ -19,7 +21,10 @@ import {
 
 export type DescriptionsUpdateServiceConfig<
   TValues extends CommonRecord = CommonRecord
-> = UpdateServiceConfig<[values: TValues]>;
+> = UpdateServiceConfig<[values: TValues]> & {
+  useRequestOptions?: Options<ResponseStructure, [values: TValues]>;
+  useRequestPlugins?: Plugin<ResponseStructure, [values: TValues]>[];
+};
 
 export type DescriptionsUpdateRequest<
   TValues extends CommonRecord = CommonRecord
@@ -31,9 +36,13 @@ export function useDescriptionsUpdateRequest<
   serviceConfig: DescriptionsUpdateServiceConfig<TValues>,
   action: MutableRefObject<ActionType>
 ): DescriptionsUpdateRequest<TValues> {
-  const updateReq = useUpdateRequest<[values: TValues]>(serviceConfig, {
-    manual: true,
-  });
+  const updateReq = useUpdateRequest<[values: TValues]>(
+    serviceConfig,
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins)
+  );
 
   return useCallback<DescriptionsUpdateRequest>(
     async (values: TValues) => {
@@ -50,14 +59,23 @@ export function useDescriptionsUpdateRequest<
   );
 }
 
-export type DescriptionsDeleteServiceConfig = DeleteServiceConfig<[]>;
+export type DescriptionsDeleteServiceConfig = DeleteServiceConfig<[]> & {
+  useRequestOptions?: Options<ResponseStructure, []>;
+  useRequestPlugins?: Plugin<ResponseStructure, []>[];
+};
 
 export type DescriptionsDeleteRequest = () => Promise<boolean>;
 
 export function useDescriptionsDeleteRequest(
   serviceConfig: DescriptionsDeleteServiceConfig
 ): DescriptionsDeleteRequest {
-  const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
+  const deleteReq = useDeleteRequest(
+    serviceConfig,
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins)
+  );
   const navigate = useNavigate?.();
   const history = useHistory?.();
 
@@ -78,7 +96,10 @@ export function useDescriptionsDeleteRequest(
 }
 
 export type DescriptionsRetrieveServiceConfig<TData = CommonRecord> =
-  RetrieveOneServiceConfig<TData>;
+  RetrieveOneServiceConfig<TData> & {
+    useRequestOptions?: Options<ResponseStructure, [params: CommonRecord]>;
+    useRequestPlugins?: Plugin<ResponseStructure, [params: CommonRecord]>[];
+  };
 
 export type DescriptionsRetrieveRequest<TData = CommonRecord> =
   ProDescriptionsProps<TData>['request'];
@@ -86,9 +107,13 @@ export type DescriptionsRetrieveRequest<TData = CommonRecord> =
 export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
   serviceConfig: DescriptionsRetrieveServiceConfig<TData>
 ): DescriptionsRetrieveRequest<TData> {
-  const req = useRetrieveOneRequest<TData>(serviceConfig, {
-    manual: true,
-  });
+  const req = useRetrieveOneRequest<TData>(
+    serviceConfig,
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins)
+  );
 
   return useCallback<DescriptionsRetrieveRequest>(
     (params) =>
@@ -110,8 +135,8 @@ export type DescriptionsRequestConfig<
   TData = CommonRecord,
   TValues extends CommonRecord = CommonRecord
 > = RequestConfig<
-  | Extract<DescriptionsRetrieveServiceConfig<TData>, string>
-  | (Exclude<DescriptionsRetrieveServiceConfig<TData>, string> &
+  | Extract<RetrieveOneServiceConfig<TData>, string>
+  | (Exclude<RetrieveOneServiceConfig<TData>, string> &
       CustomConfig<TData, TValues>)
 >;
 
@@ -139,8 +164,8 @@ export function useDescriptionsRequests<
         retrieve: cfg,
       };
     }
-    const { requestPath, update, delete: del, retrieve, ...rest } = cfg;
-    const commonConfig = requestPath ? { ...rest, requestPath } : null;
+    const { update, delete: del, retrieve, ...rest } = cfg;
+    const commonConfig = isEmpty(rest) ? null : rest;
     return {
       update: update ?? commonConfig,
       delete: del ?? commonConfig,
