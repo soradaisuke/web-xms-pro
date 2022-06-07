@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.76](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.75...v1.0.0-beta.76) (2022-06-07)
+
+
+### Bug Fixes
+
+* **NoTicket:** string情况下缺少create配置 ([36f2dd8](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/36f2dd871d5237962a8ec2b293e6eeb1ae4fb706))
+
 ## [1.0.0-beta.75](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.74...v1.0.0-beta.75) (2022-06-07)
 
 
