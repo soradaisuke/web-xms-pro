@@ -1,59 +1,58 @@
 import {
-  BaseResult,
-  OptionsWithFormat,
+  Options,
   Service,
-} from '@ahooksjs/use-request/lib/types';
+  Plugin,
+  Result,
+} from 'ahooks/lib/useRequest/src/types';
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
 import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { request, ResponseStructure, useRequest } from '../utils/request';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ServiceConfigObject<
-  R extends ResponseStructure = ResponseStructure,
-  P extends any[] = any[],
-  U = any
+export type ServiceConfigObject<
+  TData = CommonRecord,
+  TParams extends any[] = any[]
 > = {
   requestPath?: string;
   requestOptions?: RequestOptionsInit;
-  requestService?: Service<R, P>;
-  useRequestOptions?: Partial<OptionsWithFormat<R, P, U, U>>;
+  requestService?: Service<ResponseStructure<TData>, TParams>;
+  useRequestOptions?: Options<ResponseStructure<TData>, TParams>;
+  useRequestPlugins?: Plugin<ResponseStructure<TData>, TParams>[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ServiceConfig<
-  R extends ResponseStructure = ResponseStructure,
-  P extends any[] = any[],
-  U = any
-> = string | ServiceConfigObject<R, P, U>;
+  TData = CommonRecord,
+  TParams extends any[] = any[]
+> = string | ServiceConfigObject<TData, TParams>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RequestConfig<S extends ServiceConfig> =
   | S
   | ((matchParams: RouteParams, user: User) => S);
 
-export type CreateArgs = [values: CommonRecord];
-export type CreateService = Service<ResponseStructure, CreateArgs>;
-export type CreateRequest = BaseResult<any, CreateArgs>;
-export type CreateServiceConfig = ServiceConfig<
-  ResponseStructure,
-  CreateArgs,
-  any
->;
-export function useCreateRequest(
-  serviceConfig: CreateServiceConfig,
-  useRequestOptions?: Extract<
-    CreateServiceConfig,
-    ServiceConfigObject
-  >['useRequestOptions']
-): CreateRequest {
-  let service: CreateService;
-  const options = merge(
-    {
-      formatResult: (response) => response.data,
-    },
-    useRequestOptions
-  );
+type CreateArgs = [values: CommonRecord];
+
+type CreateService<
+  TData = CommonRecord,
+  TParams extends CreateArgs = CreateArgs
+> = Service<ResponseStructure<TData>, TParams>;
+
+export type CreateServiceConfig<
+  TParams extends CreateArgs = CreateArgs,
+  TData = CommonRecord
+> = ServiceConfig<TData, TParams>;
+
+export function useCreateRequest<
+  TParams extends CreateArgs = CreateArgs,
+  TData = CommonRecord
+>(
+  serviceConfig: CreateServiceConfig<TParams, TData>,
+  options?: Options<ResponseStructure<TData>, TParams>,
+  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
+): Result<ResponseStructure<TData>, TParams> {
+  let service: CreateService<TData, TParams>;
+  const opts = merge({}, options);
+  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (values) =>
@@ -75,37 +74,39 @@ export function useCreateRequest(
             serviceConfig.requestOptions
           )
         ));
-    merge(options, serviceConfig.useRequestOptions);
+    merge(opts, serviceConfig.useRequestOptions);
+    merge(plugs, serviceConfig.useRequestPlugins);
   }
 
-  return useRequest(service, options);
+  return useRequest(service, opts, plugs);
 }
 
-export type UpdateArgs = [values: CommonRecord, id?: string | number];
-export type UpdateService = Service<ResponseStructure, UpdateArgs>;
-export type UpdateRequest = BaseResult<any, UpdateArgs>;
-export type UpdateServiceConfig = ServiceConfig<
-  ResponseStructure,
-  UpdateArgs,
-  any
->;
-export function useUpdateRequest(
-  serviceConfig: UpdateServiceConfig,
-  useRequestOptions?: Extract<
-    UpdateServiceConfig,
-    ServiceConfigObject
-  >['useRequestOptions']
-): UpdateRequest {
-  let service: UpdateService;
-  const options = merge(
-    {
-      formatResult: (response) => response.data,
-    },
-    useRequestOptions
-  );
+type UpdateArgs = [values: CommonRecord, id?: string | number];
+
+type UpdateService<
+  TData = CommonRecord,
+  TParams extends UpdateArgs = UpdateArgs
+> = Service<ResponseStructure<TData>, TParams>;
+
+export type UpdateServiceConfig<
+  TParams extends UpdateArgs = UpdateArgs,
+  TData = CommonRecord
+> = ServiceConfig<TData, TParams>;
+
+export function useUpdateRequest<
+  TParams extends UpdateArgs = UpdateArgs,
+  TData = CommonRecord
+>(
+  serviceConfig: UpdateServiceConfig<TParams, TData>,
+  options?: Options<ResponseStructure<TData>, TParams>,
+  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
+): Result<ResponseStructure<TData>, TParams> {
+  let service: UpdateService<TData, TParams>;
+  const opts = merge({}, options);
+  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
-    service = (values, id) =>
+    service = (values, id?) =>
       request(`${serviceConfig}${id ? `/${id}` : ''}`, {
         data: values,
         method: 'put',
@@ -113,7 +114,7 @@ export function useUpdateRequest(
   } else if (isPlainObject(serviceConfig)) {
     service =
       serviceConfig.requestService ??
-      ((values, id) =>
+      ((values, id?) =>
         request(
           `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
           merge(
@@ -124,34 +125,36 @@ export function useUpdateRequest(
             serviceConfig.requestOptions
           )
         ));
-    merge(options, serviceConfig.useRequestOptions);
+    merge(opts, serviceConfig.useRequestOptions);
+    merge(plugs, serviceConfig.useRequestPlugins);
   }
 
-  return useRequest(service, options);
+  return useRequest(service, opts, plugs);
 }
 
-export type DeleteArgs = [id?: string | number];
-export type DeleteService = Service<ResponseStructure, DeleteArgs>;
-export type DeleteRequest = BaseResult<any, DeleteArgs>;
-export type DeleteServiceConfig = ServiceConfig<
-  ResponseStructure,
-  DeleteArgs,
-  any
->;
-export function useDeleteRequest(
-  serviceConfig: DeleteServiceConfig,
-  useRequestOptions?: Extract<
-    DeleteServiceConfig,
-    ServiceConfigObject
-  >['useRequestOptions']
-): DeleteRequest {
-  let service: DeleteService;
-  const options = merge(
-    {
-      formatResult: (response) => response.data,
-    },
-    useRequestOptions
-  );
+type DeleteArgs = [id?: string | number];
+
+type DeleteService<
+  TData = CommonRecord,
+  TParams extends DeleteArgs = DeleteArgs
+> = Service<ResponseStructure<TData>, TParams>;
+
+export type DeleteServiceConfig<
+  TParams extends DeleteArgs = DeleteArgs,
+  TData = CommonRecord
+> = ServiceConfig<TData, TParams>;
+
+export function useDeleteRequest<
+  TParams extends DeleteArgs = DeleteArgs,
+  TData = CommonRecord
+>(
+  serviceConfig: DeleteServiceConfig<TParams, TData>,
+  options?: Options<ResponseStructure<TData>, TParams>,
+  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
+): Result<ResponseStructure<TData>, TParams> {
+  let service: DeleteService<TData, TParams>;
+  const opts = merge({}, options);
+  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (id?) =>
@@ -164,47 +167,46 @@ export function useDeleteRequest(
           `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
           merge({ method: 'delete' }, serviceConfig.requestOptions)
         ));
-    merge(options, serviceConfig.useRequestOptions);
+    merge(opts, serviceConfig.useRequestOptions);
+    merge(plugs, serviceConfig.useRequestPlugins);
   }
 
-  return useRequest(service, options);
+  return useRequest(service, opts, plugs);
 }
 
-export type RetrieveResult = {
-  items: CommonRecord[];
+type RetrieveResult<TData = CommonRecord> = {
+  items: TData[];
   total: number;
 };
-export type RetrieveArgs = [
+
+type RetrieveArgs = [
   page: number,
   pagesize: number,
   filter: CommonRecord,
   order: string
 ];
-export type RetrieveService = Service<
-  ResponseStructure<RetrieveResult>,
-  RetrieveArgs
->;
-export type RetrieveRequest<R = any> = BaseResult<R, RetrieveArgs>;
-export type RetrieveServiceConfig<R = any> = ServiceConfig<
-  ResponseStructure<RetrieveResult>,
-  RetrieveArgs,
-  R
->;
 
-export function useRetrieveRequest<R = any>(
-  serviceConfig: RetrieveServiceConfig<R>,
-  useRequestOptions?: Extract<
-    RetrieveServiceConfig<R>,
-    ServiceConfigObject
-  >['useRequestOptions']
-): RetrieveRequest {
-  let service: RetrieveService;
-  const options = merge(
-    {
-      formatResult: (response) => response.data,
-    },
-    useRequestOptions
-  );
+type RetrieveService<
+  TData = CommonRecord,
+  TParams extends RetrieveArgs = RetrieveArgs
+> = Service<ResponseStructure<RetrieveResult<TData>>, TParams>;
+
+export type RetrieveServiceConfig<
+  TData = CommonRecord,
+  TParams extends RetrieveArgs = RetrieveArgs
+> = ServiceConfig<RetrieveResult<TData>, TParams>;
+
+export function useRetrieveRequest<
+  TData = CommonRecord,
+  TParams extends RetrieveArgs = RetrieveArgs
+>(
+  serviceConfig: RetrieveServiceConfig<TData, TParams>,
+  options?: Options<ResponseStructure<RetrieveResult<TData>>, TParams>,
+  plugins?: Plugin<ResponseStructure<RetrieveResult<TData>>, TParams>[]
+): Result<ResponseStructure<RetrieveResult<TData>>, TParams> {
+  let service: RetrieveService<TData, TParams>;
+  const opts = merge({}, options);
+  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (page, pagesize, filter, order) =>
@@ -242,37 +244,36 @@ export function useRetrieveRequest<R = any>(
             serviceConfig.requestOptions
           )
         ));
-    merge(options, serviceConfig.useRequestOptions);
+    merge(opts, serviceConfig.useRequestOptions);
+    merge(plugs, serviceConfig.useRequestPlugins);
   }
 
-  return useRequest(service, options);
+  return useRequest(service, opts, plugs);
 }
 
-export type RetrieveOneArgs = [params: Record<string, string | number>];
-export type RetrieveOneService = Service<
-  ResponseStructure<CommonRecord>,
-  RetrieveOneArgs
->;
-export type RetrieveOneRequest<R = any> = BaseResult<R, RetrieveOneArgs>;
-export type RetrieveOneServiceConfig<R = any> = ServiceConfig<
-  ResponseStructure<CommonRecord>,
-  RetrieveOneArgs,
-  R
->;
-export function useRetrieveOneRequest<R = any>(
-  serviceConfig: RetrieveOneServiceConfig<R>,
-  useRequestOptions?: Extract<
-    RetrieveOneServiceConfig<R>,
-    ServiceConfigObject
-  >['useRequestOptions']
-): RetrieveOneRequest {
-  let service: RetrieveOneService;
-  const options = merge(
-    {
-      formatResult: (response) => response.data,
-    },
-    useRequestOptions
-  );
+type RetrieveOneArgs = [params: Record<string, string | number>];
+
+type RetrieveOneService<
+  TData = CommonRecord,
+  TParams extends RetrieveOneArgs = RetrieveOneArgs
+> = Service<ResponseStructure<TData>, TParams>;
+
+export type RetrieveOneServiceConfig<
+  TData = CommonRecord,
+  TParams extends RetrieveOneArgs = RetrieveOneArgs
+> = ServiceConfig<TData, TParams>;
+
+export function useRetrieveOneRequest<
+  TData = CommonRecord,
+  TParams extends RetrieveOneArgs = RetrieveOneArgs
+>(
+  serviceConfig: RetrieveOneServiceConfig<TData, TParams>,
+  options?: Options<ResponseStructure<TData>, TParams>,
+  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
+): Result<ResponseStructure<TData>, TParams> {
+  let service: RetrieveOneService<TData, TParams>;
+  const opts = merge({}, options);
+  const plugs = merge({}, plugins);
 
   if (isString(serviceConfig)) {
     service = (params) =>
@@ -292,8 +293,9 @@ export function useRetrieveOneRequest<R = any>(
           serviceConfig.requestOptions
         )
       );
-    merge(options, serviceConfig.useRequestOptions);
+    merge(opts, serviceConfig.useRequestOptions);
+    merge(plugs, serviceConfig.useRequestPlugins);
   }
 
-  return useRequest(service, options);
+  return useRequest(service, opts, plugs);
 }

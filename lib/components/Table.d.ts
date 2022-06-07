@@ -5,11 +5,10 @@ import { FormInstance } from 'antd';
 import { ParamsType } from '@ant-design/pro-provider';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import { RequestConfig } from '../hooks/useCRUDRequests';
-import { TableRetrieveServiceConfig } from '../hooks/useTableCRUDRequests';
+import { TableRequestConfig } from '../hooks/useTableCRUDRequests';
 export declare type TableProps<T = CommonRecord, U = ParamsType> = Omit<ProTableProps<T, U>, 'columns' | 'toolBarRender' | 'params'> & Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
+    requestConfig?: TableRequestConfig;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);

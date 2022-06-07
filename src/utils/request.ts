@@ -8,13 +8,13 @@ import {
   ResponseError,
 } from 'umi-request';
 import { message, notification } from 'antd';
-import useAhooksRequest, { UseRequestProvider } from '@ahooksjs/use-request';
+import { useRequest as useAhooksRequest } from 'ahooks';
 import {
-  BaseOptions,
-  BaseResult,
-  CombineService,
-  OptionsWithFormat,
-} from '@ahooksjs/use-request/lib/types';
+  Options,
+  Service,
+  Plugin,
+  Result,
+} from 'ahooks/lib/useRequest/src/types';
 import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 
@@ -126,42 +126,12 @@ const request = extend({
   errorHandler: makeErrorHandler(defaultErrorAdapter),
 });
 
-function useRequest<
-  R extends ResponseStructure = ResponseStructure,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  P extends any[] = any,
-  U = CommonRecord
->(
-  service: CombineService<R, P>,
-  options: OptionsWithFormat<R, P, U, U>
-): BaseResult<U, P>;
-
-function useRequest<
-  R extends ResponseStructure = ResponseStructure,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  P extends any[] = any
->(service: CombineService<R, P>, options?: BaseOptions<R, P>): BaseResult<R, P>;
-
-function useRequest<
-  R extends ResponseStructure = ResponseStructure,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  P extends any[] = any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
->(service: CombineService<R, P>, options: any = {}): any {
-  return useAhooksRequest(service, {
-    formatResult: (res) => res?.data,
-    requestMethod: (requestOptions) => {
-      if (typeof requestOptions === 'string') {
-        return request(requestOptions);
-      }
-      if (typeof requestOptions === 'object') {
-        const { url, ...rest } = requestOptions;
-        return request(url, rest);
-      }
-      throw new Error('request options error');
-    },
-    ...options,
-  });
+function useRequest<TData = CommonRecord, TParams extends any[] = any>(
+  service: Service<ResponseStructure<TData>, TParams>,
+  options?: Options<ResponseStructure<TData>, TParams>,
+  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
+): Result<ResponseStructure<TData>, TParams> {
+  return useAhooksRequest(service, options, plugins);
 }
 
 export interface RequestOptions extends RequestOptionsInit {
@@ -239,4 +209,4 @@ function extendRequestConfig(requestOptions: RequestOptions): void {
   responseInterceptors.map((ri) => request.interceptors.response.use(ri));
 }
 
-export { request, useRequest, extendRequestConfig, UseRequestProvider };
+export { request, useRequest, extendRequestConfig };

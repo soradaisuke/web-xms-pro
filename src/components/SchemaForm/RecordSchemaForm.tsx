@@ -6,7 +6,7 @@ import {
   ModalFormProps,
   ProFormInstance,
 } from '@ant-design/pro-form';
-import { isFunction, map, omit, merge } from 'lodash';
+import { isFunction, map, omit } from 'lodash';
 import { ProSchema } from '@ant-design/pro-utils';
 import { CommonRecord } from '../../types/common';
 import { XMSFormColumns } from '../../types/form';
@@ -75,12 +75,7 @@ function RecordSchemaForm<T = CommonRecord>({
 
   const newColumns = useMemo<FormSchema<T>['columns']>(() => {
     function transformColumn(col: XMSFormColumns) {
-      const {
-        valueType,
-        initialValue,
-        renderFormItem,
-        columns: cols,
-      } = col;
+      const { valueType, initialValue, renderFormItem, columns: cols } = col;
       let newCol = {
         ...col,
       };

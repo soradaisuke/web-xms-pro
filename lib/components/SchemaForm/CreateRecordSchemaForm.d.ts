@@ -1,19 +1,15 @@
 /// <reference types="react" />
-import { ActionType } from '@ant-design/pro-table';
 import { RecordSchemaFormProps } from './RecordSchemaForm';
+import { TableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import { CreateServiceConfig, RequestConfig } from '../../hooks/useCRUDRequests';
 export declare type CreateRecordSchemaFormProps<T = CommonRecord> = RecordSchemaFormProps<T> & {
-    /** @name ProTable或ProDescriptions的action实例 */
-    containerAction: ActionType;
-    requestConfig?: RequestConfig<CreateServiceConfig>;
+    create: TableCreateRequest;
     normalizeSubmitValues?: (values: T, matchParams: RouteParams) => T | Promise<T>;
 };
-declare function CreateRecordSchemaForm({ normalizeSubmitValues, requestConfig, containerAction, ...rest }: CreateRecordSchemaFormProps): JSX.Element;
+declare function CreateRecordSchemaForm({ normalizeSubmitValues, create, ...rest }: CreateRecordSchemaFormProps): JSX.Element;
 declare namespace CreateRecordSchemaForm {
     var defaultProps: {
         normalizeSubmitValues: (v: any) => any;
-        requestConfig: any;
     };
 }
 export default CreateRecordSchemaForm;

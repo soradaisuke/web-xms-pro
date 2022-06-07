@@ -1,5 +1,9 @@
 import React, { useMemo, useRef } from 'react';
-import ProTable, { ProColumns, ProTableProps } from '@ant-design/pro-table';
+import ProTable, {
+  ActionType,
+  ProColumns,
+  ProTableProps,
+} from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import {
   find,
@@ -17,20 +21,13 @@ import { ParamsType } from '@ant-design/pro-provider';
 import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import {
-  CreateServiceConfig,
-  DeleteServiceConfig,
-  RequestConfig,
-  UpdateServiceConfig,
-} from '../hooks/useCRUDRequests';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
+  TableCreateRequest,
   TableDeleteRequest,
-  TableRetrieveServiceConfig,
+  TableRequestConfig,
   TableUpdateRequest,
-  useTableDeleteRequest,
-  useTableRetrieveRequest,
-  useTableUpdateRequest,
+  useTableRequests,
 } from '../hooks/useTableCRUDRequests';
 import getRowKey from '../utils/getRowKey';
 import makeLinkRender from '../utils/makeLinkRender';
@@ -46,7 +43,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 > &
   Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
     /** @name 数据请求配置 */
-    requestConfig?: RequestConfig<TableRetrieveServiceConfig>;
+    requestConfig?: TableRequestConfig;
     /** @name columns配置 */
     columns: XMSTableColumns[];
     params?: U | ((matchParams: RouteParams) => U);
@@ -65,7 +62,7 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
 
 function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
   toolBarRender: TableProps<T, U>['toolBarRender'],
-  requestConfig: TableRetrieveServiceConfig,
+  create: TableCreateRequest,
   form: FormInstance,
   matchParams: RouteParams,
   user: User
@@ -79,8 +76,7 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
                 defaultCreateButtonRender: (config) => (
                   <CreateRecordSchemaForm
                     key="create"
-                    requestConfig={requestConfig as CreateServiceConfig}
-                    containerAction={args[0]}
+                    create={create}
                     {...config}
                   />
                 ),
@@ -91,7 +87,7 @@ function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
               ...args
             )
         : null,
-    [toolBarRender, form, matchParams, user, requestConfig]
+    [toolBarRender, form, matchParams, user, create]
   );
 }
 
@@ -100,7 +96,6 @@ function makeMergedRender(
   render: XMSTableColumns['render'],
   update: TableUpdateRequest,
   del: TableDeleteRequest,
-  requestConfig: TableRetrieveServiceConfig,
   user: User,
   matchParams: RouteParams
 ): ProColumns['render'] {
@@ -109,17 +104,15 @@ function makeMergedRender(
   }
   return (...args) => {
     const record = args[1];
-    const action = args[3];
     const key = get(record, getRowKey(rowKey, record));
-    const defaultUpdate = (values) => update(values, key, action);
-    const defaultDelete = () => del(key, action);
+    const defaultUpdate = (values) => update(values, key);
+    const defaultDelete = () => del(key);
     const defaultUpdateButtonRender = (config) => (
       <UpdateRecordSchemaForm
         key="update"
         rowKey={rowKey}
         record={record}
-        containerAction={action}
-        requestConfig={requestConfig}
+        update={update}
         {...config}
       />
     );
@@ -175,20 +168,14 @@ function Table<T = CommonRecord, U = ParamsType>({
   const matchParams = useParams();
   const user = useUser();
   const formRef = useRef<ProFormInstance>();
+  const actionRef = useRef<ActionType>();
 
-  const ser = useMemo(
-    () =>
-      isFunction(requestConfig)
-        ? requestConfig(matchParams, user)
-        : requestConfig,
-    [matchParams, requestConfig, user]
-  );
-
-  const retrieve = useTableRetrieveRequest(ser);
-
-  const update = useTableUpdateRequest(ser as UpdateServiceConfig);
-
-  const del = useTableDeleteRequest(ser as DeleteServiceConfig);
+  const {
+    create,
+    update,
+    delete: del,
+    retrieve,
+  } = useTableRequests(requestConfig, matchParams, user, actionRef);
 
   const newColumns = useMemo<ProTableProps<T, U>['columns']>(
     () =>
@@ -202,7 +189,6 @@ function Table<T = CommonRecord, U = ParamsType>({
             render,
             update,
             del,
-            ser,
             user,
             matchParams
           ),
@@ -227,7 +213,7 @@ function Table<T = CommonRecord, U = ParamsType>({
         }
         return newCol;
       }) as ProTableProps<T, U>['columns'],
-    [columns, del, matchParams, rowKey, ser, update, user]
+    [columns, del, matchParams, rowKey, update, user]
   );
 
   const newSearch = useMemo<TableProps['search']>(() => {
@@ -267,7 +253,7 @@ function Table<T = CommonRecord, U = ParamsType>({
 
   const mergedToolBarRender = useMergedToolBarRender(
     toolBarRender,
-    ser,
+    create,
     formRef.current,
     matchParams,
     user
@@ -284,6 +270,7 @@ function Table<T = CommonRecord, U = ParamsType>({
       params={isFunction(params) ? params(matchParams) : params}
       toolBarRender={mergedToolBarRender}
       columns={newColumns}
+      actionRef={actionRef}
     />
   );
 }

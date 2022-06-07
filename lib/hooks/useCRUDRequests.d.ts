@@ -1,47 +1,38 @@
-import { BaseResult, OptionsWithFormat, Service } from '@ahooksjs/use-request/lib/types';
+import { Options, Service, Plugin, Result } from 'ahooks/lib/useRequest/src/types';
 import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { ResponseStructure } from '../utils/request';
-declare type ServiceConfigObject<R extends ResponseStructure = ResponseStructure, P extends any[] = any[], U = any> = {
+export declare type ServiceConfigObject<TData = CommonRecord, TParams extends any[] = any[]> = {
     requestPath?: string;
     requestOptions?: RequestOptionsInit;
-    requestService?: Service<R, P>;
-    useRequestOptions?: Partial<OptionsWithFormat<R, P, U, U>>;
+    requestService?: Service<ResponseStructure<TData>, TParams>;
+    useRequestOptions?: Options<ResponseStructure<TData>, TParams>;
+    useRequestPlugins?: Plugin<ResponseStructure<TData>, TParams>[];
 };
-export declare type ServiceConfig<R extends ResponseStructure = ResponseStructure, P extends any[] = any[], U = any> = string | ServiceConfigObject<R, P, U>;
+export declare type ServiceConfig<TData = CommonRecord, TParams extends any[] = any[]> = string | ServiceConfigObject<TData, TParams>;
 export declare type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RouteParams, user: User) => S);
-export declare type CreateArgs = [values: CommonRecord];
-export declare type CreateService = Service<ResponseStructure, CreateArgs>;
-export declare type CreateRequest = BaseResult<any, CreateArgs>;
-export declare type CreateServiceConfig = ServiceConfig<ResponseStructure, CreateArgs, any>;
-export declare function useCreateRequest(serviceConfig: CreateServiceConfig, useRequestOptions?: Extract<CreateServiceConfig, ServiceConfigObject>['useRequestOptions']): CreateRequest;
-export declare type UpdateArgs = [values: CommonRecord, id?: string | number];
-export declare type UpdateService = Service<ResponseStructure, UpdateArgs>;
-export declare type UpdateRequest = BaseResult<any, UpdateArgs>;
-export declare type UpdateServiceConfig = ServiceConfig<ResponseStructure, UpdateArgs, any>;
-export declare function useUpdateRequest(serviceConfig: UpdateServiceConfig, useRequestOptions?: Extract<UpdateServiceConfig, ServiceConfigObject>['useRequestOptions']): UpdateRequest;
-export declare type DeleteArgs = [id?: string | number];
-export declare type DeleteService = Service<ResponseStructure, DeleteArgs>;
-export declare type DeleteRequest = BaseResult<any, DeleteArgs>;
-export declare type DeleteServiceConfig = ServiceConfig<ResponseStructure, DeleteArgs, any>;
-export declare function useDeleteRequest(serviceConfig: DeleteServiceConfig, useRequestOptions?: Extract<DeleteServiceConfig, ServiceConfigObject>['useRequestOptions']): DeleteRequest;
-export declare type RetrieveResult = {
-    items: CommonRecord[];
+declare type CreateArgs = [values: CommonRecord];
+export declare type CreateServiceConfig<TParams extends CreateArgs = CreateArgs, TData = CommonRecord> = ServiceConfig<TData, TParams>;
+export declare function useCreateRequest<TParams extends CreateArgs = CreateArgs, TData = CommonRecord>(serviceConfig: CreateServiceConfig<TParams, TData>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
+declare type UpdateArgs = [values: CommonRecord, id?: string | number];
+export declare type UpdateServiceConfig<TParams extends UpdateArgs = UpdateArgs, TData = CommonRecord> = ServiceConfig<TData, TParams>;
+export declare function useUpdateRequest<TParams extends UpdateArgs = UpdateArgs, TData = CommonRecord>(serviceConfig: UpdateServiceConfig<TParams, TData>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
+declare type DeleteArgs = [id?: string | number];
+export declare type DeleteServiceConfig<TParams extends DeleteArgs = DeleteArgs, TData = CommonRecord> = ServiceConfig<TData, TParams>;
+export declare function useDeleteRequest<TParams extends DeleteArgs = DeleteArgs, TData = CommonRecord>(serviceConfig: DeleteServiceConfig<TParams, TData>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
+declare type RetrieveResult<TData = CommonRecord> = {
+    items: TData[];
     total: number;
 };
-export declare type RetrieveArgs = [
+declare type RetrieveArgs = [
     page: number,
     pagesize: number,
     filter: CommonRecord,
     order: string
 ];
-export declare type RetrieveService = Service<ResponseStructure<RetrieveResult>, RetrieveArgs>;
-export declare type RetrieveRequest<R = any> = BaseResult<R, RetrieveArgs>;
-export declare type RetrieveServiceConfig<R = any> = ServiceConfig<ResponseStructure<RetrieveResult>, RetrieveArgs, R>;
-export declare function useRetrieveRequest<R = any>(serviceConfig: RetrieveServiceConfig<R>, useRequestOptions?: Extract<RetrieveServiceConfig<R>, ServiceConfigObject>['useRequestOptions']): RetrieveRequest;
-export declare type RetrieveOneArgs = [params: Record<string, string | number>];
-export declare type RetrieveOneService = Service<ResponseStructure<CommonRecord>, RetrieveOneArgs>;
-export declare type RetrieveOneRequest<R = any> = BaseResult<R, RetrieveOneArgs>;
-export declare type RetrieveOneServiceConfig<R = any> = ServiceConfig<ResponseStructure<CommonRecord>, RetrieveOneArgs, R>;
-export declare function useRetrieveOneRequest<R = any>(serviceConfig: RetrieveOneServiceConfig<R>, useRequestOptions?: Extract<RetrieveOneServiceConfig<R>, ServiceConfigObject>['useRequestOptions']): RetrieveOneRequest;
+export declare type RetrieveServiceConfig<TData = CommonRecord, TParams extends RetrieveArgs = RetrieveArgs> = ServiceConfig<RetrieveResult<TData>, TParams>;
+export declare function useRetrieveRequest<TData = CommonRecord, TParams extends RetrieveArgs = RetrieveArgs>(serviceConfig: RetrieveServiceConfig<TData, TParams>, options?: Options<ResponseStructure<RetrieveResult<TData>>, TParams>, plugins?: Plugin<ResponseStructure<RetrieveResult<TData>>, TParams>[]): Result<ResponseStructure<RetrieveResult<TData>>, TParams>;
+declare type RetrieveOneArgs = [params: Record<string, string | number>];
+export declare type RetrieveOneServiceConfig<TData = CommonRecord, TParams extends RetrieveOneArgs = RetrieveOneArgs> = ServiceConfig<TData, TParams>;
+export declare function useRetrieveOneRequest<TData = CommonRecord, TParams extends RetrieveOneArgs = RetrieveOneArgs>(serviceConfig: RetrieveOneServiceConfig<TData, TParams>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
 export {};

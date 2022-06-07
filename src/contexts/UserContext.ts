@@ -1,10 +1,11 @@
-import { BaseResult } from '@ahooksjs/use-request/lib/types';
+import { Result } from 'ahooks/lib/useRequest/src/types';
 import React from 'react';
 import { User } from '../types/common';
+import { ResponseStructure } from '../utils/request';
 
 const UserContext = React.createContext<{
   user: User;
-  auth: BaseResult<any, []>;
+  auth: Result<ResponseStructure, []>;
   signin: () => void;
   signout: () => void;
 }>({

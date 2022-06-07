@@ -1,23 +1,14 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
-import { ActionType } from '@ant-design/pro-table';
-import { isFunction } from 'lodash';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
-import { useTableCreateRequest } from '../../hooks/useTableCRUDRequests';
+import { TableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord, RouteParams } from '../../types/common';
-import {
-  CreateServiceConfig,
-  RequestConfig,
-} from '../../hooks/useCRUDRequests';
-import useUser from '../../hooks/useUser';
 
 export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
-    /** @name ProTable或ProDescriptions的action实例 */
-    containerAction: ActionType;
-    requestConfig?: RequestConfig<CreateServiceConfig>;
+    create: TableCreateRequest;
     normalizeSubmitValues?: (
       values: T,
       matchParams: RouteParams
@@ -26,26 +17,14 @@ export type CreateRecordSchemaFormProps<T = CommonRecord> =
 
 function CreateRecordSchemaForm({
   normalizeSubmitValues,
-  requestConfig,
-  containerAction,
+  create,
   ...rest
 }: CreateRecordSchemaFormProps) {
   const matchParams = useParams();
-  const user = useUser();
-
-  const service = useMemo(
-    () =>
-      isFunction(requestConfig)
-        ? requestConfig(matchParams, user)
-        : requestConfig,
-    [matchParams, requestConfig, user]
-  );
-
-  const req = useTableCreateRequest(service, containerAction);
 
   const onFinish = useCallback(
-    async (values) => req(await normalizeSubmitValues(values, matchParams)),
-    [matchParams, normalizeSubmitValues, req]
+    async (values) => create(await normalizeSubmitValues(values, matchParams)),
+    [matchParams, normalizeSubmitValues, create]
   );
 
   return (
@@ -66,7 +45,6 @@ function CreateRecordSchemaForm({
 
 CreateRecordSchemaForm.defaultProps = {
   normalizeSubmitValues: (v) => v,
-  requestConfig: null,
 };
 
 export default CreateRecordSchemaForm;

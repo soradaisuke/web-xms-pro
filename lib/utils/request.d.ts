@@ -1,6 +1,5 @@
 import { Context, RequestOptionsInit, OnionMiddleware, RequestInterceptor, ResponseInterceptor } from 'umi-request';
-import { UseRequestProvider } from '@ahooksjs/use-request';
-import { BaseOptions, BaseResult, CombineService, OptionsWithFormat } from '@ahooksjs/use-request/lib/types';
+import { Options, Service, Plugin, Result } from 'ahooks/lib/useRequest/src/types';
 import { CommonRecord } from '../types/common';
 export declare enum ErrorShowType {
     SILENT = 0,
@@ -22,8 +21,7 @@ interface ErrorInfoStructure {
 }
 declare type ErrorAdapter = (resData: ResponseStructure, ctx: Context) => ErrorInfoStructure;
 declare const request: import("umi-request").RequestMethod<false>;
-declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any, U = CommonRecord>(service: CombineService<R, P>, options: OptionsWithFormat<R, P, U, U>): BaseResult<U, P>;
-declare function useRequest<R extends ResponseStructure = ResponseStructure, P extends any[] = any>(service: CombineService<R, P>, options?: BaseOptions<R, P>): BaseResult<R, P>;
+declare function useRequest<TData = CommonRecord, TParams extends any[] = any>(service: Service<ResponseStructure<TData>, TParams>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
 export interface RequestOptions extends RequestOptionsInit {
     /** @name 错误处理配置 */
     errorConfig?: {
@@ -40,4 +38,4 @@ export interface RequestOptions extends RequestOptionsInit {
     authPath: string;
 }
 declare function extendRequestConfig(requestOptions: RequestOptions): void;
-export { request, useRequest, extendRequestConfig, UseRequestProvider };
+export { request, useRequest, extendRequestConfig };
