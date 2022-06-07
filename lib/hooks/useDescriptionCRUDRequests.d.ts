@@ -24,11 +24,11 @@ export declare type DescriptionsRetrieveServiceConfig<TData = CommonRecord> = Re
 export declare type DescriptionsRetrieveRequest<TData = CommonRecord> = ProDescriptionsProps<TData>['request'];
 export declare function useDescriptionsRetrieveRequest<TData = CommonRecord>(serviceConfig: DescriptionsRetrieveServiceConfig<TData>): DescriptionsRetrieveRequest<TData>;
 declare type CustomConfig<TData, TValues> = {
-    update?: DescriptionsUpdateServiceConfig<TValues>;
-    delete?: DescriptionsDeleteServiceConfig;
-    retrieve: DescriptionsRetrieveServiceConfig<TData>;
+    update?: Partial<Exclude<DescriptionsUpdateServiceConfig<TValues>, string>>;
+    delete?: Partial<Exclude<DescriptionsDeleteServiceConfig, string>>;
+    retrieve: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
 };
-export declare type DescriptionsRequestConfig<TData = CommonRecord, TValues extends CommonRecord = CommonRecord> = RequestConfig<Extract<RetrieveOneServiceConfig<TData>, string> | (Exclude<RetrieveOneServiceConfig<TData>, string> & CustomConfig<TData, TValues>)>;
+export declare type DescriptionsRequestConfig<TData = CommonRecord, TValues extends CommonRecord = CommonRecord> = RequestConfig<Extract<DescriptionsRetrieveServiceConfig<TData>, string> | (Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>> & CustomConfig<TData, TValues>)>;
 export declare function useDescriptionsRequests<TData = CommonRecord, TValues extends CommonRecord = CommonRecord>(requestConfig: DescriptionsRequestConfig<TData, TValues>, matchParams: RouteParams, user: User, action: MutableRefObject<ActionType>): {
     update?: DescriptionsUpdateRequest<TValues>;
     delete?: DescriptionsDeleteRequest;

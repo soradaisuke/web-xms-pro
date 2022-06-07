@@ -27,7 +27,7 @@ export type ServiceConfig<
 > = string | ServiceConfigObject<TData, TParams>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type RequestConfig<S extends ServiceConfig> =
+export type RequestConfig<S> =
   | S
   | ((matchParams: RouteParams, user: User) => S);
 

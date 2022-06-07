@@ -9,7 +9,7 @@ export declare type ServiceConfigObject<TData = CommonRecord, TParams extends an
     requestOptions?: RequestOptionsInit;
 };
 export declare type ServiceConfig<TData = CommonRecord, TParams extends any[] = any[]> = string | ServiceConfigObject<TData, TParams>;
-export declare type RequestConfig<S extends ServiceConfig> = S | ((matchParams: RouteParams, user: User) => S);
+export declare type RequestConfig<S> = S | ((matchParams: RouteParams, user: User) => S);
 declare type CreateArgs = [values: CommonRecord];
 export declare type CreateServiceConfig<TParams extends CreateArgs = CreateArgs, TData = CommonRecord> = ServiceConfig<TData, TParams>;
 export declare function useCreateRequest<TParams extends CreateArgs = CreateArgs, TData = CommonRecord>(serviceConfig: CreateServiceConfig<TParams, TData>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;

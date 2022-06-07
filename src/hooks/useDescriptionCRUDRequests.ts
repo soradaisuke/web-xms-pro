@@ -2,7 +2,7 @@ import { ProDescriptionsProps } from '@ant-design/pro-descriptions';
 import { ActionType } from '@ant-design/pro-table';
 import { Options, Plugin } from 'ahooks/lib/useRequest/src/types';
 import { message } from 'antd';
-import { concat, isEmpty, isFunction, isString, merge } from 'lodash';
+import { concat, isFunction, isString, merge } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -126,17 +126,17 @@ export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
 }
 
 type CustomConfig<TData, TValues> = {
-  update?: DescriptionsUpdateServiceConfig<TValues>;
-  delete?: DescriptionsDeleteServiceConfig;
-  retrieve: DescriptionsRetrieveServiceConfig<TData>;
+  update?: Partial<Exclude<DescriptionsUpdateServiceConfig<TValues>, string>>;
+  delete?: Partial<Exclude<DescriptionsDeleteServiceConfig, string>>;
+  retrieve: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
 };
 
 export type DescriptionsRequestConfig<
   TData = CommonRecord,
   TValues extends CommonRecord = CommonRecord
 > = RequestConfig<
-  | Extract<RetrieveOneServiceConfig<TData>, string>
-  | (Exclude<RetrieveOneServiceConfig<TData>, string> &
+  | Extract<DescriptionsRetrieveServiceConfig<TData>, string>
+  | (Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>> &
       CustomConfig<TData, TValues>)
 >;
 
@@ -165,11 +165,10 @@ export function useDescriptionsRequests<
       };
     }
     const { update, delete: del, retrieve, ...rest } = cfg;
-    const commonConfig = isEmpty(rest) ? null : rest;
     return {
-      update: update ?? commonConfig,
-      delete: del ?? commonConfig,
-      retrieve: retrieve ?? commonConfig,
+      update: merge({}, rest, update),
+      delete: merge({}, rest, del),
+      retrieve: merge({}, rest, retrieve),
     };
   }, [matchParams, requestConfig, user]);
 
