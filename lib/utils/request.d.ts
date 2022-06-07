@@ -21,7 +21,7 @@ interface ErrorInfoStructure {
 }
 declare type ErrorAdapter = (resData: ResponseStructure, ctx: Context) => ErrorInfoStructure;
 declare const request: import("umi-request").RequestMethod<false>;
-declare function useRequest<TData = CommonRecord, TParams extends any[] = any>(service: Service<ResponseStructure<TData>, TParams>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
+declare function useRequest<TData = CommonRecord, TParams extends any[] = any>(service: Service<TData, TParams>, options?: Options<TData, TParams>, plugins?: Plugin<TData, TParams>[]): Result<TData, TParams>;
 export interface RequestOptions extends RequestOptionsInit {
     /** @name 错误处理配置 */
     errorConfig?: {

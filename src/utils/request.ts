@@ -127,6 +127,12 @@ const request = extend({
 });
 
 function useRequest<TData = CommonRecord, TParams extends any[] = any>(
+  service: Service<TData, TParams>,
+  options?: Options<TData, TParams>,
+  plugins?: Plugin<TData, TParams>[]
+): Result<TData, TParams>
+
+function useRequest<TData = CommonRecord, TParams extends any[] = any>(
   service: Service<ResponseStructure<TData>, TParams>,
   options?: Options<ResponseStructure<TData>, TParams>,
   plugins?: Plugin<ResponseStructure<TData>, TParams>[]
