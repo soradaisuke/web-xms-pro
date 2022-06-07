@@ -19,11 +19,11 @@ export declare function useUpdateRequest<TParams extends UpdateArgs = UpdateArgs
 declare type DeleteArgs = [id?: string | number];
 export declare type DeleteServiceConfig<TParams extends DeleteArgs = DeleteArgs, TData = CommonRecord> = ServiceConfig<TData, TParams>;
 export declare function useDeleteRequest<TParams extends DeleteArgs = DeleteArgs, TData = CommonRecord>(serviceConfig: DeleteServiceConfig<TParams, TData>, options?: Options<ResponseStructure<TData>, TParams>, plugins?: Plugin<ResponseStructure<TData>, TParams>[]): Result<ResponseStructure<TData>, TParams>;
-declare type RetrieveResult<TData = CommonRecord> = {
+export declare type RetrieveResult<TData = CommonRecord> = {
     items: TData[];
     total: number;
 };
-declare type RetrieveArgs = [
+export declare type RetrieveArgs = [
     page: number,
     pagesize: number,
     filter: CommonRecord,

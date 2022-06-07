@@ -169,12 +169,12 @@ export function useDeleteRequest<
   return useRequest(service, options, plugins);
 }
 
-type RetrieveResult<TData = CommonRecord> = {
+export type RetrieveResult<TData = CommonRecord> = {
   items: TData[];
   total: number;
 };
 
-type RetrieveArgs = [
+export type RetrieveArgs = [
   page: number,
   pagesize: number,
   filter: CommonRecord,

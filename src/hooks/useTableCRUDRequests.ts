@@ -1,21 +1,26 @@
 import { ParamsType } from '@ant-design/pro-provider';
 import { ActionType, ProTableProps } from '@ant-design/pro-table';
+import { Options, Plugin } from 'ahooks/lib/useRequest/src/types';
 import { message } from 'antd';
 import {
-  isEmpty,
+  concat,
   isFunction,
   isString,
   join,
   map,
+  merge,
   replace,
   toPairs,
 } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
 import { CommonRecord, RouteParams, User } from '../types/common';
+import { ResponseStructure } from '../utils/request';
 import {
   CreateServiceConfig,
   DeleteServiceConfig,
   RequestConfig,
+  RetrieveArgs,
+  RetrieveResult,
   RetrieveServiceConfig,
   UpdateServiceConfig,
   useCreateRequest,
@@ -26,7 +31,10 @@ import {
 
 export type TableCreateServiceConfig<
   TValues extends CommonRecord = CommonRecord
-> = CreateServiceConfig<[values: TValues]>;
+> = CreateServiceConfig<[values: TValues]> & {
+  useRequestOptions?: Options<ResponseStructure, [values: TValues]>;
+  useRequestPlugins?: Plugin<ResponseStructure, [values: TValues]>[];
+};
 
 export type TableCreateRequest<TValues extends CommonRecord = CommonRecord> = (
   values: TValues
@@ -38,9 +46,13 @@ export function useTableCreateRequest<
   serviceConfig: TableCreateServiceConfig<TValues>,
   action: MutableRefObject<ActionType>
 ): TableCreateRequest<TValues> {
-  const createReq = useCreateRequest<[values: TValues]>(serviceConfig, {
-    manual: true,
-  });
+  const createReq = useCreateRequest<[values: TValues]>(
+    serviceConfig,
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins ?? [])
+  );
 
   return useCallback<TableCreateRequest<TValues>>(
     async (values: TValues) => {
@@ -59,7 +71,16 @@ export function useTableCreateRequest<
 
 export type TableUpdateServiceConfig<
   TValues extends CommonRecord = CommonRecord
-> = UpdateServiceConfig<[values: TValues, id: string | number]>;
+> = UpdateServiceConfig<[values: TValues, id: string | number]> & {
+  useRequestOptions?: Options<
+    ResponseStructure,
+    [values: TValues, id: string | number]
+  >;
+  useRequestPlugins?: Plugin<
+    ResponseStructure,
+    [values: TValues, id: string | number]
+  >[];
+};
 
 export type TableUpdateRequest<TValues extends CommonRecord = CommonRecord> = (
   values: TValues,
@@ -74,7 +95,10 @@ export function useTableUpdateRequest<
 ): TableUpdateRequest<TValues> {
   const updateReq = useUpdateRequest<[values: TValues, id: string | number]>(
     serviceConfig,
-    { manual: true }
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins ?? [])
   );
 
   return useCallback<TableUpdateRequest>(
@@ -94,7 +118,10 @@ export function useTableUpdateRequest<
 
 export type TableDeleteServiceConfig = DeleteServiceConfig<
   [id: string | number]
->;
+> & {
+  useRequestOptions?: Options<ResponseStructure, [id: string | number]>;
+  useRequestPlugins?: Plugin<ResponseStructure, [id: string | number]>[];
+};
 
 export type TableDeleteRequest = (id?: string | number) => Promise<boolean>;
 
@@ -102,7 +129,13 @@ export function useTableDeleteRequest(
   serviceConfig: TableDeleteServiceConfig,
   action: MutableRefObject<ActionType>
 ): TableDeleteRequest {
-  const deleteReq = useDeleteRequest(serviceConfig, { manual: true });
+  const deleteReq = useDeleteRequest(
+    serviceConfig,
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins ?? [])
+  );
 
   return useCallback<TableDeleteRequest>(
     async (id) => {
@@ -120,7 +153,16 @@ export function useTableDeleteRequest(
 }
 
 export type TableRetrieveServiceConfig<TData = CommonRecord> =
-  RetrieveServiceConfig<TData>;
+  RetrieveServiceConfig<TData> & {
+    useRequestOptions?: Options<
+      ResponseStructure<RetrieveResult<TData>>,
+      RetrieveArgs
+    >;
+    useRequestPlugins?: Plugin<
+      ResponseStructure<RetrieveResult<TData>>,
+      RetrieveArgs
+    >[];
+  };
 
 export type TableRetrieveRequest<TData = CommonRecord> = ProTableProps<
   TData,
@@ -130,9 +172,13 @@ export type TableRetrieveRequest<TData = CommonRecord> = ProTableProps<
 export function useTableRetrieveRequest<TData = CommonRecord>(
   serviceConfig: TableRetrieveServiceConfig<TData>
 ): TableRetrieveRequest<TData> {
-  const req = useRetrieveRequest<TData>(serviceConfig, {
-    manual: true,
-  });
+  const req = useRetrieveRequest<TData>(
+    serviceConfig,
+    merge({}, serviceConfig.useRequestOptions, {
+      manual: true,
+    }),
+    concat([], serviceConfig.useRequestPlugins ?? [])
+  );
 
   return useCallback<TableRetrieveRequest<TData>>(
     (params, sort) => {
@@ -153,10 +199,10 @@ export function useTableRetrieveRequest<TData = CommonRecord>(
 }
 
 type CustomConfig<TData, TValues> = {
-  create?: TableCreateServiceConfig<TValues>;
-  update?: TableUpdateServiceConfig<TValues>;
-  delete?: TableDeleteServiceConfig;
-  retrieve: TableRetrieveServiceConfig<TData>;
+  create?: Partial<Exclude<TableCreateServiceConfig<TValues>, string>>;
+  update?: Partial<Exclude<TableUpdateServiceConfig<TValues>, string>>;
+  delete?: Partial<Exclude<TableDeleteServiceConfig, string>>;
+  retrieve: Partial<Exclude<TableRetrieveServiceConfig<TData>, string>>;
 };
 
 export type TableRequestConfig<
@@ -164,7 +210,7 @@ export type TableRequestConfig<
   TValues extends CommonRecord = CommonRecord
 > = RequestConfig<
   | Extract<TableRetrieveServiceConfig<TData>, string>
-  | (Exclude<TableRetrieveServiceConfig<TData>, string> &
+  | (Partial<Exclude<TableRetrieveServiceConfig<TData>, string>> &
       CustomConfig<TData, TValues>)
 >;
 
@@ -194,12 +240,11 @@ export function useTableRequests<
       };
     }
     const { create, update, delete: del, retrieve, ...rest } = cfg;
-    const commonConfig = isEmpty(rest) ? null : rest;
     return {
-      create: create ?? commonConfig,
-      update: update ?? commonConfig,
-      delete: del ?? commonConfig,
-      retrieve: retrieve ?? commonConfig,
+      create: merge({}, rest, create),
+      update: merge({}, rest, update),
+      delete: merge({}, rest, del),
+      retrieve: merge({}, rest, retrieve),
     };
   }, [matchParams, requestConfig, user]);
 
