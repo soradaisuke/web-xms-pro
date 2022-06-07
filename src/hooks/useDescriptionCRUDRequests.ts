@@ -128,7 +128,7 @@ export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
 type CustomConfig<TData, TValues> = {
   update?: Partial<Exclude<DescriptionsUpdateServiceConfig<TValues>, string>>;
   delete?: Partial<Exclude<DescriptionsDeleteServiceConfig, string>>;
-  retrieve: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
+  retrieve?: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
 };
 
 export type DescriptionsRequestConfig<

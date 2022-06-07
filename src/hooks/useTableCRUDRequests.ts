@@ -202,7 +202,7 @@ type CustomConfig<TData, TValues> = {
   create?: Partial<Exclude<TableCreateServiceConfig<TValues>, string>>;
   update?: Partial<Exclude<TableUpdateServiceConfig<TValues>, string>>;
   delete?: Partial<Exclude<TableDeleteServiceConfig, string>>;
-  retrieve: Partial<Exclude<TableRetrieveServiceConfig<TData>, string>>;
+  retrieve?: Partial<Exclude<TableRetrieveServiceConfig<TData>, string>>;
 };
 
 export type TableRequestConfig<
