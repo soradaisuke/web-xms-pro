@@ -41,7 +41,7 @@ export function useDescriptionsUpdateRequest<
     merge({}, serviceConfig.useRequestOptions, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins)
+    concat([], serviceConfig.useRequestPlugins ?? [])
   );
 
   return useCallback<DescriptionsUpdateRequest>(
@@ -74,7 +74,7 @@ export function useDescriptionsDeleteRequest(
     merge({}, serviceConfig.useRequestOptions, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins)
+    concat([], serviceConfig.useRequestPlugins ?? [])
   );
   const navigate = useNavigate?.();
   const history = useHistory?.();
@@ -112,7 +112,7 @@ export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
     merge({}, serviceConfig.useRequestOptions, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins)
+    concat([], serviceConfig.useRequestPlugins ?? [])
   );
 
   return useCallback<DescriptionsRetrieveRequest>(
