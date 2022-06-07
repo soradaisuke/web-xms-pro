@@ -6,6 +6,10 @@ import {
   RequestInterceptor,
   ResponseInterceptor,
   ResponseError,
+  RequestMethod,
+  RequestOptionsWithResponse,
+  RequestOptionsWithoutResponse,
+  RequestResponse,
 } from 'umi-request';
 import { message, notification } from 'antd';
 import { useRequest as useAhooksRequest } from 'ahooks';
@@ -121,7 +125,27 @@ function makeErrorHandler(
   };
 }
 
-const request = extend({
+interface Request<R = false> extends RequestMethod<R> {
+  <T = any>(url: string, options: RequestOptionsWithResponse): Promise<
+    RequestResponse<ResponseStructure<T>>
+  >;
+  <T = any>(url: string, options: RequestOptionsWithoutResponse): Promise<
+    ResponseStructure<T>
+  >;
+  <T = any>(url: string, options?: RequestOptionsInit): R extends true
+    ? Promise<RequestResponse<ResponseStructure<T>>>
+    : Promise<ResponseStructure<T>>;
+  get: Request<R>;
+  post: Request<R>;
+  delete: Request<R>;
+  put: Request<R>;
+  patch: Request<R>;
+  head: Request<R>;
+  options: Request<R>;
+  rpc: Request<R>;
+}
+
+const request: Request = extend({
   credentials: 'include',
   errorHandler: makeErrorHandler(defaultErrorAdapter),
 });
@@ -130,7 +154,7 @@ function useRequest<TData = CommonRecord, TParams extends any[] = any>(
   service: Service<TData, TParams>,
   options?: Options<TData, TParams>,
   plugins?: Plugin<TData, TParams>[]
-): Result<TData, TParams>
+): Result<TData, TParams>;
 
 function useRequest<TData = CommonRecord, TParams extends any[] = any>(
   service: Service<ResponseStructure<TData>, TParams>,
