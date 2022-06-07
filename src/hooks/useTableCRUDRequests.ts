@@ -234,6 +234,7 @@ export function useTableRequests<
       : requestConfig;
     if (isString(cfg)) {
       return {
+        create: cfg,
         update: cfg,
         delete: cfg,
         retrieve: cfg,
