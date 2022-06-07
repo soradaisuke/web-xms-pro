@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.74](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.73...v1.0.0-beta.74) (2022-06-07)
+
+
+### Features
+
+* **NoTicket:** 合并description的requestConfig配置 ([6d3bc30](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/6d3bc305b15eadac4050b60bc15444d5e58533bc))
+
 ## [1.0.0-beta.73](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.72...v1.0.0-beta.73) (2022-06-07)
 
 
