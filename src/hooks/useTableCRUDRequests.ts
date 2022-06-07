@@ -144,16 +144,20 @@ export function useTableRetrieveRequest<TData = CommonRecord>(
   );
 }
 
+type CustomConfig<TData, TValues> = {
+  create?: TableCreateServiceConfig<TValues>;
+  update?: TableUpdateServiceConfig<TValues>;
+  delete?: TableDeleteServiceConfig;
+  retrieve: TableRetrieveServiceConfig<TData>;
+};
+
 export type TableRequestConfig<
   TData = CommonRecord,
   TValues extends CommonRecord = CommonRecord
 > = RequestConfig<
-  TableRetrieveServiceConfig<TData> & {
-    create?: TableCreateServiceConfig<TValues>;
-    update?: TableUpdateServiceConfig<TValues>;
-    delete?: TableDeleteServiceConfig;
-    retrieve: TableRetrieveServiceConfig<TData>;
-  }
+  | Extract<TableRetrieveServiceConfig<TData>, string>
+  | (Exclude<TableRetrieveServiceConfig<TData>, string> &
+      CustomConfig<TData, TValues>)
 >;
 
 export function useTableRequests<

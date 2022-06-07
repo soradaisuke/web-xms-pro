@@ -100,15 +100,19 @@ export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
   );
 }
 
+type CustomConfig<TData, TValues> = {
+  update?: DescriptionsUpdateServiceConfig<TValues>;
+  delete?: DescriptionsDeleteServiceConfig;
+  retrieve: DescriptionsRetrieveServiceConfig<TData>;
+};
+
 export type DescriptionsRequestConfig<
   TData = CommonRecord,
   TValues extends CommonRecord = CommonRecord
 > = RequestConfig<
-  DescriptionsRetrieveServiceConfig<TData> & {
-    update?: DescriptionsUpdateServiceConfig<TValues>;
-    delete?: DescriptionsDeleteServiceConfig;
-    retrieve: DescriptionsRetrieveServiceConfig<TData>;
-  }
+  | Extract<DescriptionsRetrieveServiceConfig<TData>, string>
+  | (Exclude<DescriptionsRetrieveServiceConfig<TData>, string> &
+      CustomConfig<TData, TValues>)
 >;
 
 export function useDescriptionsRequests<

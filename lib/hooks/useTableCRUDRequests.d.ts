@@ -17,15 +17,17 @@ export declare function useTableDeleteRequest(serviceConfig: TableDeleteServiceC
 export declare type TableRetrieveServiceConfig<TData = CommonRecord> = RetrieveServiceConfig<TData>;
 export declare type TableRetrieveRequest<TData = CommonRecord> = ProTableProps<TData, ParamsType>['request'];
 export declare function useTableRetrieveRequest<TData = CommonRecord>(serviceConfig: TableRetrieveServiceConfig<TData>): TableRetrieveRequest<TData>;
-export declare type TableRequestConfig<TData = CommonRecord, TValues extends CommonRecord = CommonRecord> = RequestConfig<TableRetrieveServiceConfig<TData> & {
+declare type CustomConfig<TData, TValues> = {
     create?: TableCreateServiceConfig<TValues>;
     update?: TableUpdateServiceConfig<TValues>;
     delete?: TableDeleteServiceConfig;
     retrieve: TableRetrieveServiceConfig<TData>;
-}>;
+};
+export declare type TableRequestConfig<TData = CommonRecord, TValues extends CommonRecord = CommonRecord> = RequestConfig<Extract<TableRetrieveServiceConfig<TData>, string> | (Exclude<TableRetrieveServiceConfig<TData>, string> & CustomConfig<TData, TValues>)>;
 export declare function useTableRequests<TData = CommonRecord, TValues extends CommonRecord = CommonRecord>(requestConfig: TableRequestConfig<TData, TValues>, matchParams: RouteParams, user: User, action: MutableRefObject<ActionType>): {
     create?: TableCreateRequest<TValues>;
     update?: TableUpdateRequest<TValues>;
     delete?: TableDeleteRequest;
     retrieve?: TableRetrieveRequest<TData>;
 };
+export {};
