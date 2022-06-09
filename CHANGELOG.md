@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.79](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.78...v1.0.0-beta.79) (2022-06-09)
+
+
+### Features
+
+* **NoTicket:** XMSTableColumns支持columns用于筛选 ([f17f6fc](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/f17f6fc710af3ab3573d5bb0d262d2783466fcec))
+
 ## [1.0.0-beta.78](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.77...v1.0.0-beta.78) (2022-06-09)
 
 
