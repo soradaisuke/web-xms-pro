@@ -26,7 +26,7 @@ export declare function useDescriptionsRetrieveRequest<TData = CommonRecord>(ser
 declare type CustomConfig<TData, TValues> = {
     update?: Partial<Exclude<DescriptionsUpdateServiceConfig<TValues>, string>>;
     delete?: Partial<Exclude<DescriptionsDeleteServiceConfig, string>>;
-    retrieve: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
+    retrieve?: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
 };
 export declare type DescriptionsRequestConfig<TData = CommonRecord, TValues extends CommonRecord = CommonRecord> = RequestConfig<Extract<DescriptionsRetrieveServiceConfig<TData>, string> | (Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>> & CustomConfig<TData, TValues>)>;
 export declare function useDescriptionsRequests<TData = CommonRecord, TValues extends CommonRecord = CommonRecord>(requestConfig: DescriptionsRequestConfig<TData, TValues>, matchParams: RouteParams, user: User, action: MutableRefObject<ActionType>): {

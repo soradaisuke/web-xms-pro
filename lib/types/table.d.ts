@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
 import { CommonRecord, LinkConfig, User, XMSValueType } from './common';
+import { XMSFormColumns } from './form';
 export declare type TableCreateConfig = Partial<Omit<CreateRecordSchemaFormProps, 'columns'>> & Pick<CreateRecordSchemaFormProps, 'columns'>;
 export declare type TableUpdateConfig = Partial<Omit<UpdateRecordSchemaFormProps, 'columns'>> & Pick<UpdateRecordSchemaFormProps, 'columns'> & {
     key?: string;
@@ -24,7 +25,7 @@ export declare type TableUpdateButtonRender = (config: TableUpdateConfig) => Rea
 export declare type TableDeleteButtonRender = (config?: TableDeleteConfig) => ReactNode;
 export declare type TableOnlineOfflineButtonRender = (config?: TableOnlineOfflineConfig) => ReactNode;
 export declare type TableSwapButtonRender = (config?: Partial<TableUpdateConfig>) => ReactNode;
-export declare type XMSTableColumns = Omit<ProColumns<CommonRecord>, 'valueType' | 'render'> & {
+export declare type XMSTableColumns<T = CommonRecord> = Omit<ProColumns<T>, 'valueType' | 'render'> & {
     /** @name 从数据获取跳转地址 */
     link?: LinkConfig;
     valueType?: ProColumns['valueType'] | XMSValueType;
@@ -35,5 +36,6 @@ export declare type XMSTableColumns = Omit<ProColumns<CommonRecord>, 'valueType'
         defaultDeleteButtonRender: TableDeleteButtonRender;
         defaultOnlineOfflineButtonRender: TableOnlineOfflineButtonRender;
         defaultSwapButtonRender: TableSwapButtonRender;
-    }, ...base: Parameters<ProColumns<CommonRecord>['render']>) => ReturnType<ProColumns<CommonRecord>['render']>;
+    }, ...base: Parameters<ProColumns<T>['render']>) => ReturnType<ProColumns<T>['render']>;
+    columns?: XMSFormColumns['columns'];
 };

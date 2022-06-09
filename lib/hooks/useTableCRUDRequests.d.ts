@@ -41,7 +41,7 @@ declare type CustomConfig<TData, TValues> = {
     create?: Partial<Exclude<TableCreateServiceConfig<TValues>, string>>;
     update?: Partial<Exclude<TableUpdateServiceConfig<TValues>, string>>;
     delete?: Partial<Exclude<TableDeleteServiceConfig, string>>;
-    retrieve: Partial<Exclude<TableRetrieveServiceConfig<TData>, string>>;
+    retrieve?: Partial<Exclude<TableRetrieveServiceConfig<TData>, string>>;
 };
 export declare type TableRequestConfig<TData = CommonRecord, TValues extends CommonRecord = CommonRecord> = RequestConfig<Extract<TableRetrieveServiceConfig<TData>, string> | (Partial<Exclude<TableRetrieveServiceConfig<TData>, string>> & CustomConfig<TData, TValues>)>;
 export declare function useTableRequests<TData = CommonRecord, TValues extends CommonRecord = CommonRecord>(requestConfig: TableRequestConfig<TData, TValues>, matchParams: RouteParams, user: User, action: MutableRefObject<ActionType>): {

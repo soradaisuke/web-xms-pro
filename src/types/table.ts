@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
 import { CommonRecord, LinkConfig, User, XMSValueType } from './common';
+import { XMSFormColumns } from './form';
 
 export type TableCreateConfig = Partial<
   Omit<CreateRecordSchemaFormProps, 'columns'>
@@ -50,7 +51,7 @@ export type XMSTableColumns<T = CommonRecord> = Omit<
 > & {
   /** @name 从数据获取跳转地址 */
   link?: LinkConfig;
-  valueType?: ProColumns['valueType'] | Extract<ProFormColumnsType['valueType'], 'dependency'> | XMSValueType;
+  valueType?: ProColumns['valueType'] | XMSValueType;
   render?: (
     config: {
       user: User;
@@ -62,4 +63,5 @@ export type XMSTableColumns<T = CommonRecord> = Omit<
     },
     ...base: Parameters<ProColumns<T>['render']>
   ) => ReturnType<ProColumns<T>['render']>;
+  columns?: XMSFormColumns['columns'];
 };
