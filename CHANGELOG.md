@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.80](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.79...v1.0.0-beta.80) (2022-06-09)
+
+
+### Features
+
+* **NoTicket:** table的column的valueType支持dependencies ([1bab187](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/1bab18702b9cae7a2ae999da11450b1f845bc59c))
+
 ## [1.0.0-beta.79](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.78...v1.0.0-beta.79) (2022-06-09)
 
 
