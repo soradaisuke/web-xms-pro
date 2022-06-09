@@ -51,7 +51,10 @@ export type XMSTableColumns<T = CommonRecord> = Omit<
 > & {
   /** @name 从数据获取跳转地址 */
   link?: LinkConfig;
-  valueType?: ProColumns['valueType'] | XMSValueType;
+  valueType?:
+    | ProColumns['valueType']
+    | Extract<ProFormColumnsType['valueType'], 'dependency'>
+    | XMSValueType;
   render?: (
     config: {
       user: User;
