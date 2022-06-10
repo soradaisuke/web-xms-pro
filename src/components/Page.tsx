@@ -5,16 +5,16 @@ import { Button, Result, TabPaneProps } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
 import Table, { TableProps } from './Table';
+import List, { ListProps } from './List';
 import Descriptions, { DescriptionsProps } from './Descriptions';
 import { RouteParams } from '../types/common';
 import useSyncTabKeyToUrl from '../hooks/useSyncTabKeyToUrl';
 import './Page.less';
 
 export type ContentConfig = {
-  /** @name pro-table配置 */
   tableProps?: TableProps;
-  /** @name pro-decriptions配置 */
   decriptionsProps?: DescriptionsProps;
+  listProps?: ListProps;
 };
 
 export type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> &
@@ -37,7 +37,8 @@ function renderContent(props: PageProps, key?: string): ReactNode {
     return null;
   }
 
-  const { tableProps, decriptionsProps, children, error, reload } = props;
+  const { tableProps, decriptionsProps, listProps, children, error, reload } =
+    props;
 
   if (error) {
     return (
@@ -67,6 +68,10 @@ function renderContent(props: PageProps, key?: string): ReactNode {
 
   if (decriptionsProps) {
     return <Descriptions key={key} {...decriptionsProps} />;
+  }
+
+  if (listProps) {
+    return <List key={key} {...listProps} />;
   }
 
   return null;
@@ -110,6 +115,7 @@ function Page({ tabList, title, ...rest }: PageProps) {
 Page.defaultProps = {
   tableProps: null,
   decriptionsProps: null,
+  listProps: null,
   children: null,
   tabList: [],
   error: null,

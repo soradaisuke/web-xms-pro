@@ -1,41 +1,24 @@
 import React, { useMemo, useRef } from 'react';
-import ProTable, {
-  ActionType,
-  ProColumns,
-  ProTableProps,
-} from '@ant-design/pro-table';
+import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import {
-  find,
-  get,
-  isBoolean,
-  isFunction,
-  map,
-  toNumber,
-  mapValues,
-} from 'lodash';
+import { find, get, isBoolean, isFunction, map } from 'lodash';
 import { useParams } from 'react-router-dom';
 import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
-import CreateRecordSchemaForm from './SchemaForm/CreateRecordSchemaForm';
 import { CommonRecord, RouteParams, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 import {
-  TableCreateRequest,
-  TableDeleteRequest,
   TableRequestConfig,
-  TableUpdateRequest,
   useTableRequests,
 } from '../hooks/useTableCRUDRequests';
-import getRowKey from '../utils/getRowKey';
 import makeLinkRender from '../utils/makeLinkRender';
-import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
-import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
-import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 import useUser from '../hooks/useUser';
-import isNumeric from '../utils/isNumeric';
+import defaultSyncToUrl from '../utils/defaultSyncToUrl';
+// eslint-disable-next-line import/no-cycle
+import makeMergedRender from '../utils/makeMergedRender';
+// eslint-disable-next-line import/no-cycle
+import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
@@ -59,101 +42,6 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
           ...base: Parameters<ToolBarProps<T>['toolBarRender']>
         ) => ReturnType<ToolBarProps<T>['toolBarRender']>);
   };
-
-function useMergedToolBarRender<T = CommonRecord, U = ParamsType>(
-  toolBarRender: TableProps<T, U>['toolBarRender'],
-  create: TableCreateRequest,
-  form: FormInstance,
-  matchParams: RouteParams,
-  user: User
-): ProTableProps<T, U>['toolBarRender'] {
-  return useMemo<ProTableProps<T, U>['toolBarRender']>(
-    () =>
-      toolBarRender
-        ? (...args) =>
-            toolBarRender(
-              {
-                defaultCreateButtonRender: (config) => (
-                  <CreateRecordSchemaForm
-                    key="create"
-                    create={create}
-                    {...config}
-                  />
-                ),
-                form,
-                matchParams,
-                user,
-              },
-              ...args
-            )
-        : null,
-    [toolBarRender, form, matchParams, user, create]
-  );
-}
-
-function makeMergedRender(
-  rowKey: TableProps['rowKey'],
-  render: XMSTableColumns['render'],
-  update: TableUpdateRequest,
-  del: TableDeleteRequest,
-  user: User,
-  matchParams: RouteParams
-): ProColumns['render'] {
-  if (!render) {
-    return null;
-  }
-  return (...args) => {
-    const record = args[1];
-    const key = get(record, getRowKey(rowKey, record));
-    const defaultUpdate = (values) => update(values, key);
-    const defaultDelete = () => del(key);
-    const defaultUpdateButtonRender = (config) => (
-      <UpdateRecordSchemaForm
-        key="update"
-        rowKey={rowKey}
-        record={record}
-        update={update}
-        {...config}
-      />
-    );
-
-    return render(
-      {
-        user,
-        update: defaultUpdate,
-        defaultUpdateButtonRender,
-        defaultDeleteButtonRender: makeDefaultDeleteButtonRender(defaultDelete),
-        defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(
-          record,
-          matchParams,
-          defaultUpdate
-        ),
-        defaultSwapButtonRender: makeDefaultSwapButtonRender(
-          defaultUpdateButtonRender
-        ),
-      },
-      ...args
-    );
-  };
-}
-
-function defaultSyncToUrl(values, type) {
-  if (type === 'get') {
-    return mapValues(values, (v) => {
-      if (v === 'true') {
-        return true;
-      }
-      if (v === 'false') {
-        return false;
-      }
-      if (isNumeric(v)) {
-        return toNumber(v);
-      }
-      return v;
-    });
-  }
-  return values;
-}
 
 function Table<T = CommonRecord, U = ParamsType>({
   rowKey,

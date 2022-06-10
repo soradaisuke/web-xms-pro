@@ -1,3 +1,4 @@
+import { ProFormColumnsType } from '@ant-design/pro-form';
 import { ProColumns } from '@ant-design/pro-table';
 import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
@@ -28,7 +29,7 @@ export declare type TableSwapButtonRender = (config?: Partial<TableUpdateConfig>
 export declare type XMSTableColumns<T = CommonRecord> = Omit<ProColumns<T>, 'valueType' | 'render'> & {
     /** @name 从数据获取跳转地址 */
     link?: LinkConfig;
-    valueType?: ProColumns['valueType'] | XMSValueType;
+    valueType?: ProColumns['valueType'] | Extract<ProFormColumnsType['valueType'], 'dependency'> | XMSValueType;
     render?: (config: {
         user: User;
         update: (values: CommonRecord) => Promise<boolean>;
