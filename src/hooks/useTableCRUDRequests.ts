@@ -232,6 +232,11 @@ export function useTableRequests<
     const cfg = isFunction(requestConfig)
       ? requestConfig(matchParams, user)
       : requestConfig;
+
+    if (!cfg) {
+      return {};
+    }
+
     if (isString(cfg)) {
       return {
         create: cfg,
