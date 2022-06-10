@@ -27,5 +27,5 @@ export type ListReqParams = {
   page?: number;
   pagesize?: number;
   order?: string;
-  filter?: Record<string, string | number>;
+  filter?: Record<string, string | number | boolean>;
 }
