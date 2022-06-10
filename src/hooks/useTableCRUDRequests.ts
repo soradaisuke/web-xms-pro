@@ -13,14 +13,13 @@ import {
   toPairs,
 } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
-import { CommonRecord, RouteParams, User } from '../types/common';
+import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
 import { ResponseStructure } from '../utils/request';
 import {
   CreateServiceConfig,
   DeleteServiceConfig,
   RequestConfig,
   RetrieveArgs,
-  RetrieveResult,
   RetrieveServiceConfig,
   UpdateServiceConfig,
   useCreateRequest,
@@ -155,11 +154,11 @@ export function useTableDeleteRequest(
 export type TableRetrieveServiceConfig<TData = CommonRecord> =
   RetrieveServiceConfig<TData> & {
     useRequestOptions?: Options<
-      ResponseStructure<RetrieveResult<TData>>,
+      ResponseStructure<ListResp<TData>>,
       RetrieveArgs
     >;
     useRequestPlugins?: Plugin<
-      ResponseStructure<RetrieveResult<TData>>,
+      ResponseStructure<ListResp<TData>>,
       RetrieveArgs
     >[];
   };

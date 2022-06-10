@@ -6,7 +6,7 @@ import {
 } from 'ahooks/lib/useRequest/src/types';
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
 import { RequestOptionsInit } from 'umi-request';
-import { CommonRecord, RouteParams, User } from '../types/common';
+import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
 import { request, ResponseStructure, useRequest } from '../utils/request';
 
 export type ServiceConfigObject<
@@ -169,11 +169,6 @@ export function useDeleteRequest<
   return useRequest(service, options, plugins);
 }
 
-export type RetrieveResult<TData = CommonRecord> = {
-  items: TData[];
-  total: number;
-};
-
 export type RetrieveArgs = [
   page: number,
   pagesize: number,
@@ -184,21 +179,21 @@ export type RetrieveArgs = [
 type RetrieveService<
   TData = CommonRecord,
   TParams extends RetrieveArgs = RetrieveArgs
-> = Service<ResponseStructure<RetrieveResult<TData>>, TParams>;
+> = Service<ResponseStructure<ListResp<TData>>, TParams>;
 
 export type RetrieveServiceConfig<
   TData = CommonRecord,
   TParams extends RetrieveArgs = RetrieveArgs
-> = ServiceConfig<RetrieveResult<TData>, TParams>;
+> = ServiceConfig<ListResp<TData>, TParams>;
 
 export function useRetrieveRequest<
   TData = CommonRecord,
   TParams extends RetrieveArgs = RetrieveArgs
 >(
   serviceConfig: RetrieveServiceConfig<TData, TParams>,
-  options?: Options<ResponseStructure<RetrieveResult<TData>>, TParams>,
-  plugins?: Plugin<ResponseStructure<RetrieveResult<TData>>, TParams>[]
-): Result<ResponseStructure<RetrieveResult<TData>>, TParams> {
+  options?: Options<ResponseStructure<ListResp<TData>>, TParams>,
+  plugins?: Plugin<ResponseStructure<ListResp<TData>>, TParams>[]
+): Result<ResponseStructure<ListResp<TData>>, TParams> {
   let service: RetrieveService<TData, TParams>;
 
   if (isString(serviceConfig)) {

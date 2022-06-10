@@ -19,3 +19,7 @@ export type User = CommonRecord & {
 export type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
+export type ListResp<TData = CommonRecord> = {
+  items: TData[];
+  total: number;
+};

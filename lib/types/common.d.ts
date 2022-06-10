@@ -16,3 +16,7 @@ export declare type User = CommonRecord & {
 export declare type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };
+export declare type ListResp<TData = CommonRecord> = {
+    items: TData[];
+    total: number;
+};

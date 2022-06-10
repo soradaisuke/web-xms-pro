@@ -2,9 +2,9 @@ import { ParamsType } from '@ant-design/pro-provider';
 import { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { Options, Plugin } from 'ahooks/lib/useRequest/src/types';
 import { MutableRefObject } from 'react';
-import { CommonRecord, RouteParams, User } from '../types/common';
+import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
 import { ResponseStructure } from '../utils/request';
-import { CreateServiceConfig, DeleteServiceConfig, RequestConfig, RetrieveArgs, RetrieveResult, RetrieveServiceConfig, UpdateServiceConfig } from './useCRUDRequests';
+import { CreateServiceConfig, DeleteServiceConfig, RequestConfig, RetrieveArgs, RetrieveServiceConfig, UpdateServiceConfig } from './useCRUDRequests';
 export declare type TableCreateServiceConfig<TValues extends CommonRecord = CommonRecord> = CreateServiceConfig<[values: TValues]> & {
     useRequestOptions?: Options<ResponseStructure, [values: TValues]>;
     useRequestPlugins?: Plugin<ResponseStructure, [values: TValues]>[];
@@ -32,8 +32,8 @@ export declare type TableDeleteServiceConfig = DeleteServiceConfig<[
 export declare type TableDeleteRequest = (id?: string | number) => Promise<boolean>;
 export declare function useTableDeleteRequest(serviceConfig: TableDeleteServiceConfig, action: MutableRefObject<ActionType>): TableDeleteRequest;
 export declare type TableRetrieveServiceConfig<TData = CommonRecord> = RetrieveServiceConfig<TData> & {
-    useRequestOptions?: Options<ResponseStructure<RetrieveResult<TData>>, RetrieveArgs>;
-    useRequestPlugins?: Plugin<ResponseStructure<RetrieveResult<TData>>, RetrieveArgs>[];
+    useRequestOptions?: Options<ResponseStructure<ListResp<TData>>, RetrieveArgs>;
+    useRequestPlugins?: Plugin<ResponseStructure<ListResp<TData>>, RetrieveArgs>[];
 };
 export declare type TableRetrieveRequest<TData = CommonRecord> = ProTableProps<TData, ParamsType>['request'];
 export declare function useTableRetrieveRequest<TData = CommonRecord>(serviceConfig: TableRetrieveServiceConfig<TData>): TableRetrieveRequest<TData>;
