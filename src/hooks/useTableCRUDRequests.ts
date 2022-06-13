@@ -50,7 +50,7 @@ export function useTableCreateRequest<
     merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins ?? [])
+    concat([], serviceConfig?.useRequestPlugins ?? [])
   );
 
   return useCallback<TableCreateRequest<TValues>>(
@@ -97,7 +97,7 @@ export function useTableUpdateRequest<
     merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins ?? [])
+    concat([], serviceConfig?.useRequestPlugins ?? [])
   );
 
   return useCallback<TableUpdateRequest>(
@@ -133,7 +133,7 @@ export function useTableDeleteRequest(
     merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins ?? [])
+    concat([], serviceConfig?.useRequestPlugins ?? [])
   );
 
   return useCallback<TableDeleteRequest>(
@@ -176,7 +176,7 @@ export function useTableRetrieveRequest<TData = CommonRecord>(
     merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
-    concat([], serviceConfig.useRequestPlugins ?? [])
+    concat([], serviceConfig?.useRequestPlugins ?? [])
   );
 
   return useCallback<TableRetrieveRequest<TData>>(
