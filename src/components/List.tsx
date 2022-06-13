@@ -98,9 +98,10 @@ function List<T = CommonRecord, U = ParamsType>({
         valueType: 'formSet',
         columns: [
           {
-            valueEnum: mapValues(keyBy(newMetas, 'dataIndex'), 'title'),
+            valueEnum: mapValues(keyBy(sortMetas, 'dataIndex'), 'title'),
             initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
               ?.dataIndex,
+            width: 200,
           },
           {
             valueEnum: {
