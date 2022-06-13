@@ -38,7 +38,7 @@ export function useDescriptionsUpdateRequest<
 ): DescriptionsUpdateRequest<TValues> {
   const updateReq = useUpdateRequest<[values: TValues]>(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])
@@ -71,7 +71,7 @@ export function useDescriptionsDeleteRequest(
 ): DescriptionsDeleteRequest {
   const deleteReq = useDeleteRequest(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])
@@ -109,7 +109,7 @@ export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
 ): DescriptionsRetrieveRequest<TData> {
   const req = useRetrieveOneRequest<TData>(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])

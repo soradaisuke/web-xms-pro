@@ -47,7 +47,7 @@ export function useTableCreateRequest<
 ): TableCreateRequest<TValues> {
   const createReq = useCreateRequest<[values: TValues]>(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])
@@ -94,7 +94,7 @@ export function useTableUpdateRequest<
 ): TableUpdateRequest<TValues> {
   const updateReq = useUpdateRequest<[values: TValues, id: string | number]>(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])
@@ -130,7 +130,7 @@ export function useTableDeleteRequest(
 ): TableDeleteRequest {
   const deleteReq = useDeleteRequest(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])
@@ -173,7 +173,7 @@ export function useTableRetrieveRequest<TData = CommonRecord>(
 ): TableRetrieveRequest<TData> {
   const req = useRetrieveRequest<TData>(
     serviceConfig,
-    merge({}, serviceConfig.useRequestOptions, {
+    merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
     }),
     concat([], serviceConfig.useRequestPlugins ?? [])
