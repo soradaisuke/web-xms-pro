@@ -101,7 +101,9 @@ function List<T = CommonRecord, U = ParamsType>({
             valueEnum: mapValues(keyBy(sortMetas, 'dataIndex'), 'title'),
             initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
               ?.dataIndex,
-            width: 200,
+            fieldProps: {
+              width: 150,
+            },
           },
           {
             valueEnum: {
@@ -155,9 +157,9 @@ function List<T = CommonRecord, U = ParamsType>({
     ({ sort, ...restParams }, _, f) =>
       retrieve(
         restParams,
-        sort?.[0]?.length === 2
+        sort?.length === 2
           ? {
-              [sort[0][0] as string]: sort[0][1] as SortOrder,
+              [sort[0] as string]: sort[1] as SortOrder,
             }
           : {},
         f
