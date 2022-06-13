@@ -1,7 +1,17 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { ActionType } from '@ant-design/pro-table';
 import ProList, { ProListMeta, ProListProps } from '@ant-design/pro-list';
-import { find, get, isBoolean, isFunction, mapValues, values } from 'lodash';
+import { SortOrder } from 'antd/lib/table/interface';
+import {
+  filter,
+  find,
+  get,
+  isBoolean,
+  isFunction,
+  keyBy,
+  mapValues,
+  values,
+} from 'lodash';
 import { useParams } from 'react-router-dom';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
@@ -45,40 +55,67 @@ function List<T = CommonRecord, U = ParamsType>({
     retrieve,
   } = useTableRequests(requestConfig, matchParams, user, actionRef);
 
-  const newMetas = useMemo<ProListProps<T, U>['metas']>(
-    () =>
-      mapValues(metas, (meta) => {
-        const { link, render, valueType } = meta;
-        const newMeta = {
-          ...meta,
-          render: makeMergedRender(
-            rowKey,
-            render,
-            update,
-            del,
-            user,
-            matchParams
-          ),
+  const formattedMetas = useMemo<ProListProps<T, U>['metas']>(() => {
+    const newMetas = mapValues(metas, (meta) => {
+      const { link, render, valueType } = meta;
+      const newMeta = {
+        ...meta,
+        render: makeMergedRender(
+          rowKey,
+          render,
+          update,
+          del,
+          user,
+          matchParams
+        ),
+      };
+      if (link && !render) {
+        newMeta.render = makeLinkRender(link);
+      }
+      if (
+        valueType === 'image' ||
+        get(meta, ['valueType', 'type']) === 'image'
+      ) {
+        newMeta.search = false;
+      }
+      if (valueType === 'image') {
+        newMeta.valueType = {
+          type: 'image',
+          width: 100,
         };
-        if (link && !render) {
-          newMeta.render = makeLinkRender(link);
-        }
-        if (
-          valueType === 'image' ||
-          get(meta, ['valueType', 'type']) === 'image'
-        ) {
-          newMeta.search = false;
-        }
-        if (valueType === 'image') {
-          newMeta.valueType = {
-            type: 'image',
-            width: 100,
-          };
-        }
-        return newMeta;
-      }) as ProListProps<T, U>['metas'],
-    [del, matchParams, metas, rowKey, update, user]
-  );
+      }
+      return newMeta;
+    }) as ProListProps<T, U>['metas'];
+
+    const sortMetas = filter(
+      newMetas,
+      (meta) => meta.sortDirections?.length > 0 || !!meta.defaultSortOrder
+    );
+    if (sortMetas.length > 0) {
+      newMetas.sort = {
+        dataIndex: 'sort',
+        title: '排序',
+        valueType: 'formSet',
+        columns: [
+          {
+            valueEnum: mapValues(keyBy(newMetas, 'dataIndex'), 'title'),
+            initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
+              ?.dataIndex,
+          },
+          {
+            valueEnum: {
+              descend: '降序',
+              asced: '升序',
+            },
+            initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
+              ?.defaultSortOrder,
+          },
+        ],
+      };
+    }
+
+    return newMetas;
+  }, [del, matchParams, metas, rowKey, update, user]);
 
   const newSearch = useMemo<ListProps['search']>(() => {
     if (isBoolean(search)) {
@@ -86,7 +123,7 @@ function List<T = CommonRecord, U = ParamsType>({
     }
     if (
       !find(
-        values<ProListMeta<T>>(newMetas),
+        values<ProListMeta<T>>(formattedMetas),
         (c) => c.search !== false && c.valueType !== 'option'
       )
     ) {
@@ -97,7 +134,7 @@ function List<T = CommonRecord, U = ParamsType>({
       labelWidth: 'auto',
       ...(search || {}),
     };
-  }, [newMetas, search]);
+  }, [formattedMetas, search]);
 
   const newForm = useMemo<ListProps['form']>(
     () => ({
@@ -113,6 +150,20 @@ function List<T = CommonRecord, U = ParamsType>({
     [form]
   );
 
+  const listRetrieve = useCallback(
+    ({ sort, ...restParams }, _, f) =>
+      retrieve(
+        restParams,
+        sort?.[0]?.length === 2
+          ? {
+              [sort[0][0] as string]: sort[0][1] as SortOrder,
+            }
+          : {},
+        f
+      ),
+    [retrieve]
+  );
+
   const mergedToolBarRender = useMergedToolBarRender(
     toolBarRender,
     create,
@@ -123,7 +174,7 @@ function List<T = CommonRecord, U = ParamsType>({
 
   return (
     <ProList
-      request={retrieve}
+      request={listRetrieve}
       {...rest}
       rowKey={rowKey}
       form={newForm}
@@ -131,7 +182,7 @@ function List<T = CommonRecord, U = ParamsType>({
       search={newSearch}
       params={isFunction(params) ? params(matchParams) : params}
       toolBarRender={mergedToolBarRender}
-      metas={newMetas}
+      metas={formattedMetas}
       actionRef={actionRef}
     />
   );

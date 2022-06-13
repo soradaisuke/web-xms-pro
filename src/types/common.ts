@@ -28,4 +28,4 @@ export type ListReqParams = {
   pagesize?: number;
   order?: string;
   filter?: Record<string, string | number | boolean>;
-}
+};

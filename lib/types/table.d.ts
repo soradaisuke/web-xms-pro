@@ -29,7 +29,7 @@ export declare type TableSwapButtonRender = (config?: Partial<TableUpdateConfig>
 export declare type XMSTableColumns<T = CommonRecord> = Omit<ProColumns<T>, 'valueType' | 'render'> & {
     /** @name 从数据获取跳转地址 */
     link?: LinkConfig;
-    valueType?: ProColumns['valueType'] | Extract<ProFormColumnsType['valueType'], 'dependency'> | XMSValueType;
+    valueType?: ProColumns['valueType'] | Extract<ProFormColumnsType['valueType'], 'dependency' | 'formSet'> | XMSValueType;
     render?: (config: {
         user: User;
         update: (values: CommonRecord) => Promise<boolean>;

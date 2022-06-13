@@ -53,7 +53,7 @@ export type XMSTableColumns<T = CommonRecord> = Omit<
   link?: LinkConfig;
   valueType?:
     | ProColumns['valueType']
-    | Extract<ProFormColumnsType['valueType'], 'dependency'>
+    | Extract<ProFormColumnsType['valueType'], 'dependency' | 'formSet'>
     | XMSValueType;
   render?: (
     config: {

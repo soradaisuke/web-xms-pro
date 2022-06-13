@@ -20,3 +20,9 @@ export declare type ListResp<TData = CommonRecord> = {
     items: TData[];
     total: number;
 };
+export declare type ListReqParams = {
+    page?: number;
+    pagesize?: number;
+    order?: string;
+    filter?: Record<string, string | number | boolean>;
+};
