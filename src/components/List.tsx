@@ -102,8 +102,11 @@ function List<T = CommonRecord, U = ParamsType>({
             initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
               ?.dataIndex,
             fieldProps: {
-              width: 150,
-            },
+              style: {
+                width: '150px',
+              }
+              
+            }
           },
           {
             valueEnum: {
