@@ -104,9 +104,8 @@ function List<T = CommonRecord, U = ParamsType>({
             fieldProps: {
               style: {
                 width: '150px',
-              }
-              
-            }
+              },
+            },
           },
           {
             valueEnum: {

@@ -270,9 +270,9 @@ export function useTableRequests<
   );
 
   return {
-    create,
-    update,
-    delete: del,
-    retrieve,
+    create: config.create ? create : null,
+    update: config.update ? update : null,
+    delete: config.delete ? del : null,
+    retrieve: config.retrieve ? retrieve : null,
   };
 }

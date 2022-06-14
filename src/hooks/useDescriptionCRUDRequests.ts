@@ -189,8 +189,8 @@ export function useDescriptionsRequests<
   );
 
   return {
-    update,
-    delete: del,
-    retrieve,
+    update: config.update ? update : null,
+    delete: config.delete ? del : null,
+    retrieve: config.retrieve ? retrieve : null,
   };
 }
