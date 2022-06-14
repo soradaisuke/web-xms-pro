@@ -92,15 +92,18 @@ function List<T = CommonRecord, U = ParamsType>({
       (meta) => meta.sortDirections?.length > 0 || !!meta.defaultSortOrder
     );
     if (sortMetas.length > 0) {
+      const initialSortMeta = find(newMetas, (meta) => !!meta.defaultSortOrder);
       newMetas.sort = {
         dataIndex: 'sort',
         title: '排序',
         valueType: 'formSet',
+        initialValue: initialSortMeta
+          ? [initialSortMeta.dataIndex, initialSortMeta.defaultSortOrder]
+          : undefined,
         columns: [
           {
             valueEnum: mapValues(keyBy(sortMetas, 'dataIndex'), 'title'),
-            initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
-              ?.dataIndex,
+            initialValue: initialSortMeta?.dataIndex,
             fieldProps: {
               style: {
                 width: '150px',
@@ -112,8 +115,7 @@ function List<T = CommonRecord, U = ParamsType>({
               descend: '降序',
               asced: '升序',
             },
-            initialValue: find(newMetas, (meta) => !!meta.defaultSortOrder)
-              ?.defaultSortOrder,
+            initialValue: initialSortMeta?.defaultSortOrder,
           },
         ],
       };
