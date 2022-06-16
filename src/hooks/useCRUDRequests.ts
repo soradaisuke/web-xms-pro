@@ -186,6 +186,9 @@ export type RetrieveServiceConfig<
   TParams extends RetrieveArgs = RetrieveArgs
 > = ServiceConfig<ListResp<TData>, TParams>;
 
+const omit = (object) =>
+  omitBy(object, (v) => v === null || v === undefined || v === '');
+
 export function useRetrieveRequest<
   TData = CommonRecord,
   TParams extends RetrieveArgs = RetrieveArgs
@@ -199,15 +202,12 @@ export function useRetrieveRequest<
   if (isString(serviceConfig)) {
     service = (page, pagesize, filter, order) =>
       request(serviceConfig, {
-        params: omitBy(
-          {
-            page,
-            pagesize,
-            order,
-            filter: JSON.stringify(filter),
-          },
-          (v) => v === null || v === undefined || v === ''
-        ),
+        params: omit({
+          page,
+          pagesize,
+          order,
+          filter: JSON.stringify(omit(filter)),
+        }),
         method: 'get',
       });
   } else if (isPlainObject(serviceConfig)) {
@@ -219,15 +219,12 @@ export function useRetrieveRequest<
           serviceConfig.requestPath,
           merge(
             {
-              params: omitBy(
-                {
-                  page,
-                  pagesize,
-                  order,
-                  filter: JSON.stringify(filter),
-                },
-                (v) => v === null || v === undefined || v === ''
-              ),
+              params: omit({
+                page,
+                pagesize,
+                order,
+                filter: JSON.stringify(omit(filter)),
+              }),
               method: 'get',
             },
             serviceConfig.requestOptions
