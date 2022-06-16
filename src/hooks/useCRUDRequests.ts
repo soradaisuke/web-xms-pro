@@ -187,7 +187,10 @@ export type RetrieveServiceConfig<
 > = ServiceConfig<ListResp<TData>, TParams>;
 
 const omit = (object) =>
-  omitBy(object, (v) => v === null || v === undefined || v === '');
+  omitBy(
+    object,
+    (v) => v === null || v === undefined || v === '' || Number.isNaN(v)
+  );
 
 export function useRetrieveRequest<
   TData = CommonRecord,
