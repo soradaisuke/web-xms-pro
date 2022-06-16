@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.93](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.92...v1.0.0-beta.93) (2022-06-16)
+
+
+### Bug Fixes
+
+* **NoTicket:** omit filter中的NaN ([18de087](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/18de087620f98f79ee17991b2c09b9646099ee01))
+* **NoTicket:** x.y.z格式字符串被判断为数字类型 ([d0851d9](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/d0851d9555e8a1a615bc670e2aaed3e1f619d7f9))
+
 ## [1.0.0-beta.92](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.91...v1.0.0-beta.92) (2022-06-16)
 
 
