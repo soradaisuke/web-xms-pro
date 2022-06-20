@@ -98,7 +98,7 @@ function makeErrorHandler(
       // const errorPage =
       //   requestConfig.errorConfig?.errorPage || DEFAULT_ERROR_PAGE;
 
-      switch (errorInfo?.showType) {
+      switch (error?.request?.options?.errorShowType || errorInfo?.showType) {
         case ErrorShowType.SILENT:
           // do nothing
           break;
