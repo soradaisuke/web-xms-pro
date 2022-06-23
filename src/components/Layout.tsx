@@ -8,10 +8,11 @@ import Page, { PageProps } from './Page';
 import { CommonRecord } from '../types/common';
 import useUser from '../hooks/useUser';
 import { hasPermission } from '../utils';
+import { PermissionConfig } from '../utils/hasPermission';
 
 export type Route = Omit<AntRoute, 'routes'> & {
   /** @name 路由所需用户权限 */
-  permissions?: string[] | string;
+  permissions?: PermissionConfig;
   /** @name 子路由 */
   routes?: Route[];
   /** @name 页面组件配置 */
