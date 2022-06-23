@@ -5,20 +5,19 @@ import {
   Result,
 } from 'ahooks/lib/useRequest/src/types';
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
-import { RequestOptionsInit } from 'umi-request';
 import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
-import { request, ResponseStructure, useRequest } from '../utils/request';
+import { request, RequestOptions, useRequest } from '../utils/request';
 
 export type ServiceConfigObject<
   TData = CommonRecord,
   TParams extends any[] = any[]
 > =
   | {
-      requestService: Service<ResponseStructure<TData>, TParams>;
+      requestService: Service<TData, TParams>;
     }
   | {
       requestPath: string;
-      requestOptions?: RequestOptionsInit;
+      requestOptions?: RequestOptions;
     };
 
 export type ServiceConfig<
@@ -36,7 +35,7 @@ type CreateArgs = [values: CommonRecord];
 type CreateService<
   TData = CommonRecord,
   TParams extends CreateArgs = CreateArgs
-> = Service<ResponseStructure<TData>, TParams>;
+> = Service<TData, TParams>;
 
 export type CreateServiceConfig<
   TParams extends CreateArgs = CreateArgs,
@@ -48,9 +47,9 @@ export function useCreateRequest<
   TData = CommonRecord
 >(
   serviceConfig: CreateServiceConfig<TParams, TData>,
-  options?: Options<ResponseStructure<TData>, TParams>,
-  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
-): Result<ResponseStructure<TData>, TParams> {
+  options?: Options<TData, TParams>,
+  plugins?: Plugin<TData, TParams>[]
+): Result<TData, TParams> {
   let service: CreateService<TData, TParams>;
 
   if (isString(serviceConfig)) {
@@ -85,7 +84,7 @@ type UpdateArgs = [values: CommonRecord, id?: string | number];
 type UpdateService<
   TData = CommonRecord,
   TParams extends UpdateArgs = UpdateArgs
-> = Service<ResponseStructure<TData>, TParams>;
+> = Service<TData, TParams>;
 
 export type UpdateServiceConfig<
   TParams extends UpdateArgs = UpdateArgs,
@@ -97,9 +96,9 @@ export function useUpdateRequest<
   TData = CommonRecord
 >(
   serviceConfig: UpdateServiceConfig<TParams, TData>,
-  options?: Options<ResponseStructure<TData>, TParams>,
-  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
-): Result<ResponseStructure<TData>, TParams> {
+  options?: Options<TData, TParams>,
+  plugins?: Plugin<TData, TParams>[]
+): Result<TData, TParams> {
   let service: UpdateService<TData, TParams>;
 
   if (isString(serviceConfig)) {
@@ -134,7 +133,7 @@ type DeleteArgs = [id?: string | number];
 type DeleteService<
   TData = CommonRecord,
   TParams extends DeleteArgs = DeleteArgs
-> = Service<ResponseStructure<TData>, TParams>;
+> = Service<TData, TParams>;
 
 export type DeleteServiceConfig<
   TParams extends DeleteArgs = DeleteArgs,
@@ -146,9 +145,9 @@ export function useDeleteRequest<
   TData = CommonRecord
 >(
   serviceConfig: DeleteServiceConfig<TParams, TData>,
-  options?: Options<ResponseStructure<TData>, TParams>,
-  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
-): Result<ResponseStructure<TData>, TParams> {
+  options?: Options<TData, TParams>,
+  plugins?: Plugin<TData, TParams>[]
+): Result<TData, TParams> {
   let service: DeleteService<TData, TParams>;
 
   if (isString(serviceConfig)) {
@@ -179,7 +178,7 @@ export type RetrieveArgs = [
 type RetrieveService<
   TData = CommonRecord,
   TParams extends RetrieveArgs = RetrieveArgs
-> = Service<ResponseStructure<ListResp<TData>>, TParams>;
+> = Service<ListResp<TData>, TParams>;
 
 export type RetrieveServiceConfig<
   TData = CommonRecord,
@@ -197,9 +196,9 @@ export function useRetrieveRequest<
   TParams extends RetrieveArgs = RetrieveArgs
 >(
   serviceConfig: RetrieveServiceConfig<TData, TParams>,
-  options?: Options<ResponseStructure<ListResp<TData>>, TParams>,
-  plugins?: Plugin<ResponseStructure<ListResp<TData>>, TParams>[]
-): Result<ResponseStructure<ListResp<TData>>, TParams> {
+  options?: Options<ListResp<TData>, TParams>,
+  plugins?: Plugin<ListResp<TData>, TParams>[]
+): Result<ListResp<TData>, TParams> {
   let service: RetrieveService<TData, TParams>;
 
   if (isString(serviceConfig)) {
@@ -244,7 +243,7 @@ type RetrieveOneArgs = [params: CommonRecord];
 type RetrieveOneService<
   TData = CommonRecord,
   TParams extends RetrieveOneArgs = RetrieveOneArgs
-> = Service<ResponseStructure<TData>, TParams>;
+> = Service<TData, TParams>;
 
 export type RetrieveOneServiceConfig<
   TData = CommonRecord,
@@ -256,9 +255,9 @@ export function useRetrieveOneRequest<
   TParams extends RetrieveOneArgs = RetrieveOneArgs
 >(
   serviceConfig: RetrieveOneServiceConfig<TData, TParams>,
-  options?: Options<ResponseStructure<TData>, TParams>,
-  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
-): Result<ResponseStructure<TData>, TParams> {
+  options?: Options<TData, TParams>,
+  plugins?: Plugin<TData, TParams>[]
+): Result<TData, TParams> {
   let service: RetrieveOneService<TData, TParams>;
 
   if (isString(serviceConfig)) {

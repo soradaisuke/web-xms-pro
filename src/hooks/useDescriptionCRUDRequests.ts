@@ -8,7 +8,6 @@ import { MutableRefObject, useCallback, useMemo } from 'react';
 // @ts-ignore
 import { useNavigate, useHistory } from 'react-router-dom';
 import { CommonRecord, RouteParams, User } from '../types/common';
-import { ResponseStructure } from '../utils/request';
 import {
   DeleteServiceConfig,
   RequestConfig,
@@ -20,23 +19,23 @@ import {
 } from './useCRUDRequests';
 
 export type DescriptionsUpdateServiceConfig<
-  TValues extends CommonRecord = CommonRecord
-> = UpdateServiceConfig<[values: TValues]> & {
-  useRequestOptions?: Options<ResponseStructure, [values: TValues]>;
-  useRequestPlugins?: Plugin<ResponseStructure, [values: TValues]>[];
+  TValue extends CommonRecord = CommonRecord
+> = UpdateServiceConfig<[values: TValue]> & {
+  useRequestOptions?: Options<any, [values: TValue]>;
+  useRequestPlugins?: Plugin<any, [values: TValue]>[];
 };
 
 export type DescriptionsUpdateRequest<
-  TValues extends CommonRecord = CommonRecord
-> = (values: TValues) => Promise<boolean>;
+  TValue extends CommonRecord = CommonRecord
+> = (values: TValue) => Promise<boolean>;
 
 export function useDescriptionsUpdateRequest<
-  TValues extends CommonRecord = CommonRecord
+  TValue extends CommonRecord = CommonRecord
 >(
-  serviceConfig: DescriptionsUpdateServiceConfig<TValues>,
+  serviceConfig: DescriptionsUpdateServiceConfig<TValue>,
   action: MutableRefObject<ActionType>
-): DescriptionsUpdateRequest<TValues> {
-  const updateReq = useUpdateRequest<[values: TValues]>(
+): DescriptionsUpdateRequest<TValue> {
+  const updateReq = useUpdateRequest<[values: TValue]>(
     serviceConfig,
     merge({}, serviceConfig?.useRequestOptions ?? {}, {
       manual: true,
@@ -45,7 +44,7 @@ export function useDescriptionsUpdateRequest<
   );
 
   return useCallback<DescriptionsUpdateRequest>(
-    async (values: TValues) => {
+    async (values: TValue) => {
       try {
         await updateReq.runAsync(values);
         message.success('提交成功');
@@ -60,8 +59,8 @@ export function useDescriptionsUpdateRequest<
 }
 
 export type DescriptionsDeleteServiceConfig = DeleteServiceConfig<[]> & {
-  useRequestOptions?: Options<ResponseStructure, []>;
-  useRequestPlugins?: Plugin<ResponseStructure, []>[];
+  useRequestOptions?: Options<any, []>;
+  useRequestPlugins?: Plugin<any, []>[];
 };
 
 export type DescriptionsDeleteRequest = () => Promise<boolean>;
@@ -97,8 +96,8 @@ export function useDescriptionsDeleteRequest(
 
 export type DescriptionsRetrieveServiceConfig<TData = CommonRecord> =
   RetrieveOneServiceConfig<TData> & {
-    useRequestOptions?: Options<ResponseStructure, [params: CommonRecord]>;
-    useRequestPlugins?: Plugin<ResponseStructure, [params: CommonRecord]>[];
+    useRequestOptions?: Options<TData, [params: CommonRecord]>;
+    useRequestPlugins?: Plugin<TData, [params: CommonRecord]>[];
   };
 
 export type DescriptionsRetrieveRequest<TData = CommonRecord> =
@@ -118,38 +117,38 @@ export function useDescriptionsRetrieveRequest<TData = CommonRecord>(
   return useCallback<DescriptionsRetrieveRequest>(
     (params) =>
       req.runAsync(params).then((res) => ({
-        data: res.data,
+        data: res,
         success: true,
       })),
     [req]
   );
 }
 
-type CustomConfig<TData, TValues> = {
-  update?: Partial<Exclude<DescriptionsUpdateServiceConfig<TValues>, string>>;
+type CustomConfig<TData, TValue> = {
+  update?: Partial<Exclude<DescriptionsUpdateServiceConfig<TValue>, string>>;
   delete?: Partial<Exclude<DescriptionsDeleteServiceConfig, string>>;
   retrieve?: Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>>;
 };
 
 export type DescriptionsRequestConfig<
   TData = CommonRecord,
-  TValues extends CommonRecord = CommonRecord
+  TValue extends CommonRecord = CommonRecord
 > = RequestConfig<
   | Extract<DescriptionsRetrieveServiceConfig<TData>, string>
   | (Partial<Exclude<DescriptionsRetrieveServiceConfig<TData>, string>> &
-      CustomConfig<TData, TValues>)
+      CustomConfig<TData, TValue>)
 >;
 
 export function useDescriptionsRequests<
   TData = CommonRecord,
-  TValues extends CommonRecord = CommonRecord
+  TValue extends CommonRecord = CommonRecord
 >(
-  requestConfig: DescriptionsRequestConfig<TData, TValues>,
+  requestConfig: DescriptionsRequestConfig<TData, TValue>,
   matchParams: RouteParams,
   user: User,
   action: MutableRefObject<ActionType>
 ): {
-  update?: DescriptionsUpdateRequest<TValues>;
+  update?: DescriptionsUpdateRequest<TValue>;
   delete?: DescriptionsDeleteRequest;
   retrieve?: DescriptionsRetrieveRequest<TData>;
 } {
@@ -178,7 +177,7 @@ export function useDescriptionsRequests<
   }, [matchParams, requestConfig, user]);
 
   const update = useDescriptionsUpdateRequest(
-    config.update as DescriptionsUpdateServiceConfig<TValues>,
+    config.update as DescriptionsUpdateServiceConfig<TValue>,
     action
   );
   const del = useDescriptionsDeleteRequest(

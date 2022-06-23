@@ -6,10 +6,8 @@ import {
   RequestInterceptor,
   ResponseInterceptor,
   ResponseError,
-  RequestMethod,
   RequestOptionsWithResponse,
   RequestOptionsWithoutResponse,
-  RequestResponse,
 } from 'umi-request';
 import { message, notification } from 'antd';
 import { useRequest as useAhooksRequest } from 'ahooks';
@@ -29,7 +27,7 @@ export enum ErrorShowType {
   NOTIFICATION = 4,
 }
 
-export interface ResponseStructure<T = any> extends CommonRecord {
+interface ResponseStructure<T = any> extends CommonRecord {
   errcode: number;
   errmsg?: string;
   data?: T;
@@ -50,10 +48,24 @@ interface RequestError extends Error {
   response?: Context['res'];
 }
 
-type ErrorAdapter = (
-  resData: ResponseStructure,
+type ErrorAdapter<T = ResponseStructure> = (
+  resData: T,
   ctx: Context
 ) => ErrorInfoStructure;
+
+type ResultAdapter<T = ResponseStructure, R = any> = (resData: T) => R;
+
+export type RequestOptions = (
+  | RequestOptionsInit
+  | RequestOptionsWithoutResponse
+  | RequestOptionsWithResponse
+) & {
+  skipErrorHandler?: boolean;
+  skipFormatResult?: boolean;
+  errorShowType?: ErrorShowType;
+  errorAdaptor?: ErrorAdapter;
+  resultAdapter?: ResultAdapter;
+};
 
 const defaultErrorAdapter: ErrorAdapter = (
   resData: ResponseStructure,
@@ -68,11 +80,15 @@ const defaultErrorAdapter: ErrorAdapter = (
   return errorInfo;
 };
 
+const defaultResultAdapter: ResultAdapter = (resData: ResponseStructure) =>
+  resData.data;
+
 function makeErrorHandler(
   errorAdaptor: ErrorAdapter
 ): (error: ResponseError) => void {
   return (error: RequestError) => {
-    if (error?.request?.options?.skipErrorHandler) {
+    const options = error?.request?.options as RequestOptions;
+    if (options?.skipErrorHandler) {
       throw error;
     }
 
@@ -95,10 +111,8 @@ function makeErrorHandler(
     if (errorInfo) {
       const errorMessage = errorInfo?.errorMessage;
       const errorCode = errorInfo?.errorCode;
-      // const errorPage =
-      //   requestConfig.errorConfig?.errorPage || DEFAULT_ERROR_PAGE;
 
-      switch (error?.request?.options?.errorShowType || errorInfo?.showType) {
+      switch (options?.errorShowType || errorInfo?.showType) {
         case ErrorShowType.SILENT:
           // do nothing
           break;
@@ -125,27 +139,7 @@ function makeErrorHandler(
   };
 }
 
-interface Request<R = false> extends RequestMethod<R> {
-  <T = any>(url: string, options?: RequestOptionsInit): R extends true
-    ? Promise<RequestResponse<ResponseStructure<T>>>
-    : Promise<ResponseStructure<T>>;
-  <T = any>(url: string, options: RequestOptionsWithoutResponse): Promise<
-    ResponseStructure<T>
-  >;
-  <T = any>(url: string, options: RequestOptionsWithResponse): Promise<
-    RequestResponse<ResponseStructure<T>>
-  >;
-  get: Request<R>;
-  post: Request<R>;
-  delete: Request<R>;
-  put: Request<R>;
-  patch: Request<R>;
-  head: Request<R>;
-  options: Request<R>;
-  rpc: Request<R>;
-}
-
-const request: Request = extend({
+const request = extend({
   credentials: 'include',
   errorHandler: makeErrorHandler(defaultErrorAdapter),
 });
@@ -154,22 +148,17 @@ function useRequest<TData = CommonRecord, TParams extends any[] = any>(
   service: Service<TData, TParams>,
   options?: Options<TData, TParams>,
   plugins?: Plugin<TData, TParams>[]
-): Result<TData, TParams>;
-
-function useRequest<TData = CommonRecord, TParams extends any[] = any>(
-  service: Service<ResponseStructure<TData>, TParams>,
-  options?: Options<ResponseStructure<TData>, TParams>,
-  plugins?: Plugin<ResponseStructure<TData>, TParams>[]
-): Result<ResponseStructure<TData>, TParams> {
+): Result<TData, TParams> {
   return useAhooksRequest(service, options, plugins);
 }
 
-export interface RequestOptions extends RequestOptionsInit {
+export interface RequestConfig extends RequestOptionsInit {
   /** @name 错误处理配置 */
   errorConfig?: {
     /** @name 错误消息适配器 */
     adaptor?: ErrorAdapter;
   };
+  resultAdapter?: ResultAdapter;
   /** @name 中间件 */
   middlewares?: OnionMiddleware[];
   /** @name request拦截器 */
@@ -180,13 +169,34 @@ export interface RequestOptions extends RequestOptionsInit {
   authPath: string;
 }
 
-function extendRequestConfig(requestOptions: RequestOptions): void {
-  const errorAdaptor =
-    requestOptions.errorConfig?.adaptor || defaultErrorAdapter;
+function extendRequestConfig(requestConfig: RequestConfig): void {
+  const globalErrorAdaper =
+    requestConfig.errorConfig?.adaptor || defaultErrorAdapter;
+  const globalResultAdaper =
+    requestConfig.resultAdapter || defaultResultAdapter;
 
   request.extendOptions({
-    errorHandler: makeErrorHandler(errorAdaptor),
-    ...requestOptions,
+    errorHandler: makeErrorHandler(globalErrorAdaper),
+    ...requestConfig,
+  });
+
+  // 中间件统一返回数据格式
+  request.use(async (ctx, next) => {
+    await next();
+    const { req, res } = ctx;
+    const options = req.options as RequestOptions;
+    if (options?.skipFormatResult) {
+      return;
+    }
+    const resData = options?.getResponse ? res.data : res;
+    const resultAdaptor = options.resultAdapter || globalResultAdaper;
+    const result = resultAdaptor(resData);
+    ctx.res = options?.getResponse
+      ? {
+          ...res,
+          data: result,
+        }
+      : result;
   });
 
   // 中间件统一错误处理
@@ -195,12 +205,13 @@ function extendRequestConfig(requestOptions: RequestOptions): void {
   request.use(async (ctx, next) => {
     await next();
     const { req, res } = ctx;
-    if (req.options?.skipErrorHandler) {
+    const options = req.options as RequestOptions;
+    if (options?.skipErrorHandler) {
       return;
     }
-    const { options } = req;
     const { getResponse } = options;
     const resData = getResponse ? res.data : res;
+    const errorAdaptor = options.errorAdaptor || globalErrorAdaper;
     const errorInfo = errorAdaptor(resData, ctx);
     if (errorInfo.success === false) {
       // 抛出错误到 errorHandler 中处理
@@ -214,7 +225,7 @@ function extendRequestConfig(requestOptions: RequestOptions): void {
   });
 
   // Add user custom middlewares
-  const customMiddlewares = requestOptions.middlewares || [];
+  const customMiddlewares = requestConfig.middlewares || [];
   customMiddlewares.forEach((mw) => {
     request.use(mw);
   });
@@ -233,8 +244,8 @@ function extendRequestConfig(requestOptions: RequestOptions): void {
   });
 
   // Add user custom interceptors
-  const requestInterceptors = requestOptions.requestInterceptors || [];
-  const responseInterceptors = requestOptions.responseInterceptors || [];
+  const requestInterceptors = requestConfig.requestInterceptors || [];
+  const responseInterceptors = requestConfig.responseInterceptors || [];
   requestInterceptors.map((ri) => request.interceptors.request.use(ri));
   responseInterceptors.map((ri) => request.interceptors.response.use(ri));
 }
