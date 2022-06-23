@@ -113,7 +113,7 @@ function List<T = CommonRecord, U = ParamsType>({
           {
             valueEnum: {
               descend: '降序',
-              asced: '升序',
+              ascend: '升序',
             },
             initialValue: initialSortMeta?.defaultSortOrder,
           },
