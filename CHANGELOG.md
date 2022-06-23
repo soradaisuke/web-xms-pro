@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.98](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.97...v1.0.0-beta.98) (2022-06-23)
+
+
+### Bug Fixes
+
+* **NoTicket:** pro-form最新版带来的Drawer/ModalForm白屏 ([1cc10d0](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/1cc10d05a4009bbffbf7f65617153ca97224b7f4))
+
 ## [1.0.0-beta.97](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.96...v1.0.0-beta.97) (2022-06-23)
 
 
