@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.99](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.98...v1.0.0-beta.99) (2022-06-23)
+
+
+### Bug Fixes
+
+* **NoTicket:** peerDependencies rc-field-form ([417dc8c](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/417dc8c7df8ccdbc0b016653033efab627cdf932))
+
 ## [1.0.0-beta.98](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.97...v1.0.0-beta.98) (2022-06-23)
 
 
