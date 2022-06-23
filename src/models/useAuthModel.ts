@@ -2,8 +2,9 @@
 import { useCallback, useState } from 'react';
 import { generateUri } from '@qt/web-common';
 import { isProduction } from '@qt/env';
+import { useRequest } from 'ahooks';
 import Cookie from 'js-cookie';
-import { request, useRequest } from '../utils/request';
+import { request } from '../utils/request';
 import { Hook } from '../components/Provider';
 
 const ENTRY_HOST = `//entry${isProduction ? '' : '.staging'}.qingtingfm.com`;

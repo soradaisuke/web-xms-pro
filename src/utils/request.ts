@@ -10,13 +10,6 @@ import {
   RequestOptionsWithoutResponse,
 } from 'umi-request';
 import { message, notification } from 'antd';
-import { useRequest as useAhooksRequest } from 'ahooks';
-import {
-  Options,
-  Service,
-  Plugin,
-  Result,
-} from 'ahooks/lib/useRequest/src/types';
 import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 
@@ -139,18 +132,10 @@ function makeErrorHandler(
   };
 }
 
-const request = extend({
+export const request = extend({
   credentials: 'include',
   errorHandler: makeErrorHandler(defaultErrorAdapter),
 });
-
-function useRequest<TData = CommonRecord, TParams extends any[] = any>(
-  service: Service<TData, TParams>,
-  options?: Options<TData, TParams>,
-  plugins?: Plugin<TData, TParams>[]
-): Result<TData, TParams> {
-  return useAhooksRequest(service, options, plugins);
-}
 
 export interface RequestConfig extends RequestOptionsInit {
   /** @name 错误处理配置 */
@@ -169,7 +154,7 @@ export interface RequestConfig extends RequestOptionsInit {
   authPath: string;
 }
 
-function extendRequestConfig(requestConfig: RequestConfig): void {
+export function extendRequestConfig(requestConfig: RequestConfig): void {
   const globalErrorAdaper =
     requestConfig.errorConfig?.adaptor || defaultErrorAdapter;
   const globalResultAdaper =
@@ -249,5 +234,3 @@ function extendRequestConfig(requestConfig: RequestConfig): void {
   requestInterceptors.map((ri) => request.interceptors.request.use(ri));
   responseInterceptors.map((ri) => request.interceptors.response.use(ri));
 }
-
-export { request, useRequest, extendRequestConfig };

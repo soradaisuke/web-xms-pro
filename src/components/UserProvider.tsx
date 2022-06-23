@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { generateUri } from '@qt/web-common';
 import { isProduction } from '@qt/env';
 import Cookie from 'js-cookie';
-import { request, useRequest } from '../utils/request';
+import { useRequest } from 'ahooks';
+import { request } from '../utils/request';
 import UserContext from '../contexts/UserContext';
 import { User } from '../types/common';
 

@@ -1,5 +1,4 @@
 import { Context, RequestOptionsInit, OnionMiddleware, RequestInterceptor, ResponseInterceptor, RequestOptionsWithResponse, RequestOptionsWithoutResponse } from 'umi-request';
-import { Options, Service, Plugin, Result } from 'ahooks/lib/useRequest/src/types';
 import { CommonRecord } from '../types/common';
 export declare enum ErrorShowType {
     SILENT = 0,
@@ -28,8 +27,7 @@ export declare type RequestOptions = (RequestOptionsInit | RequestOptionsWithout
     errorAdaptor?: ErrorAdapter;
     resultAdapter?: ResultAdapter;
 };
-declare const request: import("umi-request").RequestMethod<false>;
-declare function useRequest<TData = CommonRecord, TParams extends any[] = any>(service: Service<TData, TParams>, options?: Options<TData, TParams>, plugins?: Plugin<TData, TParams>[]): Result<TData, TParams>;
+export declare const request: import("umi-request").RequestMethod<false>;
 export interface RequestConfig extends RequestOptionsInit {
     /** @name 错误处理配置 */
     errorConfig?: {
@@ -46,5 +44,5 @@ export interface RequestConfig extends RequestOptionsInit {
     /** @name 获取用户信息的path */
     authPath: string;
 }
-declare function extendRequestConfig(requestConfig: RequestConfig): void;
-export { request, useRequest, extendRequestConfig };
+export declare function extendRequestConfig(requestConfig: RequestConfig): void;
+export {};
