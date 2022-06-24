@@ -1,13 +1,13 @@
 import React, { PropsWithChildren, useContext, useMemo } from 'react';
-import { Input, Select, Switch } from 'antd';
-import ProProvider from '@ant-design/pro-provider';
+import { Input, Select, Tag } from 'antd';
+import ProProvider, { ConfigContextPropsType } from '@ant-design/pro-provider';
 import UploadImage from './UploadImage';
 import UploadFile from './UploadFile';
 
 function XmsProProvider({ children }: PropsWithChildren<any>) {
   const values = useContext(ProProvider);
 
-  const value = useMemo(
+  const value = useMemo<ConfigContextPropsType>(
     () => ({
       ...values,
       valueTypeMap: {
@@ -39,14 +39,12 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
           ),
         },
         boolean: {
-          render: (text) => (
-            <Switch
-              checkedChildren="是"
-              unCheckedChildren="否"
-              checked={text}
-            />
+          render: (text, props) => (
+            <Tag color={text ? 'green' : 'red'} {...props?.fieldProps}>
+              {text ? '是' : '否'}
+            </Tag>
           ),
-          renderFormItem: (_, renderProps) => (
+          renderFormItem: (_, props) => (
             <Select
               allowClear
               options={[
@@ -59,7 +57,7 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
                   value: false,
                 },
               ]}
-              {...renderProps?.fieldProps}
+              {...props?.fieldProps}
             />
           ),
         },
