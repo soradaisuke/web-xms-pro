@@ -5,6 +5,7 @@ export { default as Descriptions } from './Descriptions';
 export { default as TriggerModal } from './TriggerModal';
 export { default as TableTransfer } from './TableTransfer';
 export { default as XmsProProvider } from './XmsProProvider';
+export { default as UserProvider } from './UserProvider';
 export type { PageProps } from './Page';
 export type { TableProps } from './Table';
 export type { ListProps } from './List';

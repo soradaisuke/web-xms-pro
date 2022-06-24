@@ -1,15 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { generateUri } from '@qt/web-common';
 import { isProduction } from '@qt/env';
 import Cookie from 'js-cookie';
 import { useRequest } from 'ahooks';
+import { isPlainObject, isString } from 'lodash';
 import { request } from '../utils/request';
 import UserContext from '../contexts/UserContext';
 import { User } from '../types/common';
+import { ServiceConfig } from '../hooks/useCRUDRequests';
 
 export type UserProviderProps = {
   children: React.ReactNode;
-  authPath: string;
+  requestConfig?: ServiceConfig;
+  user?: User;
 };
 
 const ENTRY_HOST = `//entry${isProduction ? '' : '.staging'}.qingtingfm.com`;
@@ -31,10 +34,34 @@ const signout = () => {
   window.location.replace(window.location.origin);
 };
 
-function UserProvider({ children, authPath }: UserProviderProps) {
-  const [user, setUser] = useState<User>(null);
+function UserProvider({
+  children,
+  requestConfig,
+  user: propUser,
+}: UserProviderProps) {
+  const [user, setUser] = useState<User>(propUser);
 
-  const auth = useRequest(() => request.get(authPath), {
+  useEffect(() => {
+    setUser(propUser);
+  }, [propUser]);
+
+  const service = useMemo(() => {
+    if (isString(requestConfig)) {
+      return () => request.get(requestConfig);
+    }
+    if (isPlainObject(requestConfig)) {
+      if ('requestService' in requestConfig) {
+        return requestConfig.requestService;
+      }
+      if ('requestPath' in requestConfig) {
+        return () =>
+          request.get(requestConfig.requestPath, requestConfig.requestOptions);
+      }
+    }
+    return null;
+  }, [requestConfig]);
+
+  const auth = useRequest(service, {
     manual: true,
     onSuccess: (result) => {
       setUser(result);
@@ -53,5 +80,10 @@ function UserProvider({ children, authPath }: UserProviderProps) {
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
+
+UserProvider.defaultProps = {
+  requestConfig: null,
+  user: null,
+};
 
 export default UserProvider;

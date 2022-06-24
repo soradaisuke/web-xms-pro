@@ -150,8 +150,6 @@ export interface RequestConfig extends RequestOptionsInit {
   requestInterceptors?: RequestInterceptor[];
   /** @name response拦截器 */
   responseInterceptors?: ResponseInterceptor[];
-  /** @name 获取用户信息的path */
-  authPath: string;
 }
 
 export function extendRequestConfig(requestConfig: RequestConfig): void {

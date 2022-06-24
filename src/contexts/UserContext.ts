@@ -4,7 +4,7 @@ import { User } from '../types/common';
 
 const UserContext = React.createContext<{
   user: User;
-  auth: Result<any, []>;
+  auth: Result<any, any[]>;
   signin: () => void;
   signout: () => void;
 }>({
