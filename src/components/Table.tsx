@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useImperativeHandle } from 'react';
 import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { find, get, isBoolean, isFunction, map } from 'lodash';
@@ -51,12 +51,17 @@ function Table<T = CommonRecord, U = ParamsType>({
   search,
   params,
   form,
+  formRef: propsFormRef,
+  actionRef: propsActionRef,
   ...rest
 }: TableProps<T, U>) {
   const matchParams = useParams();
   const user = useUser();
   const formRef = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
+
+  useImperativeHandle(propsFormRef, () => formRef.current);
+  useImperativeHandle(propsActionRef, () => actionRef.current);
 
   const {
     create,

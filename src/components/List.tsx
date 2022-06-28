@@ -1,4 +1,9 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useImperativeHandle,
+} from 'react';
 import { ActionType } from '@ant-design/pro-table';
 import ProList, { ProListMeta, ProListProps } from '@ant-design/pro-list';
 import { SortOrder } from 'antd/lib/table/interface';
@@ -41,12 +46,17 @@ function List<T = CommonRecord, U = ParamsType>({
   search,
   params,
   form,
+  formRef: propsFormRef,
+  actionRef: propsActionRef,
   ...rest
 }: ListProps<T, U>) {
   const matchParams = useParams();
   const user = useUser();
   const formRef = useRef<ProFormInstance>();
   const actionRef = useRef<ActionType>();
+
+  useImperativeHandle(propsFormRef, () => formRef.current);
+  useImperativeHandle(propsActionRef, () => actionRef.current);
 
   const {
     create,
