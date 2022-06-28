@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { ModalProps } from 'antd';
-export declare type TriggerModalProps = PropsWithChildren<ModalProps> & {
+export declare type TriggerModalProps = ModalProps & {
     trigger: JSX.Element;
 };
 declare function TriggerModal({ trigger, onOk, onCancel, ...rest }: TriggerModalProps): JSX.Element;

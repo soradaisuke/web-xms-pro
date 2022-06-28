@@ -19,7 +19,7 @@ export declare type TableProps<T = CommonRecord, U = ParamsType> = Omit<ProTable
         user: User;
     }, ...base: Parameters<ToolBarProps<T>['toolBarRender']>) => ReturnType<ToolBarProps<T>['toolBarRender']>);
 };
-declare function Table<T = CommonRecord, U = ParamsType>({ rowKey, requestConfig, columns, toolBarRender, search, params, form, ...rest }: TableProps<T, U>): JSX.Element;
+declare function Table<T = CommonRecord, U = ParamsType>({ rowKey, requestConfig, columns, toolBarRender, search, params, form, formRef: propsFormRef, actionRef: propsActionRef, ...rest }: TableProps<T, U>): JSX.Element;
 declare namespace Table {
     var defaultProps: {
         params: any;

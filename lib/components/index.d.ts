@@ -3,6 +3,7 @@ export { default as Table } from './Table';
 export { default as List } from './List';
 export { default as Descriptions } from './Descriptions';
 export { default as TriggerModal } from './TriggerModal';
+export { default as TriggerDrawer } from './TriggerDrawer';
 export { default as TableTransfer } from './TableTransfer';
 export { default as XmsProProvider } from './XmsProProvider';
 export { default as UserProvider } from './UserProvider';

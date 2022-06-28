@@ -1,7 +1,7 @@
-import React, { PropsWithChildren, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Modal, ModalProps } from 'antd';
 
-export type TriggerModalProps = PropsWithChildren<ModalProps> & {
+export type TriggerModalProps = ModalProps & {
   trigger: JSX.Element;
 };
 
