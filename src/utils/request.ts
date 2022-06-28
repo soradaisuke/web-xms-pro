@@ -12,13 +12,7 @@ import {
 import { message, notification } from 'antd';
 import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
-
-export enum ErrorShowType {
-  SILENT = 0,
-  WARN_MESSAGE = 1,
-  ERROR_MESSAGE = 2,
-  NOTIFICATION = 4,
-}
+import showError, { ErrorShowType, XmsError } from './showError';
 
 interface ResponseStructure<T = any> extends CommonRecord {
   errcode: number;
@@ -102,31 +96,12 @@ function makeErrorHandler(
     errorInfo = error.info;
 
     if (errorInfo) {
-      const errorMessage = errorInfo?.errorMessage;
-      const errorCode = errorInfo?.errorCode;
-
-      switch (options?.errorShowType || errorInfo?.showType) {
-        case ErrorShowType.SILENT:
-          // do nothing
-          break;
-        case ErrorShowType.WARN_MESSAGE:
-          message.warn(errorMessage);
-          break;
-        case ErrorShowType.ERROR_MESSAGE:
-          message.error(errorMessage);
-          break;
-        case ErrorShowType.NOTIFICATION:
-          notification.open({
-            description: errorMessage,
-            message: errorCode,
-          });
-          break;
-        default:
-          message.error(errorMessage);
-          break;
-      }
+      const e: XmsError = new Error(errorInfo?.errorMessage);
+      e.code = errorInfo?.errorCode;
+      e.showType = options?.errorShowType || errorInfo?.showType;
+      showError(e);
     } else {
-      message.error(error.message || 'Request error, please retry.');
+      showError(error);
     }
     throw error;
   };

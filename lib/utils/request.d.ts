@@ -1,11 +1,6 @@
 import { Context, RequestOptionsInit, OnionMiddleware, RequestInterceptor, ResponseInterceptor, RequestOptionsWithResponse, RequestOptionsWithoutResponse } from 'umi-request';
 import { CommonRecord } from '../types/common';
-export declare enum ErrorShowType {
-    SILENT = 0,
-    WARN_MESSAGE = 1,
-    ERROR_MESSAGE = 2,
-    NOTIFICATION = 4
-}
+import { ErrorShowType } from './showError';
 interface ResponseStructure<T = any> extends CommonRecord {
     errcode: number;
     errmsg?: string;
