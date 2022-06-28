@@ -6,6 +6,8 @@ export { default as TriggerModal } from './TriggerModal';
 export { default as TableTransfer } from './TableTransfer';
 export { default as XmsProProvider } from './XmsProProvider';
 export { default as UserProvider } from './UserProvider';
+export { default as UploadImage } from './UploadImage';
+export { default as UploadFile } from './UploadFile';
 export type { PageProps } from './Page';
 export type { TableProps } from './Table';
 export type { ListProps } from './List';
