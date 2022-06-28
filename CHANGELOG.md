@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.101](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.100...v1.0.0-beta.101) (2022-06-28)
+
+
+### Features
+
+* **NoTicket:** forward actionRef&formRef ([6ecb653](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/6ecb65347ea07d29ea2e54ba352b819a405a853c))
+* **NoTicket:** showError ([5d82dad](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/5d82dadf96090b053ff320debd9de2c266a58f42))
+* **NoTicket:** 重构UploadImage和UploadFile ([1591278](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/15912780ff46dd63b92c27caaa7c4eef0cb12bef))
+
 ## [1.0.0-beta.100](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.99...v1.0.0-beta.100) (2022-06-24)
 
 
