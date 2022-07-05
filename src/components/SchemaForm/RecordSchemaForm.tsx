@@ -58,6 +58,7 @@ function RecordSchemaForm<T = CommonRecord>({
         modalProps: {
           ...((rest as ModalFormProps<T>).modalProps ?? {}),
           destroyOnClose: true,
+          forceRender: true,
         },
       };
     }
@@ -67,6 +68,7 @@ function RecordSchemaForm<T = CommonRecord>({
         drawerProps: {
           ...((rest as DrawerFormProps<T>).drawerProps ?? {}),
           destroyOnClose: true,
+          forceRender: true,
         },
       };
     }
