@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.102](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.101...v1.0.0-beta.102) (2022-07-05)
+
+
+### Features
+
+* **NoTicket:** TriggerDrawer ([1d07f0a](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/1d07f0a6ffa13d4238026774a0e392d41485b40d))
+
+
+### Bug Fixes
+
+* **NoTicket:** 升级依赖，去除forceRender的临时修改 ([fc7665e](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/fc7665ead7bfb3325796b8f1b4c5fa05d18c51cf))
+
 ## [1.0.0-beta.101](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.100...v1.0.0-beta.101) (2022-06-28)
 
 
