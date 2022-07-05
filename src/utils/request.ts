@@ -9,7 +9,6 @@ import {
   RequestOptionsWithResponse,
   RequestOptionsWithoutResponse,
 } from 'umi-request';
-import { message, notification } from 'antd';
 import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 import showError, { ErrorShowType, XmsError } from './showError';
