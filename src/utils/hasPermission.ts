@@ -1,12 +1,23 @@
-import { find, get, isArray, isString } from 'lodash';
+import { find, get, isArray, isPlainObject, isString, keys } from 'lodash';
 import { CommonRecord } from '../types';
 
-type Permission = string;
-type OrPermissions = Permission[];
-type AndPermissions = Permission[][];
+/**
+ * 所需权限配置
+ *
+ * string为单一权限
+ *
+ * string[]为满足任意权限
+ *
+ * Record<string, any>为满足所有权限
+ */
+export type PermissionConfig = string | string[] | Record<string, any>;
 
-export type PermissionConfig = Permission | OrPermissions | AndPermissions;
-
+/**
+ * 检查用户权限是否满足条件
+ * @param permissionConfig 所需权限配置
+ * @param userPermissions 用户权限
+ * @returns 是否满足条件
+ */
 export default function hasPermission(
   permissionConfig: PermissionConfig,
   userPermissions: CommonRecord
@@ -19,16 +30,16 @@ export default function hasPermission(
     if (permissionConfig.length === 0) {
       return true;
     }
-    if (isArray(permissionConfig[0])) {
-      if (permissionConfig[0].length === 0) {
-        return true;
-      }
+    return !!find(permissionConfig, (p) => get(userPermissions, p));
+  }
 
-      return !find(permissionConfig[0], (p) => !get(userPermissions, p));
+  if (isPlainObject(permissionConfig)) {
+    const permissions = keys(permissionConfig);
+    if (permissions.length === 0) {
+      return true;
     }
-    return !!find(permissionConfig as OrPermissions, (p) =>
-      get(userPermissions, p)
-    );
+
+    return !find(permissions, (p) => !get(userPermissions, p));
   }
 
   return true;

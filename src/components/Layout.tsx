@@ -7,8 +7,7 @@ import Account from './Account';
 import Page, { PageProps } from './Page';
 import { CommonRecord } from '../types/common';
 import useUser from '../hooks/useUser';
-import { hasPermission } from '../utils';
-import { PermissionConfig } from '../utils/hasPermission';
+import { hasPermission, PermissionConfig } from '../utils';
 
 export type Route = Omit<AntRoute, 'routes'> & {
   /** @name 路由所需用户权限 */

@@ -7,7 +7,7 @@ import {
 } from 'ahooks/lib/useRequest/src/types';
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
 import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
-import { request, RequestOptions } from '../utils/request';
+import { request, XmsRequestOptionsInit } from '../utils/request';
 
 export type ServiceConfigObject<
   TData = CommonRecord,
@@ -18,7 +18,7 @@ export type ServiceConfigObject<
     }
   | {
       requestPath: string;
-      requestOptions?: RequestOptions;
+      requestOptions?: XmsRequestOptionsInit;
     };
 
 export type ServiceConfig<

@@ -1,3 +1,6 @@
+/**
+ * @module request
+ */
 import {
   extend,
   Context,
@@ -6,52 +9,133 @@ import {
   RequestInterceptor,
   ResponseInterceptor,
   ResponseError,
-  RequestOptionsWithResponse,
-  RequestOptionsWithoutResponse,
+  RequestMethod,
+  RequestResponse,
 } from 'umi-request';
 import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 import showError, { ErrorShowType, XmsError } from './showError';
 
-interface ResponseStructure<T = any> extends CommonRecord {
+export * as UmiRequest from 'umi-request';
+
+/**
+ * 默认的后端请求返回格式
+ *
+ * @typeParam T - 数据（data）的类型
+ */
+export interface ResponseStructure<T = any> extends CommonRecord {
+  /**
+   * 错误代码，0代表成功，非0代表失败
+   */
   errcode: number;
+  /**
+   * 错误消息
+   */
   errmsg?: string;
+  /**
+   * 数据
+   */
   data?: T;
 }
 
-interface ErrorInfoStructure {
+/**
+ * 格式化的错误信息
+ */
+export interface ErrorInfoStructure<T = ResponseStructure> {
+  /**
+   * 是否成功
+   */
   success: boolean;
-  data?: ResponseStructure;
+  /**
+   * 后端返回数据
+   */
+  data?: T;
+  /**
+   * 错误代码
+   */
   errorCode?: number;
+  /**
+   * 错误消息
+   */
   errorMessage?: string;
+  /**
+   * 错误展示类型
+   *
+   * @defaultValue {@link ErrorShowType.ERROR_MESSAGE}
+   */
   showType?: ErrorShowType;
 }
 
-interface RequestError extends Error {
-  data?: ResponseStructure;
+interface RequestError<T = ResponseStructure> extends Error {
+  data?: T;
   info?: ErrorInfoStructure;
   request?: Context['req'];
   response?: Context['res'];
 }
 
-type ErrorAdapter<T = ResponseStructure> = (
+/**
+ * 错误适配器
+ *
+ * @typeParam T - 后端返回数据类型
+ * @param resData - 后端返回数据
+ * @param ctx - 上下文
+ * @returns 转换后给前端使用的错误数据
+ */
+export type ErrorAdapter<T = ResponseStructure> = (
   resData: T,
   ctx: Context
-) => ErrorInfoStructure;
+) => ErrorInfoStructure<T>;
 
-type ResultAdapter<T = ResponseStructure, R = any> = (resData: T) => R;
+/**
+ * 数据适配器
+ *
+ * @typeParam T - 后端返回数据类型
+ * @typeParam R - 前端获取数据类型
+ * @param resData - 后端返回数据
+ * @returns 转换后给前端使用的数据
+ */
+export type ResultAdapter<T = ResponseStructure, R = any> = (resData: T) => R;
 
-export type RequestOptions = (
-  | RequestOptionsInit
-  | RequestOptionsWithoutResponse
-  | RequestOptionsWithResponse
-) & {
+/**
+ * 请求参数
+ */
+export interface XmsRequestOptionsInit extends RequestOptionsInit {
+  /**
+   * 是否跳过全局错误处理器
+   *
+   * @defaultValue `false`
+   */
   skipErrorHandler?: boolean;
+  /**
+   * 是否跳过全局数据适配器
+   *
+   * @defaultValue `false`
+   */
   skipFormatResult?: boolean;
+  /**
+   * 错误展示类型
+   *
+   * @defaultValue {@link ErrorShowType.ERROR_MESSAGE}
+   */
   errorShowType?: ErrorShowType;
+  /**
+   * 错误适配器
+   */
   errorAdaptor?: ErrorAdapter;
+  /**
+   * 数据适配器
+   */
   resultAdapter?: ResultAdapter;
-};
+}
+
+export interface XmsRequestOptionsWithResponse extends XmsRequestOptionsInit {
+  getResponse: true;
+}
+
+export interface XmsRequestOptionsWithoutResponse
+  extends XmsRequestOptionsInit {
+  getResponse: false;
+}
 
 const defaultErrorAdapter: ErrorAdapter = (
   resData: ResponseStructure,
@@ -73,7 +157,7 @@ function makeErrorHandler(
   errorAdaptor: ErrorAdapter
 ): (error: ResponseError) => void {
   return (error: RequestError) => {
-    const options = error?.request?.options as RequestOptions;
+    const options = error?.request?.options as XmsRequestOptionsInit;
     if (options?.skipErrorHandler) {
       throw error;
     }
@@ -106,26 +190,61 @@ function makeErrorHandler(
   };
 }
 
-export const request = extend({
+export interface XmsRequestMethod<R = false> extends RequestMethod<R> {
+  <T = any>(url: string, options: XmsRequestOptionsWithResponse): Promise<
+    RequestResponse<T>
+  >;
+  <T = any>(url: string, options: XmsRequestOptionsWithoutResponse): Promise<T>;
+  <T = any>(url: string, options?: XmsRequestOptionsInit): R extends true
+    ? Promise<RequestResponse<T>>
+    : Promise<T>;
+  get: XmsRequestMethod<R>;
+  post: XmsRequestMethod<R>;
+  delete: XmsRequestMethod<R>;
+  put: XmsRequestMethod<R>;
+  patch: XmsRequestMethod<R>;
+  head: XmsRequestMethod<R>;
+  options: XmsRequestMethod<R>;
+  rpc: XmsRequestMethod<R>;
+}
+
+/**
+ * 全局请求实例
+ */
+export const request: XmsRequestMethod = extend({
   credentials: 'include',
   errorHandler: makeErrorHandler(defaultErrorAdapter),
 });
 
+/**
+ * 全局request配置
+ */
 export interface RequestConfig extends RequestOptionsInit {
-  /** @name 错误处理配置 */
+  /**
+   * 全局错误配置
+   */
   errorConfig?: {
-    /** @name 错误消息适配器 */
+    /**
+     * 全局错误适配器
+     */
     adaptor?: ErrorAdapter;
   };
+  /**
+   * 全局数据适配器
+   */
   resultAdapter?: ResultAdapter;
-  /** @name 中间件 */
+  /** 中间件 */
   middlewares?: OnionMiddleware[];
-  /** @name request拦截器 */
+  /** request拦截器 */
   requestInterceptors?: RequestInterceptor[];
-  /** @name response拦截器 */
+  /** response拦截器 */
   responseInterceptors?: ResponseInterceptor[];
 }
 
+/**
+ * 扩展全局request配置
+ * @param requestConfig 全局request配置
+ */
 export function extendRequestConfig(requestConfig: RequestConfig): void {
   const globalErrorAdaper =
     requestConfig.errorConfig?.adaptor || defaultErrorAdapter;
@@ -141,7 +260,7 @@ export function extendRequestConfig(requestConfig: RequestConfig): void {
   request.use(async (ctx, next) => {
     await next();
     const { req, res } = ctx;
-    const options = req.options as RequestOptions;
+    const options = req.options as XmsRequestOptionsInit;
     if (options?.skipFormatResult) {
       return;
     }
@@ -162,7 +281,7 @@ export function extendRequestConfig(requestConfig: RequestConfig): void {
   request.use(async (ctx, next) => {
     await next();
     const { req, res } = ctx;
-    const options = req.options as RequestOptions;
+    const options = req.options as XmsRequestOptionsInit;
     if (options?.skipErrorHandler) {
       return;
     }
