@@ -1,5 +1,0 @@
-export { default as getImageSizeByFile } from './getImageSizeByFile';
-export { default as isNumeric } from './isNumeric';
-export { default as hasPermission } from './hasPermission';
-export { default as showError } from './showError';
-export * from './request';

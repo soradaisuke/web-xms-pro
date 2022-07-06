@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
 import { Button, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 import { get } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProTableProps } from '@ant-design/pro-table';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { TableUpdateRequest } from '../../hooks/useTableCRUDRequests';
-import { CommonRecord, RouteParams } from '../../types/common';
+import { CommonRecord } from '../../types/common';
 import getRowKey from '../../utils/getRowKey';
 import { DescriptionsUpdateRequest } from '../../hooks/useDescriptionCRUDRequests';
 
@@ -22,11 +22,11 @@ export type UpdateRecordSchemaFormProps<
     /** @name 对提交给后台的数据做转换 */
     normalizeSubmitValues?: (
       values: T,
-      matchParams: RouteParams,
+      matchParams: Params,
       record: T
     ) => T | Promise<T>;
     /** @name 对提交给form的初始数据做转换 */
-    normalizeInitialValues?: (record: T, matchParams: RouteParams) => T;
+    normalizeInitialValues?: (record: T, matchParams: Params) => T;
   };
 
 function UpdateRecordSchemaForm({

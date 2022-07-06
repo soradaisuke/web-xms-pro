@@ -2,12 +2,11 @@ import React, { ReactNode, useMemo } from 'react';
 import { PageContainer, PageContainerProps } from '@ant-design/pro-layout';
 import { find, isFunction } from 'lodash';
 import { Button, Result, TabPaneProps } from 'antd';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
 import Table, { TableProps } from './Table';
 import List, { ListProps } from './List';
 import Descriptions, { DescriptionsProps } from './Descriptions';
-import { RouteParams } from '../types/common';
 import useSyncTabKeyToUrl from '../hooks/useSyncTabKeyToUrl';
 import './Page.less';
 
@@ -26,7 +25,7 @@ export type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> &
     title?:
       | PageContainerProps['title']
       | ((
-          params: RouteParams
+          params: Params
         ) =>
           | PageContainerProps['title']
           | Promise<PageContainerProps['title']>);

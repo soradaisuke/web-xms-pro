@@ -3,12 +3,12 @@ import ProDescriptions, {
   ProDescriptionsItemProps,
   ProDescriptionsProps,
 } from '@ant-design/pro-descriptions';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 import { map } from 'lodash';
 import { Button, Result } from 'antd';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProCoreActionType } from '@ant-design/pro-utils';
-import { CommonRecord, RouteParams, User } from '../types/common';
+import { CommonRecord, User } from '../types/common';
 import { XMSDescriptionsColumns } from '../types/descriptions';
 import {
   DescriptionsDeleteRequest,
@@ -38,7 +38,7 @@ function makeMergedRender(
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
   user: User,
-  matchParams: RouteParams
+  matchParams: Params
 ): ProDescriptionsItemProps['render'] {
   if (!render) {
     return null;

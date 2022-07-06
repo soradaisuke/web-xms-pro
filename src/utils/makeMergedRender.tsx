@@ -1,6 +1,7 @@
 import { ProColumns } from '@ant-design/pro-table';
 import { get } from 'lodash';
 import React from 'react';
+import { Params } from 'react-router-dom';
 import UpdateRecordSchemaForm from '../components/SchemaForm/UpdateRecordSchemaForm';
 // eslint-disable-next-line import/no-cycle
 import { TableProps } from '../components/Table';
@@ -8,7 +9,7 @@ import {
   TableDeleteRequest,
   TableUpdateRequest,
 } from '../hooks/useTableCRUDRequests';
-import { RouteParams, User } from '../types/common';
+import { User } from '../types/common';
 import { XMSTableColumns } from '../types/table';
 import getRowKey from './getRowKey';
 import makeDefaultDeleteButtonRender from './makeDefaultDeleteButtonRender';
@@ -21,7 +22,7 @@ export default function makeMergedRender(
   update: TableUpdateRequest,
   del: TableDeleteRequest,
   user: User,
-  matchParams: RouteParams
+  matchParams: Params
 ): ProColumns['render'] {
   if (!render) {
     return null;

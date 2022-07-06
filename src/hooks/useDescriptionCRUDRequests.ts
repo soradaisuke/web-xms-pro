@@ -6,8 +6,8 @@ import { concat, isFunction, isString, merge } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { useNavigate, useHistory } from 'react-router-dom';
-import { CommonRecord, RouteParams, User } from '../types/common';
+import { useNavigate, useHistory, Params } from 'react-router-dom';
+import { CommonRecord, User } from '../types/common';
 import {
   DeleteServiceConfig,
   RequestConfig,
@@ -144,7 +144,7 @@ export function useDescriptionsRequests<
   TValue extends CommonRecord = CommonRecord
 >(
   requestConfig: DescriptionsRequestConfig<TData, TValue>,
-  matchParams: RouteParams,
+  matchParams: Params,
   user: User,
   action: MutableRefObject<ActionType>
 ): {

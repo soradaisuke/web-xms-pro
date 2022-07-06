@@ -7,7 +7,7 @@ import { generateDeviceId, uploadToUpyun } from '@qt/web-common';
 import getImageSizeByFile from '../utils/getImageSizeByFile';
 import { useUser } from '../hooks';
 
-type UploadImageProps = Omit<UploadProps<string>, 'onChange'> & {
+export type UploadImageProps = Omit<UploadProps<string>, 'onChange'> & {
   /**
    * @name  上传文件的图标
    * @default UploadOutlined

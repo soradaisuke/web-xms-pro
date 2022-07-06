@@ -4,14 +4,22 @@ import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
 import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
 import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
-import { CommonRecord, LinkConfig, User, XMSValueType } from './common';
+import { CommonRecord, User, XMSValueType } from './common';
 import { XMSFormColumns } from './form';
 
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableCreateConfig = Partial<
   Omit<CreateRecordSchemaFormProps, 'columns'>
 > &
   Pick<CreateRecordSchemaFormProps, 'columns'>;
 
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableUpdateConfig = Partial<
   Omit<UpdateRecordSchemaFormProps, 'columns'>
 > &
@@ -19,11 +27,19 @@ export type TableUpdateConfig = Partial<
     key?: string;
   };
 
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableDeleteConfig = {
   /** @name Popconfirm配置 */
   popConfirmProps?: PopconfirmProps;
 };
 
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableOnlineOfflineConfig = Pick<
   UpdateRecordSchemaFormProps,
   'normalizeSubmitValues'
@@ -35,22 +51,49 @@ export type TableOnlineOfflineConfig = Pick<
   statusKey?: string;
 };
 
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableCreateButtonRender = (config: TableCreateConfig) => ReactNode;
+
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableUpdateButtonRender = (config: TableUpdateConfig) => ReactNode;
+
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableDeleteButtonRender = (config?: TableDeleteConfig) => ReactNode;
+
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableOnlineOfflineButtonRender = (
   config?: TableOnlineOfflineConfig
 ) => ReactNode;
+
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type TableSwapButtonRender = (
   config?: Partial<TableUpdateConfig>
 ) => ReactNode;
 
+/**
+ * @group Pro Components
+ * @category Pro Table
+ */
 export type XMSTableColumns<T = CommonRecord> = Omit<
   ProColumns<T>,
   'valueType' | 'render'
 > & {
-  /** @name 从数据获取跳转地址 */
-  link?: LinkConfig;
+  link?: (record: CommonRecord) => string;
   valueType?:
     | ProColumns['valueType']
     | Extract<ProFormColumnsType['valueType'], 'dependency' | 'formSet'>

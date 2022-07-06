@@ -6,8 +6,13 @@ import UserProvider from './components/UserProvider';
 import { ServiceConfig } from './hooks/useCRUDRequests';
 
 export type AppConfig = AppProps & {
-  /** @name 网络请求相关配置 */
+  /**
+   * 网络请求相关配置
+   */
   requestConfig: RequestConfig;
+  /**
+   * 用户鉴权配置
+   */
   authRequestConfig?: ServiceConfig;
 };
 

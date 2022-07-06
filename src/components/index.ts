@@ -1,19 +1,24 @@
-export { default as Page } from './Page';
-export { default as Table } from './Table';
-export { default as List } from './List';
-export { default as Descriptions } from './Descriptions';
-export { default as TriggerModal } from './TriggerModal';
-export { default as TriggerDrawer } from './TriggerDrawer';
-export { default as TableTransfer } from './TableTransfer';
+export { default as Page, PageProps } from './Page';
+export { default as Table, TableProps } from './Table';
+export { default as List, ListProps } from './List';
+export { default as Descriptions, DescriptionsProps } from './Descriptions';
+export { default as TriggerModal, TriggerModalProps } from './TriggerModal';
+export { default as TriggerDrawer, TriggerDrawerProps } from './TriggerDrawer';
+export { default as TableTransfer, TableTransferProps } from './TableTransfer';
 export { default as XmsProProvider } from './XmsProProvider';
-export { default as UserProvider } from './UserProvider';
-export { default as UploadImage } from './UploadImage';
-export { default as UploadFile } from './UploadFile';
-
-export type { PageProps } from './Page';
-export type { TableProps } from './Table';
-export type { ListProps } from './List';
-export type { DescriptionsProps } from './Descriptions';
-export type { TriggerModalProps } from './TriggerModal';
-export type { TableTransferProps } from './TableTransfer';
-export type { Route } from './Layout';
+export { default as UserProvider, UserProviderProps } from './UserProvider';
+export { default as UploadImage, UploadImageProps } from './UploadImage';
+export { default as UploadFile, UploadFileProps } from './UploadFile';
+export { default as Layout, LayoutProps, Route } from './Layout';
+export {
+  default as RecordSchemaForm,
+  RecordSchemaFormProps,
+} from './SchemaForm/RecordSchemaForm';
+export {
+  default as CreateRecordSchemaForm,
+  CreateRecordSchemaFormProps,
+} from './SchemaForm/CreateRecordSchemaForm';
+export {
+  default as UpdateRecordSchemaForm,
+  UpdateRecordSchemaFormProps,
+} from './SchemaForm/UpdateRecordSchemaForm';

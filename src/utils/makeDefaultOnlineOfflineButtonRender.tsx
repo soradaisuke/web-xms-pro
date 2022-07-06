@@ -2,12 +2,13 @@ import { CloudDownloadOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import { get } from 'lodash';
 import React from 'react';
-import { CommonRecord, RouteParams } from '../types/common';
+import { Params } from 'react-router-dom';
+import { CommonRecord } from '../types/common';
 import { TableOnlineOfflineButtonRender } from '../types/table';
 
 export default function makeDefaultOnlineOfflineButtonRender(
   record: CommonRecord,
-  matchParams: RouteParams,
+  matchParams: Params,
   update: (values: CommonRecord) => Promise<boolean>
 ): TableOnlineOfflineButtonRender {
   const render: TableOnlineOfflineButtonRender = (config = {}) => {

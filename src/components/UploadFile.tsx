@@ -5,7 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { generateDeviceId, uploadToAliyun } from '@qt/web-common';
 import { useUser } from '../hooks';
 
-type UploadFileProps = Omit<UploadProps<string>, 'onChange'> & {
+export type UploadFileProps = Omit<UploadProps<string>, 'onChange'> & {
   /**
    * @name  上传文件的图标
    * @default UploadOutlined

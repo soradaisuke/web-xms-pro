@@ -1,18 +1,15 @@
 import React, { useCallback } from 'react';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
 import { TableCreateRequest } from '../../hooks/useTableCRUDRequests';
-import { CommonRecord, RouteParams } from '../../types/common';
+import { CommonRecord } from '../../types/common';
 
 export type CreateRecordSchemaFormProps<T = CommonRecord> =
   RecordSchemaFormProps<T> & {
     create: TableCreateRequest;
-    normalizeSubmitValues?: (
-      values: T,
-      matchParams: RouteParams
-    ) => T | Promise<T>;
+    normalizeSubmitValues?: (values: T, matchParams: Params) => T | Promise<T>;
   };
 
 function CreateRecordSchemaForm({

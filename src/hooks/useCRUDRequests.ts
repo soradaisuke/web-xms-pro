@@ -6,8 +6,10 @@ import {
   Result,
 } from 'ahooks/lib/useRequest/src/types';
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
-import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
-import { request, RequestOptions } from '../utils/request';
+import { Params } from 'react-router-dom';
+import { RequestOptionsInit } from 'umi-request';
+import { CommonRecord, ListResp, User } from '../types/common';
+import { request } from '../utils/request';
 
 export type ServiceConfigObject<
   TData = CommonRecord,
@@ -18,7 +20,7 @@ export type ServiceConfigObject<
     }
   | {
       requestPath: string;
-      requestOptions?: RequestOptions;
+      requestOptions?: RequestOptionsInit;
     };
 
 export type ServiceConfig<
@@ -27,9 +29,7 @@ export type ServiceConfig<
 > = string | ServiceConfigObject<TData, TParams>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type RequestConfig<S> =
-  | S
-  | ((matchParams: RouteParams, user: User) => S);
+export type RequestConfig<S> = S | ((matchParams: Params, user: User) => S);
 
 type CreateArgs = [values: CommonRecord];
 

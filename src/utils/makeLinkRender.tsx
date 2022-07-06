@@ -3,10 +3,12 @@ import { Button } from 'antd';
 import { includes } from 'lodash';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LinkConfig } from '../types/common';
+import { CommonRecord } from '../types/common';
 import '../styles/link.less';
 
-export default function makeLinkRender(link: LinkConfig): ProColumns['render'] {
+export default function makeLinkRender(
+  link: (record: CommonRecord) => string
+): ProColumns['render'] {
   const render = (dom, record) => {
     const url = link(record);
 

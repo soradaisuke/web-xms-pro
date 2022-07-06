@@ -2,11 +2,11 @@ import React, { useMemo, useRef, useImperativeHandle } from 'react';
 import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { find, get, isBoolean, isFunction, map } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { Params, useParams } from 'react-router-dom';
 import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
-import { CommonRecord, RouteParams, User } from '../types/common';
+import { CommonRecord, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
 import {
   TableRequestConfig,
@@ -29,14 +29,14 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
     requestConfig?: TableRequestConfig;
     /** @name columns配置 */
     columns: XMSTableColumns[];
-    params?: U | ((matchParams: RouteParams) => U);
+    params?: U | ((matchParams: Params) => U);
     toolBarRender?:
       | Extract<ProTableProps<T, U>['toolBarRender'], boolean>
       | ((
           config: {
             defaultCreateButtonRender: TableCreateButtonRender;
             form: FormInstance;
-            matchParams: RouteParams;
+            matchParams: Params;
             user: User;
           },
           ...base: Parameters<ToolBarProps<T>['toolBarRender']>

@@ -13,7 +13,8 @@ import {
   toPairs,
 } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
-import { CommonRecord, ListResp, RouteParams, User } from '../types/common';
+import { Params } from 'react-router-dom';
+import { CommonRecord, ListResp, User } from '../types/common';
 import {
   CreateServiceConfig,
   DeleteServiceConfig,
@@ -205,7 +206,7 @@ export function useTableRequests<
   TValue extends CommonRecord = CommonRecord
 >(
   requestConfig: TableRequestConfig<TData, TValue>,
-  matchParams: RouteParams,
+  matchParams: Params,
   user: User,
   action: MutableRefObject<ActionType>
 ): {

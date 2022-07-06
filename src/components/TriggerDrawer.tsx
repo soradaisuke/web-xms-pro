@@ -31,4 +31,4 @@ function TriggerDrawer({ trigger, onClose, ...rest }: TriggerDrawerProps) {
   );
 }
 
-export default React.memo(TriggerDrawer);
+export default TriggerDrawer;

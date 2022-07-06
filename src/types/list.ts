@@ -1,17 +1,24 @@
 import { ProListMeta } from '@ant-design/pro-list';
-import { CommonRecord, LinkConfig } from './common';
+import { CommonRecord } from './common';
 import { XMSTableColumns } from './table';
 
+/**
+ * @group Pro Components
+ * @category Pro List
+ */
 export type XMSListMeta<T = CommonRecord> = Omit<
   ProListMeta<T>,
   'valueType' | 'render'
 > & {
-  /** @name 从数据获取跳转地址 */
-  link?: LinkConfig;
+  link?: (record: CommonRecord) => string;
   valueType?: XMSTableColumns<T>['valueType'];
   render?: XMSTableColumns<T>['render'];
 };
 
+/**
+ * @group Pro Components
+ * @category Pro List
+ */
 export type XMSListMetas<T = CommonRecord> = {
   [key: string]: XMSListMeta<T>;
   type?: XMSListMeta<T>;

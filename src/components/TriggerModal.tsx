@@ -44,4 +44,4 @@ function TriggerModal({ trigger, onOk, onCancel, ...rest }: TriggerModalProps) {
   );
 }
 
-export default React.memo(TriggerModal);
+export default TriggerModal;
