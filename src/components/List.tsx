@@ -114,11 +114,7 @@ function List<T = CommonRecord, U = ParamsType>({
           {
             valueEnum: mapValues(keyBy(sortMetas, 'dataIndex'), 'title'),
             initialValue: initialSortMeta?.dataIndex,
-            fieldProps: {
-              style: {
-                width: '150px',
-              },
-            },
+            fieldProps: find(sortMetas, 'fieldProps')?.fieldProps,
           },
           {
             valueEnum: {
