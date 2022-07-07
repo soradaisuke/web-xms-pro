@@ -1,5 +1,5 @@
 import { find, get, isArray, isPlainObject, isString, keys } from 'lodash';
-import { CommonRecord } from '../types';
+import { CommonRecord } from 'types/common';
 
 /**
  * 所需权限配置

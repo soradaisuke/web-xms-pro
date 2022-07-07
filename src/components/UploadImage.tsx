@@ -4,8 +4,8 @@ import { filter, isArray, isString, map } from 'lodash';
 import { UploadOutlined } from '@ant-design/icons';
 import ImgCrop, { ImgCropProps } from 'antd-img-crop';
 import { generateDeviceId, uploadToUpyun } from '@qt/web-common';
-import getImageSizeByFile from '../utils/getImageSizeByFile';
-import { useUser } from '../hooks';
+import getImageSizeByFile from 'utils/getImageSizeByFile';
+import useUser from 'hooks/useUser';
 
 export type UploadImageProps = Omit<UploadProps<string>, 'onChange'> & {
   /**

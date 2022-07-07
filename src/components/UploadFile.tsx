@@ -3,7 +3,7 @@ import { Button, ButtonProps, Upload, UploadProps } from 'antd';
 import { filter, isArray, isString, map } from 'lodash';
 import { UploadOutlined } from '@ant-design/icons';
 import { generateDeviceId, uploadToAliyun } from '@qt/web-common';
-import { useUser } from '../hooks';
+import useUser from 'hooks/useUser';
 
 export type UploadFileProps = Omit<UploadProps<string>, 'onChange'> & {
   /**

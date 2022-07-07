@@ -3,12 +3,11 @@ import ProLayout, { BasicLayoutProps } from '@ant-design/pro-layout';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { Route as AntRoute } from '@ant-design/pro-layout/lib/typings';
 import { concat, filter, map } from 'lodash';
+import { CommonRecord } from 'types/common';
+import useUser from 'hooks/useUser';
+import hasPermission, { PermissionConfig } from 'utils/hasPermission';
 import Account from './Account';
 import Page, { PageProps } from './Page';
-import { CommonRecord } from '../types/common';
-import useUser from '../hooks/useUser';
-import { hasPermission } from '../utils';
-import { PermissionConfig } from '../utils/hasPermission';
 
 export type Route = Omit<AntRoute, 'routes'> & {
   /** @name 路由所需用户权限 */

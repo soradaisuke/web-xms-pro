@@ -4,10 +4,10 @@ import { isProduction } from '@qt/env';
 import Cookie from 'js-cookie';
 import { useRequest } from 'ahooks';
 import { isPlainObject, isString } from 'lodash';
-import { request } from '../utils/request';
-import UserContext from '../contexts/UserContext';
-import { User } from '../types/common';
-import { ServiceConfig } from '../hooks/useCRUDRequests';
+import { request } from 'utils/request';
+import UserContext from 'contexts/UserContext';
+import { User } from 'types/common';
+import { ServiceConfig } from 'hooks/useCRUDRequests';
 
 export type UserProviderProps = {
   children: React.ReactNode;

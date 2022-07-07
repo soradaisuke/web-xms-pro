@@ -20,15 +20,15 @@ import {
 import { useParams } from 'react-router-dom';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
-import { CommonRecord } from '../types/common';
-import { useTableRequests } from '../hooks/useTableCRUDRequests';
-import makeLinkRender from '../utils/makeLinkRender';
-import useUser from '../hooks/useUser';
+import { CommonRecord } from 'types/common';
+import { useTableRequests } from 'hooks/useTableCRUDRequests';
+import makeLinkRender from 'utils/makeLinkRender';
+import useUser from 'hooks/useUser';
+import { XMSListMetas } from 'types/list';
+import defaultSyncToUrl from 'utils/defaultSyncToUrl';
+import useMergedToolBarRender from 'hooks/useMergedToolBarRender';
+import makeMergedRender from 'utils/makeMergedRender';
 import { TableProps } from './Table';
-import { XMSListMetas } from '../types';
-import defaultSyncToUrl from '../utils/defaultSyncToUrl';
-import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
-import makeMergedRender from '../utils/makeMergedRender';
 
 export type ListProps<T = CommonRecord, U = ParamsType> = Omit<
   ProListProps<T, U>,

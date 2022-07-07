@@ -4,10 +4,10 @@ import { find, isFunction } from 'lodash';
 import { Button, Result, TabPaneProps } from 'antd';
 import { Params, useParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
+import useSyncTabKeyToUrl from 'hooks/useSyncTabKeyToUrl';
 import Table, { TableProps } from './Table';
 import List, { ListProps } from './List';
 import Descriptions, { DescriptionsProps } from './Descriptions';
-import useSyncTabKeyToUrl from '../hooks/useSyncTabKeyToUrl';
 import './Page.less';
 
 export type ContentConfig = {

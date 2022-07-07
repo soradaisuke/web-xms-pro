@@ -8,20 +8,20 @@ import { map } from 'lodash';
 import { Button, Result } from 'antd';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProCoreActionType } from '@ant-design/pro-utils';
-import { CommonRecord, User } from '../types/common';
-import { XMSDescriptionsColumns } from '../types/descriptions';
+import { CommonRecord, User } from 'types/common';
+import { XMSDescriptionsColumns } from 'types/descriptions';
 import {
   DescriptionsDeleteRequest,
   DescriptionsRequestConfig,
   DescriptionsUpdateRequest,
   useDescriptionsRequests,
-} from '../hooks/useDescriptionCRUDRequests';
+} from 'hooks/useDescriptionCRUDRequests';
+import useUser from 'hooks/useUser';
+import makeLinkRender from 'utils/makeLinkRender';
+import makeDefaultOnlineOfflineButtonRender from 'utils/makeDefaultOnlineOfflineButtonRender';
+import makeDefaultDeleteButtonRender from 'utils/makeDefaultDeleteButtonRender';
+import makeDefaultSwapButtonRender from 'utils/makeDefaultSwapButtonRender';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
-import makeLinkRender from '../utils/makeLinkRender';
-import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
-import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
-import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
-import useUser from '../hooks/useUser';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
   ProDescriptionsProps<T, U>,

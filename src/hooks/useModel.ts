@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import isEqual from 'fast-deep-equal';
-import XmsContext from '../contexts/XmsContext';
-import Dispatcher from '../helpers/dispatcher';
+import XmsContext from 'contexts/XmsContext';
+import Dispatcher from 'helpers/dispatcher';
 
 export default function useModel(
   namespace: string,

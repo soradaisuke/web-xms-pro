@@ -1,5 +1,5 @@
 import React from 'react';
-import Dispatcher from '../helpers/dispatcher';
+import Dispatcher from 'helpers/dispatcher';
 
 const XmsContext = React.createContext<Dispatcher>(null);
 

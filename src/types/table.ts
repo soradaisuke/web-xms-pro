@@ -2,8 +2,8 @@ import { ProFormColumnsType } from '@ant-design/pro-form';
 import { ProColumns } from '@ant-design/pro-table';
 import { PopconfirmProps } from 'antd';
 import { ReactNode } from 'react';
-import { CreateRecordSchemaFormProps } from '../components/SchemaForm/CreateRecordSchemaForm';
-import { UpdateRecordSchemaFormProps } from '../components/SchemaForm/UpdateRecordSchemaForm';
+import { CreateRecordSchemaFormProps } from 'components/SchemaForm/CreateRecordSchemaForm';
+import { UpdateRecordSchemaFormProps } from 'components/SchemaForm/UpdateRecordSchemaForm';
 import { CommonRecord, User, XMSValueType } from './common';
 import { XMSFormColumns } from './form';
 

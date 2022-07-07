@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Avatar, Button } from 'antd';
 import { UserOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
-import UserContext from '../contexts/UserContext';
+import UserContext from 'contexts/UserContext';
 
 function Account() {
   const { user, auth, signin, signout } = useContext(UserContext);

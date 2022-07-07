@@ -1,6 +1,6 @@
 import { Result } from 'ahooks/lib/useRequest/src/types';
 import React from 'react';
-import { User } from '../types/common';
+import { User } from 'types/common';
 
 const UserContext = React.createContext<{
   user: User;

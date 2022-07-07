@@ -1,6 +1,6 @@
 import React from 'react';
-import XmsContext from '../contexts/XmsContext';
-import Dispatcher from '../helpers/dispatcher';
+import XmsContext from 'contexts/XmsContext';
+import Dispatcher from 'helpers/dispatcher';
 import Executor from './Executor';
 
 const dispatcher = new Dispatcher();

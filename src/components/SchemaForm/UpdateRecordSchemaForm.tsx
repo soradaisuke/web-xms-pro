@@ -5,11 +5,11 @@ import { Params, useParams } from 'react-router-dom';
 import { get } from 'lodash';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProTableProps } from '@ant-design/pro-table';
+import { TableUpdateRequest } from 'hooks/useTableCRUDRequests';
+import { CommonRecord } from 'types/common';
+import getRowKey from 'utils/getRowKey';
+import { DescriptionsUpdateRequest } from 'hooks/useDescriptionCRUDRequests';
 import RecordSchemaForm, { RecordSchemaFormProps } from './RecordSchemaForm';
-import { TableUpdateRequest } from '../../hooks/useTableCRUDRequests';
-import { CommonRecord } from '../../types/common';
-import getRowKey from '../../utils/getRowKey';
-import { DescriptionsUpdateRequest } from '../../hooks/useDescriptionCRUDRequests';
 
 export type UpdateRecordSchemaFormProps<
   T = CommonRecord,

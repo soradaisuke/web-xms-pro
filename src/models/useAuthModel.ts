@@ -4,8 +4,8 @@ import { generateUri } from '@qt/web-common';
 import { isProduction } from '@qt/env';
 import { useRequest } from 'ahooks';
 import Cookie from 'js-cookie';
-import { request } from '../utils/request';
-import { Hook } from '../components/Provider';
+import { request } from 'utils/request';
+import { Hook } from 'components/Provider';
 
 const ENTRY_HOST = `//entry${isProduction ? '' : '.staging'}.qingtingfm.com`;
 const TOKEN_KEY = isProduction ? 'prod_sso_token' : 'stg_sso_token';

@@ -6,19 +6,19 @@ import { Params, useParams } from 'react-router-dom';
 import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
-import { CommonRecord, User } from '../types/common';
-import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
+import { CommonRecord, User } from 'types/common';
+import { TableCreateButtonRender, XMSTableColumns } from 'types/table';
 import {
   TableRequestConfig,
   useTableRequests,
-} from '../hooks/useTableCRUDRequests';
-import makeLinkRender from '../utils/makeLinkRender';
-import useUser from '../hooks/useUser';
-import defaultSyncToUrl from '../utils/defaultSyncToUrl';
+} from 'hooks/useTableCRUDRequests';
+import makeLinkRender from 'utils/makeLinkRender';
+import useUser from 'hooks/useUser';
+import defaultSyncToUrl from 'utils/defaultSyncToUrl';
 // eslint-disable-next-line import/no-cycle
-import makeMergedRender from '../utils/makeMergedRender';
+import makeMergedRender from 'utils/makeMergedRender';
 // eslint-disable-next-line import/no-cycle
-import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
+import useMergedToolBarRender from 'hooks/useMergedToolBarRender';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
