@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.1...v1.0.2) (2022-07-07)
+
+
+### Features
+
+* **NoTicket:** 外部自定义sort meta的fieldprops ([7be2e51](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/7be2e515e033188ed586285485b725d84062ba7b))
+
 ### [1.0.1](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0...v1.0.1) (2022-07-07)
 
 ## [1.0.0](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.0-beta.103...v1.0.0) (2022-07-07)
