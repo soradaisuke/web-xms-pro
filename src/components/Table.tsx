@@ -19,6 +19,7 @@ import defaultSyncToUrl from 'utils/defaultSyncToUrl';
 import makeMergedRender from 'utils/makeMergedRender';
 // eslint-disable-next-line import/no-cycle
 import useMergedToolBarRender from 'hooks/useMergedToolBarRender';
+import './Table.less';
 
 export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
   ProTableProps<T, U>,
