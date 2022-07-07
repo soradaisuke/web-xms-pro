@@ -4,10 +4,10 @@ import { ProTableProps } from '@ant-design/pro-table';
 import React, { useMemo } from 'react';
 import { Params } from 'react-router-dom';
 // eslint-disable-next-line import/no-cycle
-import { TableProps } from 'components/Table';
-import { CommonRecord, User } from 'types/common';
-import CreateRecordSchemaForm from 'components/SchemaForm/CreateRecordSchemaForm';
+import { TableProps } from '../components/Table';
+import { CommonRecord, User } from '../types';
 import { TableCreateRequest } from './useTableCRUDRequests';
+import CreateRecordSchemaForm from '../components/SchemaForm/CreateRecordSchemaForm';
 
 export default function useMergedToolBarRender<
   T = CommonRecord,

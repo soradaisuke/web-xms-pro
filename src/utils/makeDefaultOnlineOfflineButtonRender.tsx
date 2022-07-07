@@ -3,8 +3,8 @@ import { Button, Popconfirm, Tooltip } from 'antd';
 import { get } from 'lodash';
 import React from 'react';
 import { Params } from 'react-router-dom';
-import { CommonRecord } from 'types/common';
-import { TableOnlineOfflineButtonRender } from 'types/table';
+import { CommonRecord } from '../types/common';
+import { TableOnlineOfflineButtonRender } from '../types/table';
 
 export default function makeDefaultOnlineOfflineButtonRender(
   record: CommonRecord,

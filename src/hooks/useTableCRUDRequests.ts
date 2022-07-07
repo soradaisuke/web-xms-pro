@@ -14,7 +14,7 @@ import {
 } from 'lodash';
 import { MutableRefObject, useCallback, useMemo } from 'react';
 import { Params } from 'react-router-dom';
-import { CommonRecord, ListResp, User } from 'types/common';
+import { CommonRecord, ListResp, User } from '../types/common';
 import {
   CreateServiceConfig,
   DeleteServiceConfig,

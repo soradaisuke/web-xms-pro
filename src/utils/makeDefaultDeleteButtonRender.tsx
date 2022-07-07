@@ -1,7 +1,7 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Tooltip } from 'antd';
 import React from 'react';
-import { TableDeleteButtonRender } from 'types/table';
+import { TableDeleteButtonRender } from '../types/table';
 
 export default function makeDefaultDeleteButtonRender(
   del: () => Promise<boolean>

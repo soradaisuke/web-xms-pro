@@ -7,7 +7,7 @@ import { MutableRefObject, useCallback, useMemo } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useNavigate, useHistory, Params } from 'react-router-dom';
-import { CommonRecord, User } from 'types/common';
+import { CommonRecord, User } from '../types/common';
 import {
   DeleteServiceConfig,
   RequestConfig,

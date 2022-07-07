@@ -8,8 +8,8 @@ import {
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
 import { Params } from 'react-router-dom';
 import { RequestOptionsInit } from 'umi-request';
-import { CommonRecord, ListResp, User } from 'types/common';
-import { request } from 'utils/request';
+import { CommonRecord, ListResp, User } from '../types/common';
+import { request } from '../utils/request';
 
 export type ServiceConfigObject<
   TData = CommonRecord,

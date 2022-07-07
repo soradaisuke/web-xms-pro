@@ -8,8 +8,8 @@ import {
 } from '@ant-design/pro-form';
 import { isFunction, map, omit } from 'lodash';
 import { ProSchema } from '@ant-design/pro-utils';
-import { CommonRecord } from 'types/common';
-import { XMSFormColumns } from 'types/form';
+import { CommonRecord } from '../../types/common';
+import { XMSFormColumns } from '../../types/form';
 
 export type RecordSchemaFormProps<T = CommonRecord> = Omit<
   FormSchema<T>,
