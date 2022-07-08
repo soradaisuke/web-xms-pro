@@ -1,0 +1,10 @@
+{
+  "typescript": {
+    "quoteStyle": "preferSingle",
+    "jsx.quoteStyle": "preferDouble"
+  },
+  "includes": ["src/**/*.{ts,tsx,js,jsx}"],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.69.5.wasm"
+  ]
+}

@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { generateUri } from '@qt/web-common';
 import { isProduction } from '@qt/env';
-import Cookie from 'js-cookie';
+import { generateUri } from '@qt/web-common';
 import { useRequest } from 'ahooks';
+import Cookie from 'js-cookie';
 import { isPlainObject, isString } from 'lodash';
-import { request } from '../utils/request';
+import React, { useEffect, useMemo, useState } from 'react';
 import UserContext from '../contexts/UserContext';
-import { User } from '../types/common';
 import { ServiceConfig } from '../hooks/useCRUDRequests';
+import { User } from '../types/common';
+import { request } from '../utils/request';
 
 export type UserProviderProps = {
   children: React.ReactNode;
@@ -54,8 +54,7 @@ function UserProvider({
         return requestConfig.requestService;
       }
       if ('requestPath' in requestConfig) {
-        return () =>
-          request.get(requestConfig.requestPath, requestConfig.requestOptions);
+        return () => request.get(requestConfig.requestPath, requestConfig.requestOptions);
       }
     }
     return null;
@@ -75,7 +74,7 @@ function UserProvider({
       signout,
       auth,
     }),
-    [auth, user]
+    [auth, user],
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

@@ -23,7 +23,7 @@ export type PermissionConfig = string | string[] | Record<string, any>;
  */
 export default function hasPermission(
   permissionConfig: PermissionConfig,
-  userPermissions: CommonRecord
+  userPermissions: CommonRecord,
 ): boolean {
   if (isString(permissionConfig)) {
     return permissionConfig ? !!get(userPermissions, permissionConfig) : true;

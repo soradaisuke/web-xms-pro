@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
 import { Modal, ModalProps } from 'antd';
+import React, { useCallback, useState } from 'react';
 
 export type TriggerModalProps = ModalProps & {
   trigger: JSX.Element;
@@ -13,7 +13,7 @@ function TriggerModal({ trigger, onOk, onCancel, ...rest }: TriggerModalProps) {
       await onOk?.(e);
       setIsModalVisible(false);
     },
-    [onOk]
+    [onOk],
   );
 
   const onMergedCancel = useCallback(
@@ -21,7 +21,7 @@ function TriggerModal({ trigger, onOk, onCancel, ...rest }: TriggerModalProps) {
       await onCancel?.(e);
       setIsModalVisible(false);
     },
-    [onCancel]
+    [onCancel],
   );
 
   return (
@@ -32,8 +32,8 @@ function TriggerModal({ trigger, onOk, onCancel, ...rest }: TriggerModalProps) {
         onOk={onMergedOk}
         onCancel={onMergedCancel}
       />
-      {trigger &&
-        React.cloneElement(trigger, {
+      {trigger
+        && React.cloneElement(trigger, {
           ...trigger.props,
           onClick: async (e: any) => {
             setIsModalVisible(true);

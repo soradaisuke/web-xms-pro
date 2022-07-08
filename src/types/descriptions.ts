@@ -12,21 +12,23 @@ import {
  * @group Pro Components
  * @category Pro Descriptions
  */
-export type XMSDescriptionsColumns = Omit<
-  ProDescriptionsItemProps<CommonRecord>,
-  'valueType' | 'render'
-> & {
-  link?: (record: CommonRecord) => string;
-  valueType?: ProDescriptionsItemProps['valueType'] | XMSValueType;
-  render?: (
-    config: {
-      user: User;
-      update: (values: CommonRecord) => Promise<boolean>;
-      defaultUpdateButtonRender: TableUpdateButtonRender;
-      defaultDeleteButtonRender: TableDeleteButtonRender;
-      defaultOnlineOfflineButtonRender: TableOnlineOfflineButtonRender;
-      defaultSwapButtonRender: TableSwapButtonRender;
-    },
-    ...base: Parameters<ProDescriptionsItemProps<CommonRecord>['render']>
-  ) => ReturnType<ProDescriptionsItemProps<CommonRecord>['render']>;
-};
+export type XMSDescriptionsColumns =
+  & Omit<
+    ProDescriptionsItemProps<CommonRecord>,
+    'valueType' | 'render'
+  >
+  & {
+    link?: (record: CommonRecord) => string;
+    valueType?: ProDescriptionsItemProps['valueType'] | XMSValueType;
+    render?: (
+      config: {
+        user: User;
+        update: (values: CommonRecord) => Promise<boolean>;
+        defaultUpdateButtonRender: TableUpdateButtonRender;
+        defaultDeleteButtonRender: TableDeleteButtonRender;
+        defaultOnlineOfflineButtonRender: TableOnlineOfflineButtonRender;
+        defaultSwapButtonRender: TableSwapButtonRender;
+      },
+      ...base: Parameters<ProDescriptionsItemProps<CommonRecord>['render']>
+    ) => ReturnType<ProDescriptionsItemProps<CommonRecord>['render']>;
+  };

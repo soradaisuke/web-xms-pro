@@ -4,7 +4,7 @@ import React from 'react';
 import { TableDeleteButtonRender } from '../types/table';
 
 export default function makeDefaultDeleteButtonRender(
-  del: () => Promise<boolean>
+  del: () => Promise<boolean>,
 ): TableDeleteButtonRender {
   const render: TableDeleteButtonRender = (config = {}) => {
     const { popConfirmProps = {} } = config;

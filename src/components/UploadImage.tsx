@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, ButtonProps, message, Upload, UploadProps } from 'antd';
-import { filter, isArray, isString, map } from 'lodash';
 import { UploadOutlined } from '@ant-design/icons';
-import ImgCrop, { ImgCropProps } from 'antd-img-crop';
 import { generateDeviceId, uploadToUpyun } from '@qt/web-common';
-import getImageSizeByFile from '../utils/getImageSizeByFile';
+import { Button, ButtonProps, message, Upload, UploadProps } from 'antd';
+import ImgCrop, { ImgCropProps } from 'antd-img-crop';
+import { filter, isArray, isString, map } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUser } from '../hooks';
+import getImageSizeByFile from '../utils/getImageSizeByFile';
 
 export type UploadImageProps = Omit<UploadProps<string>, 'onChange'> & {
   /**
@@ -44,7 +44,6 @@ export type UploadImageProps = Omit<UploadProps<string>, 'onChange'> & {
   /**
    * @name 上传组件的 url
    * @default []
-   *
    */
   value?: string | string[];
   onChange?: (value: string | string[]) => void;
@@ -77,7 +76,7 @@ function UploadImage({
       setFileList([{ uid: value, name: value, url: value }]);
     } else if (isArray(value)) {
       setFileList(
-        map(value, (v) => ({ uid: v, name: v, url: v, response: v }))
+        map(value, (v) => ({ uid: v, name: v, url: v, response: v })),
       );
     } else {
       setFileList([]);
@@ -86,12 +85,12 @@ function UploadImage({
 
   const showUploadButton = useMemo(
     () => max === undefined || !fileList || fileList?.length < max,
-    [max, fileList]
+    [max, fileList],
   );
 
   const isPictureCard = useMemo(
     () => restProps.listType === 'picture-card',
-    [restProps.listType]
+    [restProps.listType],
   );
 
   const customRequest = useCallback<UploadProps<string>['customRequest']>(
@@ -109,7 +108,7 @@ function UploadImage({
         info.onError(e);
       }
     },
-    [user?.sso_token]
+    [user?.sso_token],
   );
 
   const onFilesChange = useCallback<UploadProps<string>['onChange']>(
@@ -123,7 +122,7 @@ function UploadImage({
         }
       }
     },
-    [max, onChange]
+    [max, onChange],
   );
 
   const beforeUpload = useCallback<UploadImageProps['beforeUpload']>(
@@ -141,7 +140,7 @@ function UploadImage({
       }
       return restProps.beforeUpload?.(file, files) ?? true;
     },
-    [limitHeight, limitWidth, restProps]
+    [limitHeight, limitWidth, restProps],
   );
 
   const onRemove = useCallback<UploadImageProps['onRemove']>(
@@ -153,7 +152,7 @@ function UploadImage({
       }
       restProps.onRemove?.(file);
     },
-    [max, onChange, restProps, value]
+    [max, onChange, restProps, value],
   );
 
   const upload = useMemo(
@@ -168,17 +167,19 @@ function UploadImage({
         listType={restProps.listType || 'picture-card'}
         accept={restProps.accept || 'image/jpeg, image/png'}
       >
-        {showUploadButton &&
-          (isPictureCard ? (
-            <span>
-              {icon} {title}
-            </span>
-          ) : (
-            <Button disabled={disabled} {...buttonProps}>
-              {icon}
-              {title}
-            </Button>
-          ))}
+        {showUploadButton
+          && (isPictureCard
+            ? (
+              <span>
+                {icon} {title}
+              </span>
+            )
+            : (
+              <Button disabled={disabled} {...buttonProps}>
+                {icon}
+                {title}
+              </Button>
+            ))}
       </Upload>
     ),
     [
@@ -194,7 +195,7 @@ function UploadImage({
       restProps,
       showUploadButton,
       title,
-    ]
+    ],
   );
 
   if (imgCropProps) {

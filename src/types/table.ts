@@ -11,19 +11,22 @@ import { XMSFormColumns } from './form';
  * @group Pro Components
  * @category Pro Table
  */
-export type TableCreateConfig = Partial<
-  Omit<CreateRecordSchemaFormProps, 'columns'>
-> &
-  Pick<CreateRecordSchemaFormProps, 'columns'>;
+export type TableCreateConfig =
+  & Partial<
+    Omit<CreateRecordSchemaFormProps, 'columns'>
+  >
+  & Pick<CreateRecordSchemaFormProps, 'columns'>;
 
 /**
  * @group Pro Components
  * @category Pro Table
  */
-export type TableUpdateConfig = Partial<
-  Omit<UpdateRecordSchemaFormProps, 'columns'>
-> &
-  Pick<UpdateRecordSchemaFormProps, 'columns'> & {
+export type TableUpdateConfig =
+  & Partial<
+    Omit<UpdateRecordSchemaFormProps, 'columns'>
+  >
+  & Pick<UpdateRecordSchemaFormProps, 'columns'>
+  & {
     key?: string;
   };
 
@@ -40,16 +43,18 @@ export type TableDeleteConfig = {
  * @group Pro Components
  * @category Pro Table
  */
-export type TableOnlineOfflineConfig = Pick<
-  UpdateRecordSchemaFormProps,
-  'normalizeSubmitValues'
-> & {
-  onlineStatus?: number;
-  offlineStatus?: number;
-  onlineText?: string;
-  offlineText?: string;
-  statusKey?: string;
-};
+export type TableOnlineOfflineConfig =
+  & Pick<
+    UpdateRecordSchemaFormProps,
+    'normalizeSubmitValues'
+  >
+  & {
+    onlineStatus?: number;
+    offlineStatus?: number;
+    onlineText?: string;
+    offlineText?: string;
+    statusKey?: string;
+  };
 
 /**
  * @group Pro Components
@@ -74,7 +79,7 @@ export type TableDeleteButtonRender = (config?: TableDeleteConfig) => ReactNode;
  * @category Pro Table
  */
 export type TableOnlineOfflineButtonRender = (
-  config?: TableOnlineOfflineConfig
+  config?: TableOnlineOfflineConfig,
 ) => ReactNode;
 
 /**
@@ -82,32 +87,34 @@ export type TableOnlineOfflineButtonRender = (
  * @category Pro Table
  */
 export type TableSwapButtonRender = (
-  config?: Partial<TableUpdateConfig>
+  config?: Partial<TableUpdateConfig>,
 ) => ReactNode;
 
 /**
  * @group Pro Components
  * @category Pro Table
  */
-export type XMSTableColumns<T = CommonRecord> = Omit<
-  ProColumns<T>,
-  'valueType' | 'render'
-> & {
-  link?: (record: CommonRecord) => string;
-  valueType?:
-    | ProColumns['valueType']
-    | Extract<ProFormColumnsType['valueType'], 'dependency' | 'formSet'>
-    | XMSValueType;
-  render?: (
-    config: {
-      user: User;
-      update: (values: CommonRecord) => Promise<boolean>;
-      defaultUpdateButtonRender: TableUpdateButtonRender;
-      defaultDeleteButtonRender: TableDeleteButtonRender;
-      defaultOnlineOfflineButtonRender: TableOnlineOfflineButtonRender;
-      defaultSwapButtonRender: TableSwapButtonRender;
-    },
-    ...base: Parameters<ProColumns<T>['render']>
-  ) => ReturnType<ProColumns<T>['render']>;
-  columns?: XMSFormColumns['columns'];
-};
+export type XMSTableColumns<T = CommonRecord> =
+  & Omit<
+    ProColumns<T>,
+    'valueType' | 'render'
+  >
+  & {
+    link?: (record: CommonRecord) => string;
+    valueType?:
+      | ProColumns['valueType']
+      | Extract<ProFormColumnsType['valueType'], 'dependency' | 'formSet'>
+      | XMSValueType;
+    render?: (
+      config: {
+        user: User;
+        update: (values: CommonRecord) => Promise<boolean>;
+        defaultUpdateButtonRender: TableUpdateButtonRender;
+        defaultDeleteButtonRender: TableDeleteButtonRender;
+        defaultOnlineOfflineButtonRender: TableOnlineOfflineButtonRender;
+        defaultSwapButtonRender: TableSwapButtonRender;
+      },
+      ...base: Parameters<ProColumns<T>['render']>
+    ) => ReturnType<ProColumns<T>['render']>;
+    columns?: XMSFormColumns['columns'];
+  };

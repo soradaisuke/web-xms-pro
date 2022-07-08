@@ -19,15 +19,15 @@ export default function useFormListItemAction(form: ProFormInstance) {
         set(form?.getFieldsValue() || {}, context.listName, {
           ...(form?.getFieldValue(context.listName) || {}),
           ...(data || {}),
-        })
+        }),
       );
     },
-    [context.listName, form]
+    [context.listName, form],
   );
 
   const getCurrentRowData = useCallback(
     () => form?.getFieldValue(context.listName),
-    [context.listName, form]
+    [context.listName, form],
   );
 
   return {

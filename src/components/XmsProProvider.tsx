@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, useContext, useMemo } from 'react';
-import { Input, Select, Tag } from 'antd';
 import ProProvider, { ConfigContextPropsType } from '@ant-design/pro-provider';
-import UploadImage from './UploadImage';
+import { Input, Select, Tag } from 'antd';
+import React, { PropsWithChildren, useContext, useMemo } from 'react';
 import UploadFile from './UploadFile';
+import UploadImage from './UploadImage';
 
 function XmsProProvider({ children }: PropsWithChildren<any>) {
   const values = useContext(ProProvider);
@@ -12,14 +12,10 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
       ...values,
       valueTypeMap: {
         image: {
-          renderFormItem: (_, renderProps) => (
-            <UploadImage {...renderProps?.fieldProps} />
-          ),
+          renderFormItem: (_, renderProps) => <UploadImage {...renderProps?.fieldProps} />,
         },
         file: {
-          renderFormItem: (_, renderProps) => (
-            <UploadFile {...renderProps?.fieldProps} />
-          ),
+          renderFormItem: (_, renderProps) => <UploadFile {...renderProps?.fieldProps} />,
         },
         link: {
           render: (text, renderProps) => (
@@ -34,9 +30,7 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
               </div>
             </a>
           ),
-          renderFormItem: (_, renderProps) => (
-            <Input placeholder="请输入链接" {...renderProps?.fieldProps} />
-          ),
+          renderFormItem: (_, renderProps) => <Input placeholder="请输入链接" {...renderProps?.fieldProps} />,
         },
         boolean: {
           render: (text, props) => (
@@ -63,7 +57,7 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
         },
       },
     }),
-    [values]
+    [values],
   );
 
   return <ProProvider.Provider value={value}>{children}</ProProvider.Provider>;

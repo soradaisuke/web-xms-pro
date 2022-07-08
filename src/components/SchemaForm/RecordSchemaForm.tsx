@@ -1,27 +1,24 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import { BetaSchemaForm, DrawerFormProps, ModalFormProps, ProFormInstance } from '@ant-design/pro-form';
 import { FormSchema } from '@ant-design/pro-form/lib/components/SchemaForm';
-import {
-  BetaSchemaForm,
-  DrawerFormProps,
-  ModalFormProps,
-  ProFormInstance,
-} from '@ant-design/pro-form';
-import { isFunction, map, omit } from 'lodash';
 import { ProSchema } from '@ant-design/pro-utils';
+import { isFunction, map, omit } from 'lodash';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { CommonRecord } from '../../types/common';
 import { XMSFormColumns } from '../../types/form';
 
-export type RecordSchemaFormProps<T = CommonRecord> = Omit<
-  FormSchema<T>,
-  'columns'
-> & {
-  columns: XMSFormColumns[];
-  record?: T;
-};
+export type RecordSchemaFormProps<T = CommonRecord> =
+  & Omit<
+    FormSchema<T>,
+    'columns'
+  >
+  & {
+    columns: XMSFormColumns[];
+    record?: T;
+  };
 
 function makeMergedRender<T = CommonRecord>(
   renderFormItem: ProSchema['renderFormItem'],
-  record: T
+  record: T,
 ): ProSchema['renderFormItem'] {
   if (!renderFormItem) {
     return null;
@@ -33,7 +30,7 @@ function makeMergedRender<T = CommonRecord>(
         ...config,
         record,
       },
-      form
+      form,
     );
 }
 
@@ -91,7 +88,7 @@ function RecordSchemaForm<T = CommonRecord>({
           newCol.columns = (values) =>
             map(
               (cols as (values: CommonRecord) => XMSFormColumns[])(values),
-              (c) => transformColumn(c)
+              (c) => transformColumn(c),
             );
         } else {
           newCol.columns = map(newCol.columns, (c) => transformColumn(c));
@@ -109,9 +106,7 @@ function RecordSchemaForm<T = CommonRecord>({
       return newCol;
     }
 
-    return map(columns, (col) =>
-      transformColumn(col)
-    ) as FormSchema<T>['columns'];
+    return map(columns, (col) => transformColumn(col)) as FormSchema<T>['columns'];
   }, [columns, record]);
 
   return (

@@ -1,31 +1,30 @@
-import React, { useMemo, useRef, useImperativeHandle } from 'react';
-import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
-import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
-import { find, get, isBoolean, isFunction, map } from 'lodash';
-import { Params, useParams } from 'react-router-dom';
-import { FormInstance } from 'antd';
 import { ProFormInstance } from '@ant-design/pro-form';
 import { ParamsType } from '@ant-design/pro-provider';
+import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
+import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
+import { FormInstance } from 'antd';
+import { find, get, isBoolean, isFunction, map } from 'lodash';
+import React, { useImperativeHandle, useMemo, useRef } from 'react';
+import { Params, useParams } from 'react-router-dom';
+import { TableRequestConfig, useTableRequests } from '../hooks/useTableCRUDRequests';
+import useUser from '../hooks/useUser';
 import { CommonRecord, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
-import {
-  TableRequestConfig,
-  useTableRequests,
-} from '../hooks/useTableCRUDRequests';
-import makeLinkRender from '../utils/makeLinkRender';
-import useUser from '../hooks/useUser';
 import defaultSyncToUrl from '../utils/defaultSyncToUrl';
+import makeLinkRender from '../utils/makeLinkRender';
 // eslint-disable-next-line import/no-cycle
 import makeMergedRender from '../utils/makeMergedRender';
 // eslint-disable-next-line import/no-cycle
 import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
 import './Table.less';
 
-export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
-  ProTableProps<T, U>,
-  'columns' | 'toolBarRender' | 'params'
-> &
-  Required<Pick<ProTableProps<T, U>, 'rowKey'>> & {
+export type TableProps<T = CommonRecord, U = ParamsType> =
+  & Omit<
+    ProTableProps<T, U>,
+    'columns' | 'toolBarRender' | 'params'
+  >
+  & Required<Pick<ProTableProps<T, U>, 'rowKey'>>
+  & {
     /** @name 数据请求配置 */
     requestConfig?: TableRequestConfig;
     /** @name columns配置 */
@@ -34,14 +33,14 @@ export type TableProps<T = CommonRecord, U = ParamsType> = Omit<
     toolBarRender?:
       | Extract<ProTableProps<T, U>['toolBarRender'], boolean>
       | ((
-          config: {
-            defaultCreateButtonRender: TableCreateButtonRender;
-            form: FormInstance;
-            matchParams: Params;
-            user: User;
-          },
-          ...base: Parameters<ToolBarProps<T>['toolBarRender']>
-        ) => ReturnType<ToolBarProps<T>['toolBarRender']>);
+        config: {
+          defaultCreateButtonRender: TableCreateButtonRender;
+          form: FormInstance;
+          matchParams: Params;
+          user: User;
+        },
+        ...base: Parameters<ToolBarProps<T>['toolBarRender']>
+      ) => ReturnType<ToolBarProps<T>['toolBarRender']>);
   };
 
 function Table<T = CommonRecord, U = ParamsType>({
@@ -74,8 +73,7 @@ function Table<T = CommonRecord, U = ParamsType>({
   const newColumns = useMemo<ProTableProps<T, U>['columns']>(
     () =>
       map(columns, (col) => {
-        const { link, render, valueType, defaultSortOrder, sortDirections } =
-          col;
+        const { link, render, valueType, defaultSortOrder, sortDirections } = col;
         const newCol = {
           ...col,
           render: makeMergedRender(
@@ -84,15 +82,15 @@ function Table<T = CommonRecord, U = ParamsType>({
             update,
             del,
             user,
-            matchParams
+            matchParams,
           ),
         };
         if (link && !render) {
           newCol.render = makeLinkRender(link);
         }
         if (
-          valueType === 'image' ||
-          get(col, ['valueType', 'type']) === 'image'
+          valueType === 'image'
+          || get(col, ['valueType', 'type']) === 'image'
         ) {
           newCol.hideInSearch = true;
         }
@@ -107,7 +105,7 @@ function Table<T = CommonRecord, U = ParamsType>({
         }
         return newCol;
       }) as ProTableProps<T, U>['columns'],
-    [columns, del, matchParams, rowKey, update, user]
+    [columns, del, matchParams, rowKey, update, user],
   );
 
   const newSearch = useMemo<TableProps['search']>(() => {
@@ -118,8 +116,8 @@ function Table<T = CommonRecord, U = ParamsType>({
       !find(
         newColumns,
         (c) =>
-          (c.hideInSearch === false || c.hideInSearch === undefined) &&
-          c.valueType !== 'option'
+          (c.hideInSearch === false || c.hideInSearch === undefined)
+          && c.valueType !== 'option',
       )
     ) {
       return false;
@@ -142,7 +140,7 @@ function Table<T = CommonRecord, U = ParamsType>({
         return defaultSyncToUrl(values, type);
       },
     }),
-    [form]
+    [form],
   );
 
   const mergedToolBarRender = useMergedToolBarRender(
@@ -150,7 +148,7 @@ function Table<T = CommonRecord, U = ParamsType>({
     create,
     formRef.current,
     matchParams,
-    user
+    user,
   );
 
   return (

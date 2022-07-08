@@ -1,40 +1,28 @@
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useImperativeHandle,
-} from 'react';
-import { ActionType } from '@ant-design/pro-table';
-import ProList, { ProListMeta, ProListProps } from '@ant-design/pro-list';
-import { SortOrder } from 'antd/lib/table/interface';
-import {
-  filter,
-  find,
-  get,
-  isBoolean,
-  isFunction,
-  keyBy,
-  mapValues,
-  values,
-} from 'lodash';
-import { useParams } from 'react-router-dom';
 import { ProFormInstance } from '@ant-design/pro-form';
+import ProList, { ProListMeta, ProListProps } from '@ant-design/pro-list';
 import { ParamsType } from '@ant-design/pro-provider';
-import { CommonRecord } from '../types/common';
-import { useTableRequests } from '../hooks/useTableCRUDRequests';
-import makeLinkRender from '../utils/makeLinkRender';
-import useUser from '../hooks/useUser';
-import { TableProps } from './Table';
-import { XMSListMetas } from '../types';
-import defaultSyncToUrl from '../utils/defaultSyncToUrl';
+import { ActionType } from '@ant-design/pro-table';
+import { SortOrder } from 'antd/lib/table/interface';
+import { filter, find, get, isBoolean, isFunction, keyBy, mapValues, values } from 'lodash';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
+import { useTableRequests } from '../hooks/useTableCRUDRequests';
+import useUser from '../hooks/useUser';
+import { XMSListMetas } from '../types';
+import { CommonRecord } from '../types/common';
+import defaultSyncToUrl from '../utils/defaultSyncToUrl';
+import makeLinkRender from '../utils/makeLinkRender';
 import makeMergedRender from '../utils/makeMergedRender';
+import { TableProps } from './Table';
 
-export type ListProps<T = CommonRecord, U = ParamsType> = Omit<
-  ProListProps<T, U>,
-  'metas' | 'toolBarRender' | 'params'
-> &
-  Pick<TableProps, 'requestConfig' | 'rowKey' | 'params' | 'toolBarRender'> & {
+export type ListProps<T = CommonRecord, U = ParamsType> =
+  & Omit<
+    ProListProps<T, U>,
+    'metas' | 'toolBarRender' | 'params'
+  >
+  & Pick<TableProps, 'requestConfig' | 'rowKey' | 'params' | 'toolBarRender'>
+  & {
     metas: XMSListMetas;
   };
 
@@ -76,15 +64,15 @@ function List<T = CommonRecord, U = ParamsType>({
           update,
           del,
           user,
-          matchParams
+          matchParams,
         ),
       };
       if (link && !render) {
         newMeta.render = makeLinkRender(link);
       }
       if (
-        valueType === 'image' ||
-        get(meta, ['valueType', 'type']) === 'image'
+        valueType === 'image'
+        || get(meta, ['valueType', 'type']) === 'image'
       ) {
         newMeta.search = false;
       }
@@ -99,7 +87,7 @@ function List<T = CommonRecord, U = ParamsType>({
 
     const sortMetas = filter(
       newMetas,
-      (meta) => meta.sortDirections?.length > 0 || !!meta.defaultSortOrder
+      (meta) => meta.sortDirections?.length > 0 || !!meta.defaultSortOrder,
     );
     if (sortMetas.length > 0) {
       const initialSortMeta = find(newMetas, (meta) => !!meta.defaultSortOrder);
@@ -137,7 +125,7 @@ function List<T = CommonRecord, U = ParamsType>({
     if (
       !find(
         values<ProListMeta<T>>(formattedMetas),
-        (c) => c.search !== false && c.valueType !== 'option'
+        (c) => c.search !== false && c.valueType !== 'option',
       )
     ) {
       return false;
@@ -160,7 +148,7 @@ function List<T = CommonRecord, U = ParamsType>({
         return defaultSyncToUrl(data, type);
       },
     }),
-    [form]
+    [form],
   );
 
   const listRetrieve = useCallback(
@@ -169,12 +157,12 @@ function List<T = CommonRecord, U = ParamsType>({
         restParams,
         sort?.length === 2
           ? {
-              [sort[0] as string]: sort[1] as SortOrder,
-            }
+            [sort[0] as string]: sort[1] as SortOrder,
+          }
           : {},
-        f
+        f,
       ),
-    [retrieve]
+    [retrieve],
   );
 
   const mergedToolBarRender = useMergedToolBarRender(
@@ -182,7 +170,7 @@ function List<T = CommonRecord, U = ParamsType>({
     create,
     formRef.current,
     matchParams,
-    user
+    user,
   );
 
   return (

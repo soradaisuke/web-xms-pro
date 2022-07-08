@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
 import { Drawer, DrawerProps } from 'antd';
+import React, { useCallback, useState } from 'react';
 
 export type TriggerDrawerProps = DrawerProps & {
   trigger: JSX.Element;
@@ -13,14 +13,14 @@ function TriggerDrawer({ trigger, onClose, ...rest }: TriggerDrawerProps) {
       onClose?.(e);
       setIsDrawerVisible(false);
     },
-    [onClose]
+    [onClose],
   );
 
   return (
     <>
       <Drawer {...rest} visible={isDrawerVisible} onClose={onMergedClose} />
-      {trigger &&
-        React.cloneElement(trigger, {
+      {trigger
+        && React.cloneElement(trigger, {
           ...trigger.props,
           onClick: async (e: any) => {
             setIsDrawerVisible(true);

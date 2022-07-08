@@ -7,7 +7,7 @@ import { CommonRecord } from '../types/common';
 import '../styles/link.less';
 
 export default function makeLinkRender(
-  link: (record: CommonRecord) => string
+  link: (record: CommonRecord) => string,
 ): ProColumns['render'] {
   const render = (dom, record) => {
     const url = link(record);

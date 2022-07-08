@@ -1,44 +1,43 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import ProDescriptions, {
-  ProDescriptionsItemProps,
-  ProDescriptionsProps,
-} from '@ant-design/pro-descriptions';
-import { Params, useParams } from 'react-router-dom';
-import { map } from 'lodash';
-import { Button, Result } from 'antd';
+import ProDescriptions, { ProDescriptionsItemProps, ProDescriptionsProps } from '@ant-design/pro-descriptions';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProCoreActionType } from '@ant-design/pro-utils';
-import { CommonRecord, User } from '../types/common';
-import { XMSDescriptionsColumns } from '../types/descriptions';
+import { Button, Result } from 'antd';
+import { map } from 'lodash';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Params, useParams } from 'react-router-dom';
 import {
   DescriptionsDeleteRequest,
   DescriptionsRequestConfig,
   DescriptionsUpdateRequest,
   useDescriptionsRequests,
 } from '../hooks/useDescriptionCRUDRequests';
-import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
-import makeLinkRender from '../utils/makeLinkRender';
-import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
-import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
-import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 import useUser from '../hooks/useUser';
+import { CommonRecord, User } from '../types/common';
+import { XMSDescriptionsColumns } from '../types/descriptions';
+import makeDefaultDeleteButtonRender from '../utils/makeDefaultDeleteButtonRender';
+import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOfflineButtonRender';
+import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
+import makeLinkRender from '../utils/makeLinkRender';
+import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
 
-export type DescriptionsProps<T = CommonRecord, U = ParamsType> = Omit<
-  ProDescriptionsProps<T, U>,
-  'columns'
-> & {
-  /** @name 数据请求配置 */
-  requestConfig?: DescriptionsRequestConfig;
-  /** @name columns配置 */
-  columns: XMSDescriptionsColumns[];
-};
+export type DescriptionsProps<T = CommonRecord, U = ParamsType> =
+  & Omit<
+    ProDescriptionsProps<T, U>,
+    'columns'
+  >
+  & {
+    /** @name 数据请求配置 */
+    requestConfig?: DescriptionsRequestConfig;
+    /** @name columns配置 */
+    columns: XMSDescriptionsColumns[];
+  };
 
 function makeMergedRender(
   render: XMSDescriptionsColumns['render'],
   update: DescriptionsUpdateRequest,
   del: DescriptionsDeleteRequest,
   user: User,
-  matchParams: Params
+  matchParams: Params,
 ): ProDescriptionsItemProps['render'] {
   if (!render) {
     return null;
@@ -65,13 +64,13 @@ function makeMergedRender(
         defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(
           record,
           matchParams,
-          defaultUpdate
+          defaultUpdate,
         ),
         defaultSwapButtonRender: makeDefaultSwapButtonRender(
-          defaultUpdateButtonRender
+          defaultUpdateButtonRender,
         ),
       },
-      ...args
+      ...args,
     );
   };
 }
@@ -107,12 +106,12 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
         }
         return newCol;
       }) as ProDescriptionsProps['columns'],
-    [columns, del, matchParams, update, user]
+    [columns, del, matchParams, update, user],
   );
 
   const onRequestError = useCallback<ProDescriptionsProps['onRequestError']>(
     (e) => setError(e),
-    []
+    [],
   );
 
   if (error) {

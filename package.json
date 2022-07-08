@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "prettier": "npx prettier --write 'src/**/*.{ts,tsx}'",
-    "lint": "npx eslint --fix 'src/**/*.{ts,tsx}'",
-    "style": "npx stylelint --fix --custom-syntax postcss-less 'src/**/*.less'",
+    "dprint": "npx dprint fmt",
+    "lint-code": "npx eslint --fix 'src/**/*.{ts,tsx}'",
+    "lint-style": "npx stylelint --fix --custom-syntax postcss-less 'src/**/*.less'",
     "build": "rm -rf lib && tsc && babel -d lib/ src/  --copy-files --extensions \".js,.jsx,.ts,.tsx\" --no-copy-ignored"
   },
   "repository": {

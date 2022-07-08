@@ -3,8 +3,8 @@ export default function isNumeric(str: string): boolean {
     return false;
   }
   return (
-    !Number.isNaN(str) &&
-    !Number.isNaN(parseFloat(str)) &&
-    String(parseFloat(str)) === str
+    !Number.isNaN(str)
+    && !Number.isNaN(parseFloat(str))
+    && String(parseFloat(str)) === str
   );
 }

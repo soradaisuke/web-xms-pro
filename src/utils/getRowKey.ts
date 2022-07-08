@@ -6,7 +6,7 @@ import { CommonRecord } from '../types/common';
 
 export default function getRowKey(
   rowKey: ProTableProps<CommonRecord, ParamsType>['rowKey'],
-  record: CommonRecord
+  record: CommonRecord,
 ): Key {
   if (isFunction(rowKey)) {
     return rowKey(record);

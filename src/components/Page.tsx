@@ -1,13 +1,13 @@
-import React, { ReactNode, useMemo } from 'react';
 import { PageContainer, PageContainerProps } from '@ant-design/pro-layout';
-import { find, isFunction } from 'lodash';
-import { Button, Result, TabPaneProps } from 'antd';
-import { Params, useParams } from 'react-router-dom';
 import { useRequest } from 'ahooks';
-import Table, { TableProps } from './Table';
-import List, { ListProps } from './List';
-import Descriptions, { DescriptionsProps } from './Descriptions';
+import { Button, Result, TabPaneProps } from 'antd';
+import { find, isFunction } from 'lodash';
+import React, { ReactNode, useMemo } from 'react';
+import { Params, useParams } from 'react-router-dom';
 import useSyncTabKeyToUrl from '../hooks/useSyncTabKeyToUrl';
+import Descriptions, { DescriptionsProps } from './Descriptions';
+import List, { ListProps } from './List';
+import Table, { TableProps } from './Table';
 import './Page.less';
 
 export type ContentConfig = {
@@ -16,8 +16,10 @@ export type ContentConfig = {
   listProps?: ListProps;
 };
 
-export type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> &
-  ContentConfig & {
+export type PageProps =
+  & Omit<PageContainerProps, 'tabList' | 'title'>
+  & ContentConfig
+  & {
     children?: ReactNode;
     tabList?: (TabPaneProps & ContentConfig & { key: string })[];
     error?: Error;
@@ -25,10 +27,10 @@ export type PageProps = Omit<PageContainerProps, 'tabList' | 'title'> &
     title?:
       | PageContainerProps['title']
       | ((
-          params: Params
-        ) =>
-          | PageContainerProps['title']
-          | Promise<PageContainerProps['title']>);
+        params: Params,
+      ) =>
+        | PageContainerProps['title']
+        | Promise<PageContainerProps['title']>);
   };
 
 function renderContent(props: PageProps, key?: string): ReactNode {
@@ -36,23 +38,20 @@ function renderContent(props: PageProps, key?: string): ReactNode {
     return null;
   }
 
-  const { tableProps, decriptionsProps, listProps, children, error, reload } =
-    props;
+  const { tableProps, decriptionsProps, listProps, children, error, reload } = props;
 
   if (error) {
     return (
       <Result
         status="error"
         title={error.message}
-        extra={
-          reload
-            ? [
-                <Button type="primary" key="retry" onClick={() => reload()}>
-                  重试
-                </Button>,
-              ]
-            : []
-        }
+        extra={reload
+          ? [
+            <Button type="primary" key="retry" onClick={() => reload()}>
+              重试
+            </Button>,
+          ]
+          : []}
       />
     );
   }
@@ -79,18 +78,19 @@ function renderContent(props: PageProps, key?: string): ReactNode {
 function Page({ tabList, title, ...rest }: PageProps) {
   const { tabActiveKey, onTabChange } = useSyncTabKeyToUrl(
     'tab_key',
-    tabList?.[0]?.key
+    tabList?.[0]?.key,
   );
   const matchParams = useParams();
 
   const getTitle = useMemo<() => Promise<PageContainerProps['title']>>(
-    () => async () => {
-      if (isFunction(title)) {
-        return title(matchParams);
-      }
-      return title;
-    },
-    [matchParams, title]
+    () =>
+      async () => {
+        if (isFunction(title)) {
+          return title(matchParams);
+        }
+        return title;
+      },
+    [matchParams, title],
   );
 
   const { data } = useRequest(getTitle);
@@ -102,10 +102,10 @@ function Page({ tabList, title, ...rest }: PageProps) {
       tabActiveKey={tabActiveKey}
       onTabChange={onTabChange}
     >
-      {renderContent(rest) ||
-        renderContent(
+      {renderContent(rest)
+        || renderContent(
           find(tabList, (tab) => tab.key === tabActiveKey),
-          tabActiveKey
+          tabActiveKey,
         )}
     </PageContainer>
   );

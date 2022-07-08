@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 type ExecutorProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,13 +18,13 @@ function Executor({ hook, onUpdate, namespace }: ExecutorProps) {
   try {
     data = hook();
     if (
-      process.env.NODE_ENV === 'development' &&
-      typeof document !== 'undefined'
+      process.env.NODE_ENV === 'development'
+      && typeof document !== 'undefined'
     ) {
       try {
         const count = Object.keys(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ((window as any).xms_useModel_dev_tool_log || {})[namespace] || {}
+          ((window as any).xms_useModel_dev_tool_log || {})[namespace] || {},
         ).length;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).xms_useModel_dev_tool = Object.assign(
@@ -32,7 +32,7 @@ function Executor({ hook, onUpdate, namespace }: ExecutorProps) {
           (window as any).xms_useModel_dev_tool || {},
           {
             [namespace]: data,
-          }
+          },
         );
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).xms_useModel_dev_tool_log = Object.assign(
@@ -41,13 +41,13 @@ function Executor({ hook, onUpdate, namespace }: ExecutorProps) {
           {
             [namespace]: Object.assign(
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ((window as any).xms_useModel_dev_tool_log || {})[namespace] ||
-                {},
+              ((window as any).xms_useModel_dev_tool_log || {})[namespace]
+                || {},
               {
                 [count]: data,
-              }
+              },
             ),
-          }
+          },
         );
         window.dispatchEvent(
           new CustomEvent('xms_useModel_update', {
@@ -57,7 +57,7 @@ function Executor({ hook, onUpdate, namespace }: ExecutorProps) {
               data,
               index: count,
             },
-          })
+          }),
         );
       } catch (e) {
         // dev tool 记录失败、可能是低版本浏览器，忽略
@@ -67,7 +67,7 @@ function Executor({ hook, onUpdate, namespace }: ExecutorProps) {
     // eslint-disable-next-line no-console
     console.error(
       `plugin-model: Invoking '${namespace || 'unknown'}' model failed:`,
-      e
+      e,
     );
   }
 

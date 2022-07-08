@@ -1,13 +1,13 @@
+import { isUndefined, mapValues, toString } from 'lodash';
 import {
-  extend,
   Context,
+  extend,
   OnionMiddleware,
   RequestInterceptor,
-  ResponseInterceptor,
-  ResponseError,
   RequestOptionsInit,
+  ResponseError,
+  ResponseInterceptor,
 } from 'umi-request';
-import { isUndefined, mapValues, toString } from 'lodash';
 import { CommonRecord } from '../types/common';
 import showError, { ErrorShowType, XmsError } from './showError';
 
@@ -93,7 +93,7 @@ export type RequestError<T = ResponseStructure> = Error & {
  */
 export type ErrorAdapter<T = ResponseStructure> = (
   resData: T,
-  ctx: Context
+  ctx: Context,
 ) => ErrorInfoStructure;
 
 /**
@@ -140,7 +140,7 @@ declare module 'umi-request' {
 
 const defaultErrorAdapter: ErrorAdapter = (
   resData: ResponseStructure,
-  ctx: Context
+  ctx: Context,
 ): ErrorInfoStructure => {
   const errorInfo: ErrorInfoStructure = {
     success: resData.errcode === 0,
@@ -151,11 +151,10 @@ const defaultErrorAdapter: ErrorAdapter = (
   return errorInfo;
 };
 
-const defaultResultAdapter: ResultAdapter = (resData: ResponseStructure) =>
-  resData.data;
+const defaultResultAdapter: ResultAdapter = (resData: ResponseStructure) => resData.data;
 
 function makeErrorHandler(
-  errorAdaptor: ErrorAdapter
+  errorAdaptor: ErrorAdapter,
 ): (error: ResponseError) => void {
   return (error: RequestError) => {
     const options = error?.request?.options as RequestOptionsInit;
@@ -227,10 +226,8 @@ export type RequestConfig = RequestOptionsInit & {
  * @group Request
  */
 export function extendRequestConfig(requestConfig: RequestConfig): void {
-  const globalErrorAdaper =
-    requestConfig.errorConfig?.adaptor || defaultErrorAdapter;
-  const globalResultAdaper =
-    requestConfig.resultAdapter || defaultResultAdapter;
+  const globalErrorAdaper = requestConfig.errorConfig?.adaptor || defaultErrorAdapter;
+  const globalResultAdaper = requestConfig.resultAdapter || defaultResultAdapter;
 
   request.extendOptions({
     errorHandler: makeErrorHandler(globalErrorAdaper),
@@ -250,9 +247,9 @@ export function extendRequestConfig(requestConfig: RequestConfig): void {
     const result = resultAdaptor(resData);
     ctx.res = options?.getResponse
       ? {
-          ...res,
-          data: result,
-        }
+        ...res,
+        data: result,
+      }
       : result;
   });
 

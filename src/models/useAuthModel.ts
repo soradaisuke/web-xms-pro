@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useCallback, useState } from 'react';
-import { generateUri } from '@qt/web-common';
 import { isProduction } from '@qt/env';
+import { generateUri } from '@qt/web-common';
 import { useRequest } from 'ahooks';
 import Cookie from 'js-cookie';
-import { request } from '../utils/request';
+import { useCallback, useState } from 'react';
 import { Hook } from '../components/Provider';
+import { request } from '../utils/request';
 
 const ENTRY_HOST = `//entry${isProduction ? '' : '.staging'}.qingtingfm.com`;
 const TOKEN_KEY = isProduction ? 'prod_sso_token' : 'stg_sso_token';
@@ -18,8 +18,7 @@ const signin = () => {
   window.location.replace(loginUrl.href);
 };
 
-const useAuthModel =
-  (authPath: string): Hook =>
+const useAuthModel = (authPath: string): Hook =>
   () => {
     const [user, setUser] = useState(null);
 

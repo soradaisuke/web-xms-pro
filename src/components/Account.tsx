@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import { LoginOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button } from 'antd';
-import { UserOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
+import React, { useContext, useEffect } from 'react';
 import UserContext from '../contexts/UserContext';
 
 function Account() {
@@ -21,9 +21,7 @@ function Account() {
         <Avatar
           shape="square"
           size="small"
-          src={
-            user.avatar || 'https://sss.qingting.fm/zhibo/ic-qt-assistant.png'
-          }
+          src={user.avatar || 'https://sss.qingting.fm/zhibo/ic-qt-assistant.png'}
           icon={<UserOutlined />}
         />
         <div style={{ marginLeft: 5, marginRight: 5 }}>{user.nickname}</div>

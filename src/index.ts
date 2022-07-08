@@ -1,9 +1,9 @@
 import xms from './app';
 
+export { AppConfig } from './app';
 export * from './components';
 export * from './hooks';
-export * from './utils';
 export * from './types';
-export { AppConfig } from './app';
+export * from './utils';
 
 export default xms;

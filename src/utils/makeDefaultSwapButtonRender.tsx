@@ -4,7 +4,7 @@ import React from 'react';
 import { TableSwapButtonRender, TableUpdateButtonRender } from '../types/table';
 
 export default function makeDefaultSwapButtonRender(
-  defaultUpdateButtonRender: TableUpdateButtonRender
+  defaultUpdateButtonRender: TableUpdateButtonRender,
 ): TableSwapButtonRender {
   const render = (config = {}) =>
     defaultUpdateButtonRender({

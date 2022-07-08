@@ -6,14 +6,16 @@ import { XMSTableColumns } from './table';
  * @group Pro Components
  * @category Pro List
  */
-export type XMSListMeta<T = CommonRecord> = Omit<
-  ProListMeta<T>,
-  'valueType' | 'render'
-> & {
-  link?: (record: CommonRecord) => string;
-  valueType?: XMSTableColumns<T>['valueType'];
-  render?: XMSTableColumns<T>['render'];
-};
+export type XMSListMeta<T = CommonRecord> =
+  & Omit<
+    ProListMeta<T>,
+    'valueType' | 'render'
+  >
+  & {
+    link?: (record: CommonRecord) => string;
+    valueType?: XMSTableColumns<T>['valueType'];
+    render?: XMSTableColumns<T>['render'];
+  };
 
 /**
  * @group Pro Components

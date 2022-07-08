@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, ButtonProps, Upload, UploadProps } from 'antd';
-import { filter, isArray, isString, map } from 'lodash';
 import { UploadOutlined } from '@ant-design/icons';
 import { generateDeviceId, uploadToAliyun } from '@qt/web-common';
+import { Button, ButtonProps, Upload, UploadProps } from 'antd';
+import { filter, isArray, isString, map } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUser } from '../hooks';
 
 export type UploadFileProps = Omit<UploadProps<string>, 'onChange'> & {
@@ -42,7 +42,6 @@ export type UploadFileProps = Omit<UploadProps<string>, 'onChange'> & {
   /**
    * @name 上传组件的 url
    * @default []
-   *
    */
   value?: string | string[];
   onChange?: (value: string | string[]) => void;
@@ -66,7 +65,7 @@ function UploadFile({
       setFileList([{ uid: value, name: value, url: value }]);
     } else if (isArray(value)) {
       setFileList(
-        map(value, (v) => ({ uid: v, name: v, url: v, response: v }))
+        map(value, (v) => ({ uid: v, name: v, url: v, response: v })),
       );
     } else {
       setFileList([]);
@@ -75,7 +74,7 @@ function UploadFile({
 
   const showUploadButton = useMemo(
     () => max === undefined || !fileList || fileList?.length < max,
-    [max, fileList]
+    [max, fileList],
   );
 
   const customRequest = useCallback<UploadProps<string>['customRequest']>(
@@ -93,7 +92,7 @@ function UploadFile({
         info.onError(e);
       }
     },
-    [user?.sso_token]
+    [user?.sso_token],
   );
 
   const onFilesChange = useCallback<UploadProps<string>['onChange']>(
@@ -107,7 +106,7 @@ function UploadFile({
         }
       }
     },
-    [max, onChange]
+    [max, onChange],
   );
 
   const onRemove = useCallback<UploadFileProps['onRemove']>(
@@ -119,7 +118,7 @@ function UploadFile({
       }
       restProps.onRemove?.(file);
     },
-    [max, onChange, restProps, value]
+    [max, onChange, restProps, value],
   );
 
   return (

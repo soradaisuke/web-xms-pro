@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { ProSettings, SettingDrawer } from '@ant-design/pro-layout';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ProSettings, SettingDrawer } from '@ant-design/pro-layout';
 import { merge } from 'lodash';
+import React, { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Layout, { LayoutProps } from './Layout';
 import Provider, { Models } from './Provider';
 import XmsProProvider from './XmsProProvider';
@@ -28,8 +28,8 @@ function App({ layoutProps, settings: propSettings, models }: AppProps) {
         },
         fixSiderbar: true,
       },
-      propSettings
-    )
+      propSettings,
+    ),
   );
 
   return (

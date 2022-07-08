@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext, useRef } from 'react';
 import isEqual from 'fast-deep-equal';
+import { useContext, useEffect, useRef, useState } from 'react';
 import XmsContext from '../contexts/XmsContext';
 import Dispatcher from '../helpers/dispatcher';
 
 export default function useModel(
   namespace: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  updater?: (model: any) => any
+  updater?: (model: any) => any,
 ): ReturnType<NonNullable<typeof updater>> {
   type RetState = ReturnType<NonNullable<typeof updater>>;
 

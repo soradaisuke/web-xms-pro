@@ -9,7 +9,7 @@ import { TableOnlineOfflineButtonRender } from '../types/table';
 export default function makeDefaultOnlineOfflineButtonRender(
   record: CommonRecord,
   matchParams: Params,
-  update: (values: CommonRecord) => Promise<boolean>
+  update: (values: CommonRecord) => Promise<boolean>,
 ): TableOnlineOfflineButtonRender {
   const render: TableOnlineOfflineButtonRender = (config = {}) => {
     const {
@@ -30,8 +30,8 @@ export default function makeDefaultOnlineOfflineButtonRender(
             [statusKey]: status === onlineStatus ? offlineStatus : onlineStatus,
           },
           matchParams,
-          record
-        )
+          record,
+        ),
       );
 
     return (
@@ -45,13 +45,7 @@ export default function makeDefaultOnlineOfflineButtonRender(
         <Tooltip title={status === onlineStatus ? offlineText : onlineText}>
           <Button
             danger={status === onlineStatus}
-            icon={
-              status === onlineStatus ? (
-                <CloudDownloadOutlined />
-              ) : (
-                <CloudUploadOutlined />
-              )
-            }
+            icon={status === onlineStatus ? <CloudDownloadOutlined /> : <CloudUploadOutlined />}
             shape="circle"
             type="primary"
           />

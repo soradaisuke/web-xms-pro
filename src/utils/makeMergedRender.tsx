@@ -5,10 +5,7 @@ import { Params } from 'react-router-dom';
 import UpdateRecordSchemaForm from '../components/SchemaForm/UpdateRecordSchemaForm';
 // eslint-disable-next-line import/no-cycle
 import { TableProps } from '../components/Table';
-import {
-  TableDeleteRequest,
-  TableUpdateRequest,
-} from '../hooks/useTableCRUDRequests';
+import { TableDeleteRequest, TableUpdateRequest } from '../hooks/useTableCRUDRequests';
 import { User } from '../types/common';
 import { XMSTableColumns } from '../types/table';
 import getRowKey from './getRowKey';
@@ -22,7 +19,7 @@ export default function makeMergedRender(
   update: TableUpdateRequest,
   del: TableDeleteRequest,
   user: User,
-  matchParams: Params
+  matchParams: Params,
 ): ProColumns['render'] {
   if (!render) {
     return null;
@@ -51,13 +48,13 @@ export default function makeMergedRender(
         defaultOnlineOfflineButtonRender: makeDefaultOnlineOfflineButtonRender(
           record,
           matchParams,
-          defaultUpdate
+          defaultUpdate,
         ),
         defaultSwapButtonRender: makeDefaultSwapButtonRender(
-          defaultUpdateButtonRender
+          defaultUpdateButtonRender,
         ),
       },
-      ...args
+      ...args,
     );
   };
 }

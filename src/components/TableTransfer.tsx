@@ -1,28 +1,21 @@
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { Transfer, TransferProps } from 'antd';
-import { concat, difference, find, includes, map, merge, uniqBy } from 'lodash';
-import ProTable, {
-  DragSortTable,
-  ProTableProps,
-  DragTableProps,
-} from '@ant-design/pro-table';
 import { ParamsType } from '@ant-design/pro-provider';
+import ProTable, { DragSortTable, DragTableProps, ProTableProps } from '@ant-design/pro-table';
+import { Transfer, TransferProps } from 'antd';
 import { TransferItem } from 'antd/lib/transfer';
+import { concat, difference, find, includes, map, merge, uniqBy } from 'lodash';
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 
-export type TableTransferItem = Omit<TransferItem, 'key'> &
-  Required<Pick<TransferItem, 'key'>>;
+export type TableTransferItem =
+  & Omit<TransferItem, 'key'>
+  & Required<Pick<TransferItem, 'key'>>;
 
 export type TableTransferProps<
   T extends TableTransferItem = TableTransferItem,
-  U = ParamsType
-> = Omit<TransferProps<T>, 'dataSource'> &
-  Partial<Pick<TransferProps<T>, 'dataSource'>> & {
+  U = ParamsType,
+> =
+  & Omit<TransferProps<T>, 'dataSource'>
+  & Partial<Pick<TransferProps<T>, 'dataSource'>>
+  & {
     leftTableProps?: DragTableProps<T, U>;
     rightTableProps?: DragTableProps<T, U>;
     tableProps?: DragTableProps<T, U>;
@@ -38,7 +31,7 @@ const defaultTableProps = {
 
 function TableTransfer<
   T extends TableTransferItem = TableTransferItem,
-  U = ParamsType
+  U = ParamsType,
 >({
   preserve,
   tableProps,
@@ -53,11 +46,11 @@ function TableTransfer<
 }: PropsWithChildren<TableTransferProps<T, U>>) {
   const leftProps = useMemo(
     () => merge({}, defaultTableProps, tableProps, leftTableProps),
-    [tableProps, leftTableProps]
+    [tableProps, leftTableProps],
   );
   const rightProps = useMemo(
     () => merge({}, defaultTableProps, tableProps, rightTableProps),
-    [tableProps, rightTableProps]
+    [tableProps, rightTableProps],
   );
 
   const [transferDataSource, setDataSource] = useState(dataSource || []);
@@ -69,7 +62,7 @@ function TableTransfer<
       setTargetKeys(nextTargetKeys);
       onChange?.(nextTargetKeys, direction, moveKeys);
     },
-    [onChange]
+    [onChange],
   );
 
   useEffect(() => {
@@ -77,15 +70,11 @@ function TableTransfer<
   }, [dataSource]);
 
   useEffect(() => {
-    setTotalDataSource((prev) =>
-      uniqBy(concat(prev, transferDataSource || []), 'key')
-    );
+    setTotalDataSource((prev) => uniqBy(concat(prev, transferDataSource || []), 'key'));
   }, [transferDataSource]);
 
   useEffect(() => {
-    setTotalDataSource((prev) =>
-      uniqBy(concat(prev, initialTargetDataSource || []), 'key')
-    );
+    setTotalDataSource((prev) => uniqBy(concat(prev, initialTargetDataSource || []), 'key'));
   }, [initialTargetDataSource]);
 
   useEffect(() => {
@@ -96,7 +85,7 @@ function TableTransfer<
     (newDataSource) => {
       onTransferChange(map(newDataSource, ({ key }) => key));
     },
-    [onTransferChange]
+    [onTransferChange],
   );
 
   const getTableDataSource = useCallback(
@@ -111,9 +100,7 @@ function TableTransfer<
         return filteredItems;
       }
       if (leftTableProps?.request) {
-        return map(transferTargetKeys, (key) =>
-          find(totalDataSource, (item) => key === item.key)
-        );
+        return map(transferTargetKeys, (key) => find(totalDataSource, (item) => key === item.key));
       }
       return filteredItems;
     },
@@ -123,7 +110,7 @@ function TableTransfer<
       transferDataSource,
       transferTargetKeys,
       totalDataSource,
-    ]
+    ],
   );
 
   const renderChildren = useCallback(
@@ -179,13 +166,12 @@ function TableTransfer<
       }
 
       if (direction === 'left') {
-        defaultProps.onDataSourceChange = (newDataSource) =>
-          setDataSource(newDataSource);
+        defaultProps.onDataSourceChange = (newDataSource) => setDataSource(newDataSource);
       }
 
       return <ProTable<T, U> {...prop} {...defaultProps} />;
     },
-    [getTableDataSource, leftProps, onDragSortEnd, rightProps]
+    [getTableDataSource, leftProps, onDragSortEnd, rightProps],
   );
 
   return (

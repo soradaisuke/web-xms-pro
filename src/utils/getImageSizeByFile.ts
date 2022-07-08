@@ -1,5 +1,5 @@
 export default function getImageSizeByFile(
-  file: File
+  file: File,
 ): Promise<{ width: number; height: number }> {
   return new Promise((resolve) => {
     const fr = new FileReader();

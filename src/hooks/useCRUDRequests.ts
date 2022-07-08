@@ -1,10 +1,5 @@
 import { useRequest } from 'ahooks';
-import {
-  Options,
-  Service,
-  Plugin,
-  Result,
-} from 'ahooks/lib/useRequest/src/types';
+import { Options, Plugin, Result, Service } from 'ahooks/lib/useRequest/src/types';
 import { isPlainObject, isString, merge, omitBy } from 'lodash';
 import { Params } from 'react-router-dom';
 import { RequestOptionsInit } from 'umi-request';
@@ -13,19 +8,19 @@ import { request } from '../utils/request';
 
 export type ServiceConfigObject<
   TData = CommonRecord,
-  TParams extends any[] = any[]
+  TParams extends any[] = any[],
 > =
   | {
-      requestService: Service<TData, TParams>;
-    }
+    requestService: Service<TData, TParams>;
+  }
   | {
-      requestPath: string;
-      requestOptions?: RequestOptionsInit;
-    };
+    requestPath: string;
+    requestOptions?: RequestOptionsInit;
+  };
 
 export type ServiceConfig<
   TData = CommonRecord,
-  TParams extends any[] = any[]
+  TParams extends any[] = any[],
 > = string | ServiceConfigObject<TData, TParams>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,21 +30,21 @@ type CreateArgs = [values: CommonRecord];
 
 type CreateService<
   TData = CommonRecord,
-  TParams extends CreateArgs = CreateArgs
+  TParams extends CreateArgs = CreateArgs,
 > = Service<TData, TParams>;
 
 export type CreateServiceConfig<
   TParams extends CreateArgs = CreateArgs,
-  TData = CommonRecord
+  TData = CommonRecord,
 > = ServiceConfig<TData, TParams>;
 
 export function useCreateRequest<
   TParams extends CreateArgs = CreateArgs,
-  TData = CommonRecord
+  TData = CommonRecord,
 >(
   serviceConfig: CreateServiceConfig<TParams, TData>,
   options?: Options<TData, TParams>,
-  plugins?: Plugin<TData, TParams>[]
+  plugins?: Plugin<TData, TParams>[],
 ): Result<TData, TParams> {
   let service: CreateService<TData, TParams>;
 
@@ -71,8 +66,8 @@ export function useCreateRequest<
               data: values,
               method: 'post',
             },
-            serviceConfig.requestOptions
-          )
+            serviceConfig.requestOptions,
+          ),
         );
     }
   }
@@ -84,21 +79,21 @@ type UpdateArgs = [values: CommonRecord, id?: string | number];
 
 type UpdateService<
   TData = CommonRecord,
-  TParams extends UpdateArgs = UpdateArgs
+  TParams extends UpdateArgs = UpdateArgs,
 > = Service<TData, TParams>;
 
 export type UpdateServiceConfig<
   TParams extends UpdateArgs = UpdateArgs,
-  TData = CommonRecord
+  TData = CommonRecord,
 > = ServiceConfig<TData, TParams>;
 
 export function useUpdateRequest<
   TParams extends UpdateArgs = UpdateArgs,
-  TData = CommonRecord
+  TData = CommonRecord,
 >(
   serviceConfig: UpdateServiceConfig<TParams, TData>,
   options?: Options<TData, TParams>,
-  plugins?: Plugin<TData, TParams>[]
+  plugins?: Plugin<TData, TParams>[],
 ): Result<TData, TParams> {
   let service: UpdateService<TData, TParams>;
 
@@ -120,8 +115,8 @@ export function useUpdateRequest<
               data: values,
               method: 'put',
             },
-            serviceConfig.requestOptions
-          )
+            serviceConfig.requestOptions,
+          ),
         );
     }
   }
@@ -133,27 +128,26 @@ type DeleteArgs = [id?: string | number];
 
 type DeleteService<
   TData = CommonRecord,
-  TParams extends DeleteArgs = DeleteArgs
+  TParams extends DeleteArgs = DeleteArgs,
 > = Service<TData, TParams>;
 
 export type DeleteServiceConfig<
   TParams extends DeleteArgs = DeleteArgs,
-  TData = CommonRecord
+  TData = CommonRecord,
 > = ServiceConfig<TData, TParams>;
 
 export function useDeleteRequest<
   TParams extends DeleteArgs = DeleteArgs,
-  TData = CommonRecord
+  TData = CommonRecord,
 >(
   serviceConfig: DeleteServiceConfig<TParams, TData>,
   options?: Options<TData, TParams>,
-  plugins?: Plugin<TData, TParams>[]
+  plugins?: Plugin<TData, TParams>[],
 ): Result<TData, TParams> {
   let service: DeleteService<TData, TParams>;
 
   if (isString(serviceConfig)) {
-    service = (id?) =>
-      request(`${serviceConfig}${id ? `/${id}` : ''}`, { method: 'delete' });
+    service = (id?) => request(`${serviceConfig}${id ? `/${id}` : ''}`, { method: 'delete' });
   } else if (isPlainObject(serviceConfig)) {
     if ('requestService' in serviceConfig) {
       service = serviceConfig.requestService;
@@ -161,7 +155,7 @@ export function useDeleteRequest<
       service = (id?) =>
         request(
           `${serviceConfig.requestPath}${id ? `/${id}` : ''}`,
-          merge({ method: 'delete' }, serviceConfig.requestOptions)
+          merge({ method: 'delete' }, serviceConfig.requestOptions),
         );
     }
   }
@@ -173,32 +167,32 @@ export type RetrieveArgs = [
   page: number,
   pagesize: number,
   filter: CommonRecord,
-  order: string
+  order: string,
 ];
 
 type RetrieveService<
   TData = CommonRecord,
-  TParams extends RetrieveArgs = RetrieveArgs
+  TParams extends RetrieveArgs = RetrieveArgs,
 > = Service<ListResp<TData>, TParams>;
 
 export type RetrieveServiceConfig<
   TData = CommonRecord,
-  TParams extends RetrieveArgs = RetrieveArgs
+  TParams extends RetrieveArgs = RetrieveArgs,
 > = ServiceConfig<ListResp<TData>, TParams>;
 
 const omit = (object) =>
   omitBy(
     object,
-    (v) => v === null || v === undefined || v === '' || Number.isNaN(v)
+    (v) => v === null || v === undefined || v === '' || Number.isNaN(v),
   );
 
 export function useRetrieveRequest<
   TData = CommonRecord,
-  TParams extends RetrieveArgs = RetrieveArgs
+  TParams extends RetrieveArgs = RetrieveArgs,
 >(
   serviceConfig: RetrieveServiceConfig<TData, TParams>,
   options?: Options<ListResp<TData>, TParams>,
-  plugins?: Plugin<ListResp<TData>, TParams>[]
+  plugins?: Plugin<ListResp<TData>, TParams>[],
 ): Result<ListResp<TData>, TParams> {
   let service: RetrieveService<TData, TParams>;
 
@@ -230,8 +224,8 @@ export function useRetrieveRequest<
               }),
               method: 'get',
             },
-            serviceConfig.requestOptions
-          )
+            serviceConfig.requestOptions,
+          ),
         );
     }
   }
@@ -243,21 +237,21 @@ type RetrieveOneArgs = [params: CommonRecord];
 
 type RetrieveOneService<
   TData = CommonRecord,
-  TParams extends RetrieveOneArgs = RetrieveOneArgs
+  TParams extends RetrieveOneArgs = RetrieveOneArgs,
 > = Service<TData, TParams>;
 
 export type RetrieveOneServiceConfig<
   TData = CommonRecord,
-  TParams extends RetrieveOneArgs = RetrieveOneArgs
+  TParams extends RetrieveOneArgs = RetrieveOneArgs,
 > = ServiceConfig<TData, TParams>;
 
 export function useRetrieveOneRequest<
   TData = CommonRecord,
-  TParams extends RetrieveOneArgs = RetrieveOneArgs
+  TParams extends RetrieveOneArgs = RetrieveOneArgs,
 >(
   serviceConfig: RetrieveOneServiceConfig<TData, TParams>,
   options?: Options<TData, TParams>,
-  plugins?: Plugin<TData, TParams>[]
+  plugins?: Plugin<TData, TParams>[],
 ): Result<TData, TParams> {
   let service: RetrieveOneService<TData, TParams>;
 
@@ -279,8 +273,8 @@ export function useRetrieveOneRequest<
               params,
               method: 'get',
             },
-            serviceConfig.requestOptions
-          )
+            serviceConfig.requestOptions,
+          ),
         );
     }
   }
