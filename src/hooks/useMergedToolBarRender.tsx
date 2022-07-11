@@ -3,8 +3,8 @@ import { ParamsType } from '@ant-design/pro-provider';
 import { ProTableProps } from '@ant-design/pro-table';
 import React, { useMemo } from 'react';
 import { Params } from 'react-router-dom';
-// eslint-disable-next-line import/no-cycle
 import CreateRecordSchemaForm from '../components/SchemaForm/CreateRecordSchemaForm';
+// eslint-disable-next-line import/no-cycle
 import { TableProps } from '../components/Table';
 import { CommonRecord, User } from '../types';
 import { TableCreateRequest } from './useTableCRUDRequests';
