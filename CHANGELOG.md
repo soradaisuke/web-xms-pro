@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.3...v1.0.4) (2022-07-11)
+
+
+### Bug Fixes
+
+* **NoTicket:** eslint ([00f7907](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/00f7907524fc6a2a33edfa0d786ca1b55dc8a32f))
+
 ### [1.0.3](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.2...v1.0.3) (2022-07-11)
 
 
