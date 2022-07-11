@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.2...v1.0.3) (2022-07-11)
+
+
+### Features
+
+* **NoTicket:** generateValueEnum ([da47480](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/da47480ce69a0c7bbe92c4f0e989571df769b43f))
+* **NoTicket:** 增加dprint美化代码格式 ([7dd1c69](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/7dd1c69a573933bec4c7b797aa09759ff0662c0f))
+
 ### [1.0.2](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.1...v1.0.2) (2022-07-07)
 
 
