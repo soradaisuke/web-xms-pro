@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Layout, { LayoutProps } from './Layout';
 import Provider, { Models } from './Provider';
-import XmsProProvider from './XmsProProvider';
 import 'moment/locale/zh-cn';
 
 export type AppProps = {
@@ -34,21 +33,19 @@ function App({ layoutProps, settings: propSettings, models }: AppProps) {
 
   return (
     <ConfigProvider locale={zhCN}>
-      <XmsProProvider>
-        <Router>
-          <Provider models={models}>
-            <Layout {...layoutProps} {...settings} />
-          </Provider>
-          <SettingDrawer
-            getContainer={() => document.getElementById('xms-pro-layout')}
-            settings={settings}
-            onSettingChange={(changeSetting) => {
-              setSetting(changeSetting);
-            }}
-            disableUrlParams
-          />
-        </Router>
-      </XmsProProvider>
+      <Router>
+        <Provider models={models}>
+          <Layout {...layoutProps} {...settings} />
+        </Provider>
+        <SettingDrawer
+          getContainer={() => document.getElementById('xms-pro-layout')}
+          settings={settings}
+          onSettingChange={(changeSetting) => {
+            setSetting(changeSetting);
+          }}
+          disableUrlParams
+        />
+      </Router>
     </ConfigProvider>
   );
 }

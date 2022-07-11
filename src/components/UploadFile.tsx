@@ -3,7 +3,7 @@ import { generateDeviceId, uploadToAliyun } from '@qt/web-common';
 import { Button, ButtonProps, Upload, UploadProps } from 'antd';
 import { filter, isArray, isString, map } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useUser } from '../hooks';
+import useUser from '../hooks/useUser';
 
 export type UploadFileProps = Omit<UploadProps<string>, 'onChange'> & {
   /**

@@ -17,6 +17,7 @@ import makeMergedRender from '../utils/makeMergedRender';
 // eslint-disable-next-line import/no-cycle
 import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
 import './Table.less';
+import XmsProProvider from './XmsProProvider';
 
 export type TableProps<T = CommonRecord, U = ParamsType> =
   & Omit<
@@ -152,18 +153,20 @@ function Table<T = CommonRecord, U = ParamsType>({
   );
 
   return (
-    <ProTable
-      request={retrieve}
-      {...rest}
-      rowKey={rowKey}
-      form={newForm}
-      formRef={formRef}
-      search={newSearch}
-      params={isFunction(params) ? params(matchParams) : params}
-      toolBarRender={mergedToolBarRender}
-      columns={newColumns}
-      actionRef={actionRef}
-    />
+    <XmsProProvider>
+      <ProTable
+        request={retrieve}
+        {...rest}
+        rowKey={rowKey}
+        form={newForm}
+        formRef={formRef}
+        search={newSearch}
+        params={isFunction(params) ? params(matchParams) : params}
+        toolBarRender={mergedToolBarRender}
+        columns={newColumns}
+        actionRef={actionRef}
+      />
+    </XmsProProvider>
   );
 }
 

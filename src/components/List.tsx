@@ -15,6 +15,7 @@ import defaultSyncToUrl from '../utils/defaultSyncToUrl';
 import makeLinkRender from '../utils/makeLinkRender';
 import makeMergedRender from '../utils/makeMergedRender';
 import { TableProps } from './Table';
+import XmsProProvider from './XmsProProvider';
 
 export type ListProps<T = CommonRecord, U = ParamsType> =
   & Omit<
@@ -174,18 +175,20 @@ function List<T = CommonRecord, U = ParamsType>({
   );
 
   return (
-    <ProList
-      request={listRetrieve}
-      {...rest}
-      rowKey={rowKey}
-      form={newForm}
-      formRef={formRef}
-      search={newSearch}
-      params={isFunction(params) ? params(matchParams) : params}
-      toolBarRender={mergedToolBarRender}
-      metas={formattedMetas}
-      actionRef={actionRef}
-    />
+    <XmsProProvider>
+      <ProList
+        request={listRetrieve}
+        {...rest}
+        rowKey={rowKey}
+        form={newForm}
+        formRef={formRef}
+        search={newSearch}
+        params={isFunction(params) ? params(matchParams) : params}
+        toolBarRender={mergedToolBarRender}
+        metas={formattedMetas}
+        actionRef={actionRef}
+      />
+    </XmsProProvider>
   );
 }
 

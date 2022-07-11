@@ -19,6 +19,7 @@ import makeDefaultOnlineOfflineButtonRender from '../utils/makeDefaultOnlineOffl
 import makeDefaultSwapButtonRender from '../utils/makeDefaultSwapButtonRender';
 import makeLinkRender from '../utils/makeLinkRender';
 import UpdateRecordSchemaForm from './SchemaForm/UpdateRecordSchemaForm';
+import XmsProProvider from './XmsProProvider';
 
 export type DescriptionsProps<T = CommonRecord, U = ParamsType> =
   & Omit<
@@ -133,13 +134,15 @@ function Descriptions({ requestConfig, columns, ...rest }: DescriptionsProps) {
   }
 
   return (
-    <ProDescriptions
-      request={retrieve}
-      {...rest}
-      actionRef={actionRef}
-      columns={newColumns}
-      onRequestError={onRequestError}
-    />
+    <XmsProProvider>
+      <ProDescriptions
+        request={retrieve}
+        {...rest}
+        actionRef={actionRef}
+        columns={newColumns}
+        onRequestError={onRequestError}
+      />
+    </XmsProProvider>
   );
 }
 

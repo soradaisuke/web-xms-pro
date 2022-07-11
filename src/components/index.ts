@@ -12,4 +12,3 @@ export { default as TriggerModal, TriggerModalProps } from './TriggerModal';
 export { default as UploadFile, UploadFileProps } from './UploadFile';
 export { default as UploadImage, UploadImageProps } from './UploadImage';
 export { default as UserProvider, UserProviderProps } from './UserProvider';
-export { default as XmsProProvider } from './XmsProProvider';

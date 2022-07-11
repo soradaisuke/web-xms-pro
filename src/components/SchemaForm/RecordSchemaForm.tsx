@@ -5,6 +5,7 @@ import { isFunction, map, omit } from 'lodash';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { CommonRecord } from '../../types/common';
 import { XMSFormColumns } from '../../types/form';
+import XmsProProvider from '../XmsProProvider';
 
 export type RecordSchemaFormProps<T = CommonRecord> =
   & Omit<
@@ -110,16 +111,18 @@ function RecordSchemaForm<T = CommonRecord>({
   }, [columns, record]);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    <BetaSchemaForm
-      {...rest}
-      {...componentProps}
-      layoutType={layoutType}
-      columns={newColumns}
-      formRef={formRef}
-      omitNil={false}
-    />
+    <XmsProProvider>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
+      <BetaSchemaForm
+        {...rest}
+        {...componentProps}
+        layoutType={layoutType}
+        columns={newColumns}
+        formRef={formRef}
+        omitNil={false}
+      />
+    </XmsProProvider>
   );
 }
 

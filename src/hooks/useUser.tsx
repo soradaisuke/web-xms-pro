@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
-import { User } from '../types';
+import { User } from '../types/common';
 
 /**
  * 获取用户信息
