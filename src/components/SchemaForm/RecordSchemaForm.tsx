@@ -96,8 +96,12 @@ function RecordSchemaForm<T = CommonRecord>({
         }
       }
 
-      if (valueType === 'switch') {
+      if (valueType === 'switch' || valueType === 'boolean') {
         newCol.initialValue = initialValue || false;
+
+        if (valueType === 'boolean') {
+          newCol.valueType = 'switch';
+        }
       }
 
       if (record) {
