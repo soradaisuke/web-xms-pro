@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.5...v1.0.6) (2022-07-11)
+
+
+### Bug Fixes
+
+* **NoTicket:** treat boolean as switch in form ([2d711d9](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/2d711d90f428c3805085dbd970b54480c6303b5e))
+
 ### [1.0.5](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.4...v1.0.5) (2022-07-11)
 
 
