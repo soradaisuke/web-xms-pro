@@ -93,7 +93,7 @@ function Table<T = CommonRecord, U = ParamsType>({
           valueType === 'image'
           || get(col, ['valueType', 'type']) === 'image'
         ) {
-          newCol.hideInSearch = true;
+          newCol.search = false;
         }
         if (valueType === 'image') {
           newCol.valueType = {

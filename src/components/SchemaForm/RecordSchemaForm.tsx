@@ -1,7 +1,7 @@
 import { BetaSchemaForm, DrawerFormProps, ModalFormProps, ProFormInstance } from '@ant-design/pro-form';
 import { FormSchema } from '@ant-design/pro-form/lib/components/SchemaForm';
 import { ProSchema } from '@ant-design/pro-utils';
-import { isFunction, map, omit } from 'lodash';
+import { isFunction, isPlainObject, map, merge, omit, trim } from 'lodash';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { CommonRecord } from '../../types/common';
 import { XMSFormColumns } from '../../types/form';
@@ -102,6 +102,50 @@ function RecordSchemaForm<T = CommonRecord>({
         if (valueType === 'boolean') {
           newCol.valueType = 'switch';
         }
+      }
+
+      if (valueType === 'object') {
+        newCol.valueType = 'textarea';
+        newCol.convertValue = (v) => JSON.stringify(v);
+        newCol.transform = (v) => {
+          try {
+            const result = JSON.parse(trim(v));
+            if (!isPlainObject(result)) {
+              throw new Error();
+            }
+            return result;
+          } catch (error) {
+            return {};
+          }
+        };
+        newCol = merge(newCol, {
+          formItemProps: {
+            rulse: [
+              {
+                validator: (_, value) => {
+                  if (isPlainObject(value)) {
+                    return Promise.resolve();
+                  }
+                  if (trim(value)) {
+                    try {
+                      const result = JSON.parse(value);
+                      if (!isPlainObject(result)) {
+                        throw new Error();
+                      }
+                    } catch (err) {
+                      return Promise.reject(
+                        new Error(
+                          '格式错误！例子：{"key1": "value1", "key2": "value2"}，其中除双引号里的内容以外的都要是英文字符',
+                        ),
+                      );
+                    }
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ],
+          },
+        });
       }
 
       if (record) {

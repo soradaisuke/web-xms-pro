@@ -11,6 +11,6 @@ export type XMSFormColumns =
     'columns' | 'valueType'
   >
   & {
-    valueType?: ProFormColumnsType['valueType'] | XMSValueType;
+    valueType?: ProFormColumnsType['valueType'] | XMSValueType | 'object';
     columns?: XMSFormColumns[] | ((values: CommonRecord) => XMSFormColumns[]);
   };
