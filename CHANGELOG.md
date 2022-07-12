@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.6...v1.0.7) (2022-07-12)
+
+
+### Features
+
+* **NoTicket:** SkeletonSuspense ([518f6c8](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/518f6c84171a1c797d8cf2d8e6b53ea1690fed37))
+
 ### [1.0.6](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.5...v1.0.6) (2022-07-11)
 
 
