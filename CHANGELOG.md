@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.10](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.9...v1.0.10) (2022-07-12)
+
+
+### Bug Fixes
+
+* **NoTicket:** JSON.parse转换错误返回原始数据 ([855a423](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/855a42399c4724a0ccc93c3f04a1db7c267d9b55))
+
 ### [1.0.9](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.8...v1.0.9) (2022-07-12)
 
 
