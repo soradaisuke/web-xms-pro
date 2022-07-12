@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.8](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.7...v1.0.8) (2022-07-12)
+
+
+### Bug Fixes
+
+* **NoTicket:** make fallback partial ([ba4019a](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/ba4019aed5a0086bdcb7ec93b8f5f24aeecdd439))
+
 ### [1.0.7](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.6...v1.0.7) (2022-07-12)
 
 
