@@ -106,7 +106,7 @@ function RecordSchemaForm<T = CommonRecord>({
 
       if (valueType === 'object') {
         newCol.valueType = 'textarea';
-        newCol.convertValue = (v) => JSON.stringify(v);
+        newCol.convertValue = (v) => isPlainObject(v) ? JSON.stringify(v) : v;
         newCol.transform = (v) => {
           try {
             const result = JSON.parse(trim(v));
@@ -115,7 +115,7 @@ function RecordSchemaForm<T = CommonRecord>({
             }
             return result;
           } catch (error) {
-            return {};
+            return v;
           }
         };
         newCol = merge(newCol, {
