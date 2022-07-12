@@ -5,6 +5,7 @@ export { default as Page, PageProps } from './Page';
 export { CreateRecordSchemaFormProps, default as CreateRecordSchemaForm } from './SchemaForm/CreateRecordSchemaForm';
 export { default as RecordSchemaForm, RecordSchemaFormProps } from './SchemaForm/RecordSchemaForm';
 export { default as UpdateRecordSchemaForm, UpdateRecordSchemaFormProps } from './SchemaForm/UpdateRecordSchemaForm';
+export { default as SkeletonSuspense } from './SkeletonSuspense';
 export { default as Table, TableProps } from './Table';
 export { default as TableTransfer, TableTransferProps } from './TableTransfer';
 export { default as TriggerDrawer, TriggerDrawerProps } from './TriggerDrawer';
