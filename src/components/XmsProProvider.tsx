@@ -1,6 +1,7 @@
 import ProProvider, { ConfigContextPropsType } from '@ant-design/pro-provider';
 import { Input, Select, Tag } from 'antd';
 import React, { PropsWithChildren, useContext, useMemo } from 'react';
+import ObjectInputTextArea from './ObjectInputTextArea';
 import UploadFile from './UploadFile';
 import UploadImage from './UploadImage';
 
@@ -51,6 +52,13 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
                   value: false,
                 },
               ]}
+              {...props?.fieldProps}
+            />
+          ),
+        },
+        object: {
+          renderFormItem: (_, props) => (
+            <ObjectInputTextArea
               {...props?.fieldProps}
             />
           ),
