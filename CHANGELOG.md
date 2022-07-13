@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.11](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.10...v1.0.11) (2022-07-13)
+
+
+### Features
+
+* **NoTicket:** ObjectInputTextArea ([bd06cfc](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/bd06cfcbe267bd8916119931782a06ff578a4a59))
+
 ### [1.0.10](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.9...v1.0.10) (2022-07-12)
 
 
