@@ -107,7 +107,7 @@ function RecordSchemaForm<T = CommonRecord>({
       if (valueType === 'object') {
         newCol = merge(newCol, {
           formItemProps: {
-            rulse: [
+            rules: [
               {
                 validator: (_, value) => {
                   if (isPlainObject(value)) {
