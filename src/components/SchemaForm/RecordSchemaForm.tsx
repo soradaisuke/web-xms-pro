@@ -1,7 +1,7 @@
-import { BetaSchemaForm, DrawerFormProps, ModalFormProps, ProFormInstance } from '@ant-design/pro-form';
+import { BetaSchemaForm, DrawerFormProps, FormItemProps, ModalFormProps, ProFormInstance } from '@ant-design/pro-form';
 import { FormSchema } from '@ant-design/pro-form/lib/components/SchemaForm';
 import { ProSchema } from '@ant-design/pro-utils';
-import { isFunction, isPlainObject, map, merge, omit, trim } from 'lodash';
+import { find, isFunction, isPlainObject, isString, map, merge, omit, trim } from 'lodash';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { CommonRecord } from '../../types/common';
 import { XMSFormColumns } from '../../types/form';
@@ -33,6 +33,28 @@ function makeMergedRender<T = CommonRecord>(
       },
       form,
     );
+}
+
+function insertRequired(formItemProps: FormItemProps, label?: string): FormItemProps {
+  const newProps: FormItemProps = { ...formItemProps };
+  if (formItemProps.rules) {
+    newProps.rules = map(formItemProps.rules, (rule) => {
+      if (isFunction(rule)) {
+        return rule;
+      }
+      if (rule.required) {
+        newProps.required = true;
+        if (!rule.message && label) {
+          return {
+            ...rule,
+            message: `请输入${label}`,
+          };
+        }
+      }
+      return rule;
+    });
+  }
+  return newProps;
 }
 
 function RecordSchemaForm<T = CommonRecord>({
@@ -75,7 +97,7 @@ function RecordSchemaForm<T = CommonRecord>({
 
   const newColumns = useMemo<FormSchema<T>['columns']>(() => {
     function transformColumn(col: XMSFormColumns) {
-      const { valueType, initialValue, renderFormItem, columns: cols } = col;
+      const { valueType, title, initialValue, formItemProps, fieldProps, renderFormItem, columns: cols } = col;
       let newCol = {
         ...col,
       };
@@ -133,6 +155,28 @@ function RecordSchemaForm<T = CommonRecord>({
             ],
           },
         });
+      }
+
+      // 当valueType是formList时，formItemProps不生效，需要将formItemProps合并到fieldProps
+      if (valueType === 'formList' && formItemProps) {
+        if (isFunction(formItemProps)) {
+          newCol.fieldProps = (...args) =>
+            merge(
+              isFunction(fieldProps) ? fieldProps(...args) : (fieldProps ?? {}),
+              insertRequired(formItemProps(...args), isString(title) ? title : null),
+            );
+        } else if (isFunction(fieldProps)) {
+          newCol.fieldProps = (...args) =>
+            merge(
+              fieldProps(...args),
+              insertRequired(formItemProps, isString(title) ? title : null),
+            );
+        } else {
+          newCol.fieldProps = merge(
+            fieldProps ?? {},
+            insertRequired(formItemProps, isString(title) ? title : null),
+          );
+        }
       }
 
       if (record) {
