@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.13](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.12...v1.0.13) (2022-07-14)
+
+
+### Bug Fixes
+
+* **NoTicket:** 当valueType是formList时，合并formItemProps到fieldsProps ([0f2f619](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/0f2f619c78efe75761e1199edfd442a447c02c06))
+
 ### [1.0.12](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.11...v1.0.12) (2022-07-13)
 
 
