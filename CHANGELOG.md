@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.14](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.13...v1.0.14) (2022-07-15)
+
+
+### Bug Fixes
+
+* **NoTicket:** 修改tablist渲染方式 ([ededc34](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/ededc34accdbebcdd9128f3162fc293aec19cae2))
+
 ### [1.0.13](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.12...v1.0.13) (2022-07-14)
 
 
