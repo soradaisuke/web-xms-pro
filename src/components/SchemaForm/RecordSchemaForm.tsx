@@ -1,7 +1,7 @@
 import { BetaSchemaForm, DrawerFormProps, FormItemProps, ModalFormProps, ProFormInstance } from '@ant-design/pro-form';
-import { FormSchema } from '@ant-design/pro-form/lib/components/SchemaForm';
+import { FormSchema, ProFormColumnsType } from '@ant-design/pro-form/lib/components/SchemaForm';
 import { ProSchema } from '@ant-design/pro-utils';
-import { find, isFunction, isPlainObject, isString, map, merge, omit, trim } from 'lodash';
+import { isFunction, isPlainObject, isString, map, merge, omit, trim } from 'lodash';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { CommonRecord } from '../../types/common';
 import { XMSFormColumns } from '../../types/form';
@@ -10,9 +10,10 @@ import XmsProProvider from '../XmsProProvider';
 export type RecordSchemaFormProps<T = CommonRecord> =
   & Omit<
     FormSchema<T>,
-    'columns'
+    'columns' | 'layoutType'
   >
   & {
+    layoutType: Exclude<FormSchema<T>['layoutType'], 'StepsForm'>;
     columns: XMSFormColumns[];
     record?: T;
   };
@@ -58,10 +59,9 @@ function insertRequired(formItemProps: FormItemProps, label?: string): FormItemP
 }
 
 function RecordSchemaForm<T = CommonRecord>({
-  layoutType,
-  columns,
   record,
-  ...rest
+  columns,
+  ...restProps
 }: RecordSchemaFormProps<T>) {
   const formRef = useRef<ProFormInstance>();
 
@@ -71,31 +71,7 @@ function RecordSchemaForm<T = CommonRecord>({
     }
   }, []);
 
-  const componentProps = useMemo(() => {
-    if (layoutType === 'ModalForm') {
-      return {
-        onVisibleChange,
-        modalProps: {
-          ...((rest as ModalFormProps<T>).modalProps ?? {}),
-          destroyOnClose: true,
-          forceRender: true,
-        },
-      };
-    }
-    if (layoutType === 'DrawerForm') {
-      return {
-        onVisibleChange,
-        drawerProps: {
-          ...((rest as DrawerFormProps<T>).drawerProps ?? {}),
-          destroyOnClose: true,
-          forceRender: true,
-        },
-      };
-    }
-    return {};
-  }, [layoutType, onVisibleChange, rest]);
-
-  const newColumns = useMemo<FormSchema<T>['columns']>(() => {
+  const newColumns = useMemo<ProFormColumnsType<T>[]>(() => {
     function transformColumn(col: XMSFormColumns) {
       const { valueType, title, initialValue, formItemProps, fieldProps, renderFormItem, columns: cols } = col;
       let newCol = {
@@ -186,20 +162,45 @@ function RecordSchemaForm<T = CommonRecord>({
       return newCol;
     }
 
-    return map(columns, (col) => transformColumn(col)) as FormSchema<T>['columns'];
+    return map(columns, (col) => transformColumn(col)) as ProFormColumnsType<T>[];
   }, [columns, record]);
+
+  const formProps = useMemo(() => {
+    const common = {
+      ...restProps,
+      formRef,
+      columns: newColumns,
+      omitNil: false,
+    };
+    if (restProps.layoutType === 'ModalForm') {
+      return {
+        ...common,
+        onVisibleChange,
+        modalProps: {
+          ...((restProps as ModalFormProps<T>).modalProps ?? {}),
+          destroyOnClose: true,
+          forceRender: true,
+        },
+      };
+    }
+    if (restProps.layoutType === 'DrawerForm') {
+      return {
+        ...common,
+        onVisibleChange,
+        drawerProps: {
+          ...((restProps as DrawerFormProps<T>).drawerProps ?? {}),
+          destroyOnClose: true,
+          forceRender: true,
+        },
+      };
+    }
+    return common;
+  }, [newColumns, onVisibleChange, restProps]);
 
   return (
     <XmsProProvider>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
       <BetaSchemaForm
-        {...rest}
-        {...componentProps}
-        layoutType={layoutType}
-        columns={newColumns}
-        formRef={formRef}
-        omitNil={false}
+        {...formProps}
       />
     </XmsProProvider>
   );

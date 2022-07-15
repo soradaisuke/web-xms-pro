@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Params, useParams } from 'react-router-dom';
 import { TableCreateRequest } from '../../hooks/useTableCRUDRequests';
 import { CommonRecord } from '../../types/common';
@@ -23,18 +23,20 @@ function CreateRecordSchemaForm({
     [matchParams, normalizeSubmitValues, create],
   );
 
+  const props = useMemo(() => ({
+    trigger: (
+      <Button icon={<PlusOutlined />} type="primary">
+        新建
+      </Button>
+    ),
+    layoutType: 'ModalForm',
+    onFinish,
+    ...rest,
+  }), [onFinish, rest]);
+
   return (
     <RecordSchemaForm
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      trigger={
-        <Button icon={<PlusOutlined />} type="primary">
-          新建
-        </Button>
-      }
-      layoutType="ModalForm"
-      onFinish={onFinish}
-      {...rest}
+      {...props}
     />
   );
 }
