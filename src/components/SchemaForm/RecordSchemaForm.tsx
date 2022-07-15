@@ -10,10 +10,9 @@ import XmsProProvider from '../XmsProProvider';
 export type RecordSchemaFormProps<T = CommonRecord> =
   & Omit<
     FormSchema<T>,
-    'columns' | 'layoutType'
+    'columns'
   >
   & {
-    layoutType: Exclude<FormSchema<T>['layoutType'], 'StepsForm'>;
     columns: XMSFormColumns[];
     record?: T;
   };
@@ -199,6 +198,8 @@ function RecordSchemaForm<T = CommonRecord>({
 
   return (
     <XmsProProvider>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <BetaSchemaForm
         {...formProps}
       />

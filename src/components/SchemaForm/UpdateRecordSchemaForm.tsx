@@ -3,7 +3,7 @@ import { ParamsType } from '@ant-design/pro-provider';
 import { ProTableProps } from '@ant-design/pro-table';
 import { Button, Tooltip } from 'antd';
 import { get } from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Params, useParams } from 'react-router-dom';
 import { DescriptionsUpdateRequest } from '../../hooks/useDescriptionCRUDRequests';
 import { TableUpdateRequest } from '../../hooks/useTableCRUDRequests';
@@ -31,14 +31,14 @@ export type UpdateRecordSchemaFormProps<
     normalizeInitialValues?: (record: T, matchParams: Params) => T;
   };
 
-function UpdateRecordSchemaForm({
+function UpdateRecordSchemaForm<T = CommonRecord>({
   normalizeInitialValues,
   normalizeSubmitValues,
   update,
   record,
   rowKey,
   ...rest
-}: UpdateRecordSchemaFormProps) {
+}: UpdateRecordSchemaFormProps<T>) {
   const matchParams = useParams();
 
   const onFinish = useCallback(
@@ -50,20 +50,22 @@ function UpdateRecordSchemaForm({
     [update, normalizeSubmitValues, matchParams, record, rowKey],
   );
 
+  const props = useMemo<RecordSchemaFormProps<T>>(() => ({
+    trigger: (
+      <Tooltip title="编辑">
+        <Button icon={<EditOutlined />} shape="circle" type="primary" />
+      </Tooltip>
+    ),
+    layoutType: 'ModalForm',
+    initialValues: normalizeInitialValues(record, matchParams),
+    onFinish,
+    record,
+    ...rest,
+  }), [matchParams, normalizeInitialValues, onFinish, record, rest]);
+
   return (
     <RecordSchemaForm
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      trigger={
-        <Tooltip title="编辑">
-          <Button icon={<EditOutlined />} shape="circle" type="primary" />
-        </Tooltip>
-      }
-      layoutType="ModalForm"
-      initialValues={normalizeInitialValues(record, matchParams)}
-      onFinish={onFinish}
-      record={record}
-      {...rest}
+      {...props}
     />
   );
 }

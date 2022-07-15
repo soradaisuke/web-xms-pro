@@ -11,11 +11,11 @@ export type CreateRecordSchemaFormProps<T = CommonRecord> = RecordSchemaFormProp
   normalizeSubmitValues?: (values: T, matchParams: Params) => T | Promise<T>;
 };
 
-function CreateRecordSchemaForm({
+function CreateRecordSchemaForm<T = CommonRecord>({
   normalizeSubmitValues,
   create,
   ...rest
-}: CreateRecordSchemaFormProps) {
+}: CreateRecordSchemaFormProps<T>) {
   const matchParams = useParams();
 
   const onFinish = useCallback(
@@ -23,7 +23,7 @@ function CreateRecordSchemaForm({
     [matchParams, normalizeSubmitValues, create],
   );
 
-  const props = useMemo(() => ({
+  const props = useMemo<RecordSchemaFormProps<T>>(() => ({
     trigger: (
       <Button icon={<PlusOutlined />} type="primary">
         新建
