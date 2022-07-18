@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.17](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.16...v1.0.17) (2022-07-18)
+
+
+### Bug Fixes
+
+* **NoTicket:** rowKey是函数时无法正确得到row key ([177221a](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/177221a8e4c2510e3598940f31438625f45cdb0b))
+
 ### [1.0.16](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.15...v1.0.16) (2022-07-18)
 
 
