@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.16](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.15...v1.0.16) (2022-07-18)
+
+
+### Features
+
+* **NoTicket:** boolean类型设置默认的valueEnum ([af3bbe1](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/af3bbe111f10f0dcedab256520c7daf49981133f))
+* **NoTicket:** 默认的filterDropdown ([8d1e1be](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/8d1e1be417f22aa7fbcf057a71a2cf9f1ec4bcb7))
+
 ### [1.0.15](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.14...v1.0.15) (2022-07-15)
 
 
