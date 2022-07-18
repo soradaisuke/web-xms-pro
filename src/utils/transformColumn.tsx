@@ -1,10 +1,25 @@
 import { FormItemProps, ProFormColumnsType } from '@ant-design/pro-form';
 import { ProListMeta } from '@ant-design/pro-list';
 import { ProColumns } from '@ant-design/pro-table';
-import { get, isFunction, isPlainObject, isString, map, merge, omit, toNumber, trim } from 'lodash';
-import makeLinkRender from './makeLinkRender';
+import { Button, Input, Space } from 'antd';
+import {
+  get,
+  includes,
+  isFunction,
+  isPlainObject,
+  isString,
+  map,
+  merge,
+  omit,
+  toLower,
+  toNumber,
+  toString,
+  trim,
+} from 'lodash';
+import React from 'react';
 import { CommonRecord, XMSFormColumns, XMSListMeta, XMSTableColumns } from '../types';
 import generateValueEnum from './generateValueEnum';
+import makeLinkRender from './makeLinkRender';
 import makeMergedRenderFormItem from './makeMergeRenderFormItem';
 
 function insertRequired(formItemProps: FormItemProps, label?: string): FormItemProps {
@@ -29,6 +44,13 @@ function insertRequired(formItemProps: FormItemProps, label?: string): FormItemP
   return newProps;
 }
 
+function defaultOnFilter(value: string, record: any, dataIndex: string | string[]) {
+  const recordElement = Array.isArray(dataIndex)
+    ? get(record, dataIndex as string[])
+    : record[dataIndex];
+  return includes(toLower(toString(recordElement)), toLower(toString(value)));
+}
+
 function transformLinkRender<T = CommonRecord>(src: XMSTableColumns<T>, dst: ProColumns<T>) {
   const { link, render } = src;
 
@@ -44,6 +66,47 @@ function transformSorter<T = CommonRecord>(src: XMSTableColumns<T>, dst: ProColu
   if (sortDirections || defaultSortOrder) {
     // eslint-disable-next-line no-param-reassign
     dst.sorter = true;
+  }
+}
+
+function transformFilter<T = CommonRecord>(src: XMSTableColumns<T>, dst: ProColumns<T>) {
+  const { filters, onFilter, filterDropdown, dataIndex, valueEnum } = src;
+
+  if (filters === true && onFilter === true && !valueEnum) {
+    // eslint-disable-next-line no-param-reassign
+    dst.onFilter = (value: string, row: T) => defaultOnFilter(value, row, dataIndex as string[]);
+
+    if (!filterDropdown) {
+      // eslint-disable-next-line no-param-reassign
+      dst.filterDropdown = ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ marginBottom: 8, display: 'block' }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              size="small"
+            >
+              筛选
+            </Button>
+            <Button
+              onClick={() => {
+                clearFilters();
+                confirm();
+              }}
+              size="small"
+            >
+              重置
+            </Button>
+          </Space>
+        </div>
+      );
+    }
   }
 }
 
@@ -180,6 +243,7 @@ export function transformTableColumn<T = CommonRecord>(
   transformImage(src, col as ProColumns<T>);
   transformBoolean(src, col as ProColumns<T>, false);
   transformSorter(src, col as ProColumns<T>);
+  transformFilter(src, col as ProColumns<T>);
 
   return col as ProColumns<T>;
 }
