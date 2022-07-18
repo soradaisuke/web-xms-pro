@@ -3,7 +3,7 @@ import { forEach } from 'lodash';
 import { ReactNode } from 'react';
 
 export default function generateValueEnum(options: {
-  value: number | string;
+  value: number | string | boolean;
   text: ReactNode;
   status?: 'Success' | 'Error' | 'Processing' | 'Warning' | 'Default';
 }[]): ProSchemaValueEnumMap {

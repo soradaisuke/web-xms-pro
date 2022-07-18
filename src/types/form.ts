@@ -5,9 +5,9 @@ import { CommonRecord, XMSValueType } from './common';
  * @group Pro Components
  * @category Pro Form
  */
-export type XMSFormColumns =
+export type XMSFormColumns<T = CommonRecord> =
   & Omit<
-    ProFormColumnsType<CommonRecord>,
+    ProFormColumnsType<T>,
     'columns' | 'valueType'
   >
   & {

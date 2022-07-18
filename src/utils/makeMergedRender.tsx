@@ -3,8 +3,7 @@ import { get } from 'lodash';
 import React from 'react';
 import { Params } from 'react-router-dom';
 import UpdateRecordSchemaForm from '../components/SchemaForm/UpdateRecordSchemaForm';
-// eslint-disable-next-line import/no-cycle
-import { TableProps } from '../components/Table';
+import type { TableProps } from '../components/Table';
 import { TableDeleteRequest, TableUpdateRequest } from '../hooks/useTableCRUDRequests';
 import { User } from '../types/common';
 import { XMSTableColumns } from '../types/table';

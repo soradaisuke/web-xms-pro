@@ -1,6 +1,6 @@
 import { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import { CommonRecord, User, XMSValueType } from './common';
-import {
+import type {
   TableDeleteButtonRender,
   TableOnlineOfflineButtonRender,
   TableSwapButtonRender,

@@ -1,6 +1,6 @@
 import { ProListMeta } from '@ant-design/pro-list';
 import { CommonRecord } from './common';
-import { XMSTableColumns } from './table';
+import type { XMSTableColumns } from './table';
 
 /**
  * @group Pro Components

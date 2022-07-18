@@ -1,3 +1,4 @@
+import { proFieldParsingValueEnumToArray } from '@ant-design/pro-field';
 import ProProvider, { ConfigContextPropsType } from '@ant-design/pro-provider';
 import { Input, Select, Tag } from 'antd';
 import React, { PropsWithChildren, useContext, useMemo } from 'react';
@@ -42,16 +43,7 @@ function XmsProProvider({ children }: PropsWithChildren<any>) {
           renderFormItem: (_, props) => (
             <Select
               allowClear
-              options={[
-                {
-                  label: '是',
-                  value: true,
-                },
-                {
-                  label: '否',
-                  value: false,
-                },
-              ]}
+              options={proFieldParsingValueEnumToArray(props.valueEnum)}
               {...props?.fieldProps}
             />
           ),

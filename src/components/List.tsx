@@ -3,7 +3,7 @@ import ProList, { ProListMeta, ProListProps } from '@ant-design/pro-list';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ActionType } from '@ant-design/pro-table';
 import { SortOrder } from 'antd/lib/table/interface';
-import { filter, find, get, isBoolean, isFunction, keyBy, mapValues, values } from 'lodash';
+import { filter, find, isBoolean, isFunction, keyBy, mapValues, values } from 'lodash';
 import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
@@ -12,8 +12,8 @@ import useUser from '../hooks/useUser';
 import { XMSListMetas } from '../types';
 import { CommonRecord } from '../types/common';
 import defaultSyncToUrl from '../utils/defaultSyncToUrl';
-import makeLinkRender from '../utils/makeLinkRender';
 import makeMergedRender from '../utils/makeMergedRender';
+import { transformListColumn } from '../utils/transformColumn';
 import { TableProps } from './Table';
 import XmsProProvider from './XmsProProvider';
 
@@ -56,10 +56,10 @@ function List<T = CommonRecord, U = ParamsType>({
 
   const formattedMetas = useMemo<ProListProps<T, U>['metas']>(() => {
     const newMetas = mapValues(metas, (meta) => {
-      const { link, render, valueType } = meta;
-      const newMeta = {
-        ...meta,
-        render: makeMergedRender(
+      const { render } = meta;
+      return transformListColumn(
+        meta,
+        makeMergedRender(
           rowKey,
           render,
           update,
@@ -67,23 +67,7 @@ function List<T = CommonRecord, U = ParamsType>({
           user,
           matchParams,
         ),
-      };
-      if (link && !render) {
-        newMeta.render = makeLinkRender(link);
-      }
-      if (
-        valueType === 'image'
-        || get(meta, ['valueType', 'type']) === 'image'
-      ) {
-        newMeta.search = false;
-      }
-      if (valueType === 'image') {
-        newMeta.valueType = {
-          type: 'image',
-          width: 100,
-        };
-      }
-      return newMeta;
+      );
     }) as ProListProps<T, U>['metas'];
 
     const sortMetas = filter(

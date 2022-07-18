@@ -3,7 +3,7 @@ import { ParamsType } from '@ant-design/pro-provider';
 import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
 import { ToolBarProps } from '@ant-design/pro-table/lib/components/ToolBar';
 import { FormInstance } from 'antd';
-import { find, get, isBoolean, isFunction, map } from 'lodash';
+import { find, isBoolean, isFunction, map } from 'lodash';
 import React, { useImperativeHandle, useMemo, useRef } from 'react';
 import { Params, useParams } from 'react-router-dom';
 import { TableRequestConfig, useTableRequests } from '../hooks/useTableCRUDRequests';
@@ -11,12 +11,10 @@ import useUser from '../hooks/useUser';
 import { CommonRecord, User } from '../types/common';
 import { TableCreateButtonRender, XMSTableColumns } from '../types/table';
 import defaultSyncToUrl from '../utils/defaultSyncToUrl';
-import makeLinkRender from '../utils/makeLinkRender';
-// eslint-disable-next-line import/no-cycle
 import makeMergedRender from '../utils/makeMergedRender';
-// eslint-disable-next-line import/no-cycle
 import useMergedToolBarRender from '../hooks/useMergedToolBarRender';
 import './Table.less';
+import { transformTableColumn } from '../utils/transformColumn';
 import XmsProProvider from './XmsProProvider';
 
 export type TableProps<T = CommonRecord, U = ParamsType> =
@@ -74,10 +72,10 @@ function Table<T = CommonRecord, U = ParamsType>({
   const newColumns = useMemo<ProTableProps<T, U>['columns']>(
     () =>
       map(columns, (col) => {
-        const { link, render, valueType, defaultSortOrder, sortDirections } = col;
-        const newCol = {
-          ...col,
-          render: makeMergedRender(
+        const { render } = col;
+        return transformTableColumn(
+          col,
+          makeMergedRender(
             rowKey,
             render,
             update,
@@ -85,26 +83,7 @@ function Table<T = CommonRecord, U = ParamsType>({
             user,
             matchParams,
           ),
-        };
-        if (link && !render) {
-          newCol.render = makeLinkRender(link);
-        }
-        if (
-          valueType === 'image'
-          || get(col, ['valueType', 'type']) === 'image'
-        ) {
-          newCol.search = false;
-        }
-        if (valueType === 'image') {
-          newCol.valueType = {
-            type: 'image',
-            width: 100,
-          };
-        }
-        if (sortDirections || defaultSortOrder) {
-          newCol.sorter = true;
-        }
-        return newCol;
+        );
       }) as ProTableProps<T, U>['columns'],
     [columns, del, matchParams, rowKey, update, user],
   );
