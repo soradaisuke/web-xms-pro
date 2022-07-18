@@ -1,7 +1,7 @@
 import { Key } from '@ant-design/pro-list';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProTableProps } from '@ant-design/pro-table';
-import { isFunction } from 'lodash';
+import { get, isFunction } from 'lodash';
 import { CommonRecord } from '../types/common';
 
 export default function getRowKey(
@@ -11,5 +11,5 @@ export default function getRowKey(
   if (isFunction(rowKey)) {
     return rowKey(record);
   }
-  return rowKey;
+  return get(record, rowKey);
 }

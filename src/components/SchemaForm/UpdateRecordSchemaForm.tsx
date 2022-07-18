@@ -2,7 +2,6 @@ import { EditOutlined } from '@ant-design/icons';
 import { ParamsType } from '@ant-design/pro-provider';
 import { ProTableProps } from '@ant-design/pro-table';
 import { Button, Tooltip } from 'antd';
-import { get } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { Params, useParams } from 'react-router-dom';
 import { DescriptionsUpdateRequest } from '../../hooks/useDescriptionCRUDRequests';
@@ -45,7 +44,7 @@ function UpdateRecordSchemaForm<T = CommonRecord>({
     async (values) =>
       update(
         await normalizeSubmitValues(values, matchParams, record),
-        get(record, getRowKey(rowKey, record)),
+        getRowKey(rowKey, record),
       ),
     [update, normalizeSubmitValues, matchParams, record, rowKey],
   );

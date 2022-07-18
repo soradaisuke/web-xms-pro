@@ -1,5 +1,4 @@
 import { ProColumns } from '@ant-design/pro-table';
-import { get } from 'lodash';
 import React from 'react';
 import { Params } from 'react-router-dom';
 import UpdateRecordSchemaForm from '../components/SchemaForm/UpdateRecordSchemaForm';
@@ -25,7 +24,7 @@ export default function makeMergedRender(
   }
   return (...args) => {
     const record = args[1];
-    const key = get(record, getRowKey(rowKey, record));
+    const key = getRowKey(rowKey, record);
     const defaultUpdate = (values) => update(values, key);
     const defaultDelete = () => del(key);
     const defaultUpdateButtonRender = (config) => (
