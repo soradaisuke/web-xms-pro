@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.20](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.19...v1.0.20) (2022-07-19)
+
+
+### Bug Fixes
+
+* **NoTicket:** onlinePopConfirmProps & offlinePopConfirmProps ([a13772f](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/a13772f26a40d26f5a4c21ea369f441d80b652cb))
+
 ### [1.0.19](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.18...v1.0.19) (2022-07-19)
 
 

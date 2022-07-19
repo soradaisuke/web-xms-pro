@@ -1,6 +1,6 @@
 {
   "name": "@qt/xms-pro",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "",
   "scripts": {
     "prettier": "npx prettier --write 'src/**/*.{ts,tsx}'",
