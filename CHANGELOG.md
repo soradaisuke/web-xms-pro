@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.19](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.18...v1.0.19) (2022-07-19)
+
+
+### Bug Fixes
+
+* **NoTicket:** generateValueEnum未支持全部可配置项 ([03d0654](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/03d0654d0e479f9096ecbe75e0dde162a46685bc))
+
 ### [1.0.18](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.17...v1.0.18) (2022-07-19)
 
 
