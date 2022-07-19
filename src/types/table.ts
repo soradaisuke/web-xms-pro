@@ -49,11 +49,28 @@ export type TableOnlineOfflineConfig =
     'normalizeSubmitValues'
   >
   & {
+    /**
+     * @defaultValue 1
+     */
     onlineStatus?: number;
+    /**
+     * @defaultValue 0
+     */
     offlineStatus?: number;
+    /**
+     * @defaultValue 上线
+     */
     onlineText?: string;
+    /**
+     * @defaultValue 下线
+     */
     offlineText?: string;
+    /**
+     * @defaultValue status
+     */
     statusKey?: string;
+    onlinePopConfirmProps?: PopconfirmProps;
+    offlinePopConfirmProps?: PopconfirmProps;
   };
 
 /**

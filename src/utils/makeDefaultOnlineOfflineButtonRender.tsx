@@ -18,6 +18,8 @@ export default function makeDefaultOnlineOfflineButtonRender(
       onlineText = '上线',
       offlineText = '下线',
       statusKey = 'status',
+      onlinePopConfirmProps = {},
+      offlinePopConfirmProps = {},
       normalizeSubmitValues = (v) => v,
     } = config;
 
@@ -38,9 +40,10 @@ export default function makeDefaultOnlineOfflineButtonRender(
       <Popconfirm
         key="status"
         title={`确定${status === onlineStatus ? offlineText : onlineText}？`}
-        onConfirm={onConfirm}
         okText="确定"
         cancelText="取消"
+        {...(status === onlineStatus ? offlinePopConfirmProps : onlinePopConfirmProps)}
+        onConfirm={onConfirm}
       >
         <Tooltip title={status === onlineStatus ? offlineText : onlineText}>
           <Button
