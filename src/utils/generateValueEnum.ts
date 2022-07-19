@@ -1,15 +1,14 @@
+import { ProSchemaValueEnumType } from '@ant-design/pro-provider';
 import { ProSchemaValueEnumMap } from '@ant-design/pro-utils';
 import { forEach } from 'lodash';
-import { ReactNode } from 'react';
 
-export default function generateValueEnum(options: {
+export default function generateValueEnum(options: (Omit<ProSchemaValueEnumType, 'status'> & {
   value: number | string | boolean;
-  text: ReactNode;
   status?: 'Success' | 'Error' | 'Processing' | 'Warning' | 'Default';
-}[]): ProSchemaValueEnumMap {
+})[]): ProSchemaValueEnumMap {
   const map = new Map();
-  forEach(options, ({ value, text, status }) => {
-    map.set(value, { text, status });
+  forEach(options, ({ value, ...option }) => {
+    map.set(value, option);
   });
   return map;
 }
