@@ -1,4 +1,4 @@
-import { BetaSchemaForm, DrawerFormProps, ModalFormProps, ProFormInstance } from '@ant-design/pro-form';
+import { BetaSchemaForm, ProFormInstance } from '@ant-design/pro-form';
 import { FormSchema, ProFormColumnsType } from '@ant-design/pro-form/lib/components/SchemaForm';
 import { map } from 'lodash';
 import React, { useCallback, useMemo, useRef } from 'react';
@@ -35,37 +35,13 @@ function RecordSchemaForm<T = CommonRecord>({
     record,
   ]);
 
-  const formProps = useMemo(() => {
-    const common = {
-      ...restProps,
-      formRef,
-      columns: newColumns,
-      omitNil: false,
-    };
-    if (restProps.layoutType === 'ModalForm') {
-      return {
-        ...common,
-        onVisibleChange,
-        modalProps: {
-          ...((restProps as ModalFormProps<T>).modalProps ?? {}),
-          destroyOnClose: true,
-          forceRender: true,
-        },
-      };
-    }
-    if (restProps.layoutType === 'DrawerForm') {
-      return {
-        ...common,
-        onVisibleChange,
-        drawerProps: {
-          ...((restProps as DrawerFormProps<T>).drawerProps ?? {}),
-          destroyOnClose: true,
-          forceRender: true,
-        },
-      };
-    }
-    return common;
-  }, [newColumns, onVisibleChange, restProps]);
+  const formProps = useMemo(() => ({
+    ...restProps,
+    formRef,
+    columns: newColumns,
+    omitNil: false,
+    onVisibleChange
+  }), [newColumns, onVisibleChange, restProps]);
 
   return (
     <XmsProProvider>
