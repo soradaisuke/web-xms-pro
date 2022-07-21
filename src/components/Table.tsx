@@ -112,13 +112,13 @@ function Table<T = CommonRecord, U = ParamsType>({
   const newForm = useMemo<TableProps['form']>(
     () => ({
       syncToInitialValues: false,
-      ...(form || {}),
       syncToUrl: (values, type) => {
         if (isFunction(form?.syncToUrl)) {
           return form.syncToUrl(defaultSyncToUrl(values, type), type);
         }
         return defaultSyncToUrl(values, type);
       },
+      ...(form || {}),
     }),
     [form],
   );
