@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.22](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.21...v1.0.22) (2022-07-21)
+
+
+### Bug Fixes
+
+* **NoTicket:** ModalForm和DrawerForm不再需要设置destroyOnClose和forceRender ([509ee5c](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/509ee5cc5fa9630a34fbad58e24d7776bc9c2434))
+
 ### [1.0.21](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.20...v1.0.21) (2022-07-21)
 
 
