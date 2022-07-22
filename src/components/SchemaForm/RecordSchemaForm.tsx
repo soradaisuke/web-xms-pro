@@ -40,7 +40,7 @@ function RecordSchemaForm<T = CommonRecord>({
     formRef,
     columns: newColumns,
     omitNil: false,
-    onVisibleChange
+    onVisibleChange,
   }), [newColumns, onVisibleChange, restProps]);
 
   return (

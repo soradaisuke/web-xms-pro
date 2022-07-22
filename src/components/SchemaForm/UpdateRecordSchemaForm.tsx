@@ -20,19 +20,38 @@ export type UpdateRecordSchemaFormProps<
     /** @name 传给该form所编辑的原始数据 */
     record: T;
     update: TableUpdateRequest | DescriptionsUpdateRequest;
-    /** @name 对提交给后台的数据做转换 */
+    /**
+     * @deprecated 使用transform
+     */
     normalizeSubmitValues?: (
       values: T,
       matchParams: Params,
       record: T,
     ) => T | Promise<T>;
-    /** @name 对提交给form的初始数据做转换 */
+    /**
+     * 提交时转化值，一般用于将值转化为提交的数据
+     * 如果需要二次确认等操作，可以返回Promise
+     */
+    transform?: (
+      values: T,
+      matchParams: Params,
+      record: T,
+    ) => T | Promise<T>;
+    /**
+     * @deprecated 使用convertValues
+     */
     normalizeInitialValues?: (record: T, matchParams: Params) => T;
+    /**
+     * 获取时转化值，一般用于将数据格式化为组件接收的格式
+     */
+    convertValues?: (record: T, matchParams: Params) => T;
   };
 
 function UpdateRecordSchemaForm<T = CommonRecord>({
   normalizeInitialValues,
   normalizeSubmitValues,
+  transform,
+  convertValues,
   update,
   record,
   rowKey,
@@ -40,13 +59,22 @@ function UpdateRecordSchemaForm<T = CommonRecord>({
 }: UpdateRecordSchemaFormProps<T>) {
   const matchParams = useParams();
 
+  const convertValuesFn = useMemo(() => convertValues || normalizeInitialValues || ((v) => v), [
+    convertValues,
+    normalizeInitialValues,
+  ]);
+  const transformFn = useMemo(() => transform || normalizeSubmitValues || ((v) => v), [
+    normalizeSubmitValues,
+    transform,
+  ]);
+
   const onFinish = useCallback(
     async (values) =>
       update(
-        await normalizeSubmitValues(values, matchParams, record),
+        await transformFn(values, matchParams, record),
         getRowKey(rowKey, record),
       ),
-    [update, normalizeSubmitValues, matchParams, record, rowKey],
+    [update, transformFn, matchParams, record, rowKey],
   );
 
   const props = useMemo<RecordSchemaFormProps<T>>(() => ({
@@ -56,11 +84,11 @@ function UpdateRecordSchemaForm<T = CommonRecord>({
       </Tooltip>
     ),
     layoutType: 'ModalForm',
-    initialValues: normalizeInitialValues(record, matchParams),
+    initialValues: convertValuesFn(record, matchParams),
     onFinish,
     record,
     ...rest,
-  }), [matchParams, normalizeInitialValues, onFinish, record, rest]);
+  }), [matchParams, convertValuesFn, onFinish, record, rest]);
 
   return (
     <RecordSchemaForm
@@ -70,8 +98,10 @@ function UpdateRecordSchemaForm<T = CommonRecord>({
 }
 
 UpdateRecordSchemaForm.defaultProps = {
-  normalizeSubmitValues: (v) => v,
-  normalizeInitialValues: (v) => v,
+  normalizeSubmitValues: null,
+  normalizeInitialValues: null,
+  transform: null,
+  convertValues: null,
 };
 
 export default UpdateRecordSchemaForm;

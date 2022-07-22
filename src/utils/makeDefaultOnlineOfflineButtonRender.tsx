@@ -20,14 +20,14 @@ export default function makeDefaultOnlineOfflineButtonRender(
       statusKey = 'status',
       onlinePopConfirmProps = {},
       offlinePopConfirmProps = {},
-      normalizeSubmitValues = (v) => v,
+      transform = (v) => v,
     } = config;
 
     const status = get(record, statusKey);
 
     const onConfirm = async () =>
       update(
-        await normalizeSubmitValues(
+        await transform(
           {
             [statusKey]: status === onlineStatus ? offlineStatus : onlineStatus,
           },

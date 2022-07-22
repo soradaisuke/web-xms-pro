@@ -46,7 +46,7 @@ export type TableDeleteConfig = {
 export type TableOnlineOfflineConfig =
   & Pick<
     UpdateRecordSchemaFormProps,
-    'normalizeSubmitValues'
+    'transform'
   >
   & {
     /**
