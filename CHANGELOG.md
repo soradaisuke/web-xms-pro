@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.24](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.23...v1.0.24) (2022-07-22)
+
+
+### Features
+
+* **NoTicket:** Update README.md ([6642352](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/66423528f7f83b5ba0414e4042f2572b54fb6bb0))
+* **NoTicket:** 重命名normalizeInitialValues为convertValues，normalizeSubmitValues为transform ([2bfe878](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/2bfe878755d3618a8d6089452538e41e95437927))
+
 ### [1.0.23](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.22...v1.0.23) (2022-07-22)
 
 
