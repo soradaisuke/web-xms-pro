@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.23](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.22...v1.0.23) (2022-07-22)
+
+
+### Features
+
+* **NoTicket:** 升级依赖 ([01fc375](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/01fc375e048644580385572b641fbe2fac118dfb))
+* **NoTicket:** 移除useFormListItemAction ([81aefbd](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/commit/81aefbdd966f8424cf411ca54ea554ecdcd00c40))
+
 ### [1.0.22](https://git2.qingtingfm.com/bj-libs/qt-web-xms-pro/compare/v1.0.21...v1.0.22) (2022-07-21)
 
 
